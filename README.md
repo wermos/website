@@ -6,7 +6,7 @@ What is Scratchapixel? It is a website that attempts at being a central reposito
 - Written in plain English. 
 - Every equation is derived.
 - Focus on simplicity & accessibility.
-- Books like PBRT (Physically Based Rendering) provide a complete software solution and chapters from the book describe diffrent parts of the program. Scratchapixel does not focused on providing a large software solution to which the lessons would refer to. Instead, each lesson focuses on one particular technique and each lesson comes with its own code. The goal is to show how the studied technique translate into code in a program that can easily be compiled from the command line and doesn't rely on a complex build system to be tested.
+- Books like PBRT (Physically Based Rendering) provide a complete software solution and chapters from the book describe diffrent parts of the program. Scratchapixel does not provide the source code of a large software solution to which the lessons would refer to. Instead, each lesson focuses on one particular technique and each lesson comes with its own code. The goal is to show how the studied technique translate into code in a program that can easily be compiled from the command line and doesn't rely on a complex build system to be tested.
 
 What Scratchapixel is not:
 
@@ -32,12 +32,14 @@ If you want to help, first thank you). We want to avoid conflicts in the process
 - You need a GitHub account. Once logged in into your account, go to [Scratchapixel's website repository]().
 - Fork the repository. This will create a copy of the repository in your own account.
 - How you want to edit the content after that point is entirely up to you. You can edit the content directly from GitHub (from your account, using the "forked" repo) or clone the project on your local computer to use the text editor of your choice.
-- If you work with a cloned copy (remotely) you will need to install [Git Credential Manager](http://microsoft.github.io/Git-Credential-Manager-for-Windows/Docs/CredentialManager.html). 
-- Once you want your edits to be pushed to the main website, create a pull request (from which we will be to able to merge your changes into the master branch). Your edits will go through an approval process before being merged to the main branch.
+- If you work with a cloned copy (remotely) you will need to install [Git Credential Manager](http://microsoft.github.io/Git-Credential-Manager-for-Windows/Docs/CredentialManager.html). The most useful commands you might need if you work with a remote copy are likely to be `git add`, `git commit`, and `git push`. Note that at this point, your changes will only be saved into your fork.
+- When you are ready to psuh your edits to the main website, create a pull request (from which we will be to able to merge your changes into the master branch). Your edits will go through an approval process before being merged to the main branch. Ideally, review a lesson completely and when you feel that you are done with your work, then generate a pull request (rather than making making a pull request for each incremental change).
 
 For the time being, it would be great if you could mostly focus on typos, layout, grammatical issues, and  improving the readibility of sentences if needs be. If you find some issues with the code snippets or the equations of course, please feel free to fix them too. 
 
 The point of making the project open source at this point in time is to improve the quality of the current content as much as possible. If you wish to write original content or would like to suggest important changes to the structure of a lesson, please get in touch with us (email/Discord).
+
+Changes will be pushed to www.scratchapixel.org until all the content have been translated to Markdown and reviewed. Once done, we will then publish the content under www.scratchapixel.com. Hopefully this can be done by the end of 2022 and we can start adding new content again.
 
 ### General Structure of a document
 
