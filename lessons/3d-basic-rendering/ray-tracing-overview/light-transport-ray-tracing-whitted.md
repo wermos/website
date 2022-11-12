@@ -133,72 +133,72 @@ The main goal of this program is for you to understand the concepts that it is b
   Note that if the recursion depth is greater than the maximum allowed depth, then the function simply returns the background color and no additional secondary rays are cast.
 
   ```
-  Vec3f castRay(const Vec3f &orig, const Vec3f &dir, ..., uint32_t depth) 
-  { 
-	  if (depth > options.maxDepth) 
-          return options.backgroundColor; 
- 
-      float tNear = INFINITY;  //distance to the intersected object 
-      Object *hitObject = NULL;  //pointer to the intersected object 
-      Vec3f hitColor = 0;  //the color of the intersected point 
-      if (trace(orig, dir, objects, tnear, hitObject....) { 
-          switch (hitObject->materialType) { 
-              case REFLECTION_AND_REFRACTION: 
+  Vec3f castRay(const Vec3f &orig, const Vec3f &dir, ..., uint32_t depth)
+  {
+      if (depth > options.maxDepth)
+          return options.backgroundColor;
+  
+      float tNear = INFINITY;  //distance to the intersected object
+      Object *hitObject = NULL;  //pointer to the intersected object
+      Vec3f hitColor = 0;  //the color of the intersected point
+      if (trace(orig, dir, objects, tnear, hitObject....) {
+          switch (hitObject->materialType) {
+              case REFLECTION_AND_REFRACTION:
                   // compute reflection and refraction ray
-                  ... 
+                  ...
                   // cast reflection and refraction ray, don't forget to increment depth
-                  Vec3f reflectionColor = castRay(hitPoint, reflectionDirection, ..., depth + 1); 
-                  Vec3f refractionColor = castRay(hitPoint, refractionDirection, ..., depth + 1); 
-                  float kr;  //how much light is reflected, computed by the Fresnel equation 
-                  fresnel(dir, N, hitObject->ior, kr); 
-                  hitColor = reflectionColor * kr + refractionColor * (1 - kr); 
+                  Vec3f reflectionColor = castRay(hitPoint, reflectionDirection, ..., depth + 1);
+                  Vec3f refractionColor = castRay(hitPoint, refractionDirection, ..., depth + 1);
+                  float kr;  //how much light is reflected, computed by the Fresnel equation
+                  fresnel(dir, N, hitObject->ior, kr);
+                  hitColor = reflectionColor * kr + refractionColor * (1 - kr);
                   break; 
-              case REFLECTION: 
+              case REFLECTION:
                   // compute reflection ray
-                  ... 
+                  ...
                   // cast reflection ray, increment depth
-                  Vec3f reflectionColor = castRay(hitPoint, reflectionDirection, ..., depth + 1); 
-                  hitColor = reflectionColor; 
-                  break; 
-              default: 
+                  Vec3f reflectionColor = castRay(hitPoint, reflectionDirection, ..., depth + 1);
+                  hitColor = reflectionColor;
+                  break;
+              default:
                   // compute Phong illumination model
-                  for (uint32_t i = 0; i < lights.size(); ++i) { 
+                  for (uint32_t i = 0; i < lights.size(); ++i) {
                       // compute shadow ray
-                      Vec3f lightDirection = lights[i].position - hitPoint; 
-                      float len2 = dot(lightDirection, lightDirection);  //length^2 
-                      float tNearShadow = INFINITY; 
+                      Vec3f lightDirection = lights[i].position - hitPoint;
+                      float len2 = dot(lightDirection, lightDirection);  //length^2
+                      float tNearShadow = INFINITY;
                       // is hitPoint in the shadow of this light and is the intersection point close to the light itself?
-                      bool isInShadow = (trace(hitPoint, normalize(lightDirection), tNearShadow, ...) && tNearShadow * tNearShadow < len2); 
+                      bool isInShadow = (trace(hitPoint, normalize(lightDirection), tNearShadow, ...) && tNearShadow * tNearShadow < len2);
                       // compute the Phong model terms
-                      hitColor = (1 - isInShadow) * (...); 
-                  } 
-                  break; 
-          } 
-      } 
- 
-      return hitColor; 
+                      hitColor = (1 - isInShadow) * (...);
+                  }
+                  break;
+          }
+      }
+  
+      return hitColor;
   } 
   ```
- 
+
 - Finally the `trace()` function itself. It loops over all the objects in the scene and finds the closest surface where the ray intersects. It returns true if the ray intersected an object and false otherwise.
 
   ```
-  bool trace(const Vec3f &orig, const Vec3f &dir, float tNear, ...) 
+  bool trace(const Vec3f &orig, const Vec3f &dir, float tNear, ...)
   { 
-      hitObject = NULL; 
-      for (uint32_t i = 0; i < objects.size(); ++i) { 
-          float tNearK = INFINITY; 
-          if (objects[i]->intersect(orig, dir, tNearK, ...) && tNearK < tNear) { 
-               hitObject = objects[i]; 
-               tNear = tNearK; 
-               ... 
-          } 
-      } 
- 
-      return (hitObject != NULL); 
+      hitObject = NULL;
+      for (uint32_t i = 0; i < objects.size(); ++i) {
+          float tNearK = INFINITY;
+          if (objects[i]->intersect(orig, dir, tNearK, ...) && tNearK < tNear) {
+              hitObject = objects[i];
+              tNear = tNearK;
+              ...
+          }
+      }
+  
+      return (hitObject != NULL);
   }
   ```
-  
+
 You can find the complete source code of this program in the next chapter. If you compile and run the program, you will probably observe that it takes quite a while to render this simple scene. Here is the output of the program:
 
 ![](/images/ray-tracing-refresher/rt-result.png?)
