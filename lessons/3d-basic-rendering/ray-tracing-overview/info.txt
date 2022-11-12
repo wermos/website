@@ -1,2 +1,3 @@
 @An Overview of the Ray-Tracing Rendering Technique
 ray-tracing-rendering-technique-overview.md:Overview of the Ray-Tracing Rendering Technique
+light-transport-ray-tracing-whitted.md:Light Transport Algorithms and Ray-Tracing: Whitted Ray-Tracing
