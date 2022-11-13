@@ -108,6 +108,8 @@ We are using some of the standard rules but we added a few that are specific to 
   |-
   ```
   The syntax is hopefully self-explanatory. As you can see it feels similar to the way you lay a table in HTML. Be mindful to not create more cells than they are cells in the header row declaration. For the header cell declaration put the text of the cells better {} and separate them with a comma (leaving no space between the text and the commas and no space between the text and the {}).
+  
+- To change the color of a sequence of words use `@@\rthis is the text I want in red@@` where `\r` stands for red (and `\g` and `b` for green and blue respectively). There should be no space between the `\r` (or `\g` or `\b`) qualifier and the first character in the colored string.
 
 ### Style
 
