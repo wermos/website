@@ -27,7 +27,7 @@ If we normalize C we get the vector (0, 0, 1) which as you can see, is parallel 
 
 ## Coordinate System Handedness
 
-The order in which a triangle's vertices are defined affects the orientation of the surface's normal. V0, V1, and V2, created in counter-clockwise order (CCW), produce a normal denoted N. If the vertices were created in clockwise order (CW), the normal we would get from the cross product of the two edges (A=V1-V0 and B=V2-V0) would then point in the opposite direction to N. That is -N.
+The order in which a triangle's vertices are defined affects the orientation of the surface's normal. V0, V1, and V2, created in counter-clockwise order (CCW), produce a normal denoted N. If the vertices were created in clockwise order (CW), the normal we would get from the cross product of the two edges (A=V1-V0 and B=V2-V0) would then point in the opposite direction to N. We would get -N.
 
 ![Figure 1: vector A and B can be computed from V1 - V0 and V2 - V0 respectively. The normal of the triangle, or vector C is the cross product of A and B. Note that the order in which the vertices were created determines the direction of the normal (in this example vertices have been created counter-clockwise).](/images/ray-triangle/triangle2.png?)
 
