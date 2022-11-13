@@ -13,7 +13,7 @@ mathematics-physics-for-computer-graphics/geometry/
 3d-basic-rendering/ray-tracing-generating-camera-rays/*
 3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/*
 3d-basic-rendering/ray-tracing-rendering-a-triangle/*
-3d-basic-rendering/introduction-polygon-mesh/
+3d-basic-rendering/introduction-polygon-mesh/*
 3d-basic-rendering/ray-tracing-polygon-mesh/
 3d-basic-rendering/transforming-objects-using-matrices/
 3d-basic-rendering/introduction-to-shading/
