@@ -1,2 +1,6 @@
 @A Minimal Ray-Tracer: Rendering Simple Shapes (Sphere, Cube, Disk, Plane, etc.)
 parametric-and-implicit-surfaces.md:Parametric and Implicit Surfaces
+ray-sphere-intersection.md:Ray-Sphere Intersection
+minimal-ray-tracer-rendering-spheres.md:A Minimal Ray-Tracer: Rendering Spheres
+ray-plane-and-ray-disk-intersection.md:Ray-Plane and Ray-Disk Intersection
+ray-box-intersection.md:Ray-Box Intersection

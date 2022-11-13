@@ -1,2 +1,4 @@
 @Ray-Tracing: Generating Camera Rays
 definition-ray.md:Definition of a Ray
+generating-camera-rays.md:Generating Camera Rays
+standard-coordinate-systems.md:Standard Coordinate Systems

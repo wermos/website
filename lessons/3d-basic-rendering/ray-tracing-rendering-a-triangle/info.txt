@@ -1,2 +1,7 @@
 @Ray-Tracing: Rendering a Triangle
 why-are-triangles-useful.md:Why Are Triangles Useful?
+geometry-of-a-triangle.md:Geometry of a Triangle
+ray-triangle-intersection-geometric-solution.md:Ray-Triangle Intersection: Geometric Solution
+single-vs-double-sided-triangle-backface-culling.md:Single vs Double Sided Triangle and Backface Culling
+barycentric-coordinates.md:Barycentric Coordinates
+moller-trumbore-ray-triangle-intersection.md:Möller-Trumbore algorithm
