@@ -186,7 +186,7 @@ bool rayTriangleIntersect(
 <details>
 
 The "inside-outside" technique we have just described works for any [convex polygon](http://en.wikipedia.org/wiki/Convex_polygon). Repeat the technique we have used for triangles for each edge of the polygon. Compute the cross product of the vector defined by the two edges' vertices and the vector defined by the first edge's vertex and the point. Compute the dot product of the resulting vector and the polygon's normal. The sign of the resulting dot product determines if the point is on the right or left side of that edge. Iterate through each edge of the polygon. There's no need to test the other edges if one fails to pass the test.
-</detail>
+</details>
 
 Note that this technique can be made faster if the triangle's normal as well as the value \(D\) from the plane equation are precomputed and stored in memory for each triangle of the scene.
 
