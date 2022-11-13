@@ -132,3 +132,7 @@ XX TO DO
 We can always do more, but there's a limited number of hours in a day. Let's iterate instead. One step at a time. Some first version of a lesson is better than no lesson at all. And then over time, let's improve things, add more visuals, etc.
 
 The written style is "casual". Writing "it's okay" vs "it is okay" is fine. Both versions are fine!
+
+## Roadmap
+
+[Trello board](https://trello.com/b/a3aJhki7/scratchapixel)
