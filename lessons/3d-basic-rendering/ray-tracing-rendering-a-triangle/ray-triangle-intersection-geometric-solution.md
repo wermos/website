@@ -10,7 +10,7 @@ We know that P is somewhere on the ray defined by its origin \(O\) and its direc
 
 $$P=O + tR.$$
 
-Where \(t\) is the distance from the ray origin \(O\) to P. To find P we need to find \(t\) (figure 1). What else do we know? We know the plane's normal which we have already computed and the plane equation (2) which is (check the chapter on the ray-plane intersection in [previous lesson](lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection) for more information on this topic):
+Where \(t\) is the distance from the ray origin \(O\) to P. To find P we need to find \(t\) (Figure 1). What else do we know? We know the plane's normal which we have already computed and the plane equation (2) which is (check the chapter on the ray-plane intersection in [previous lesson](lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection) for more information on this topic):
 
 $$
 Ax + By + Cz + D = 0\\
@@ -56,7 +56,7 @@ There are two very important cases that we need to look at before we check if th
 
 ### The Ray And The Triangle Are Parallel
 
-If the ray and the plane are parallel they won't intersect (figure 2). For robustness, we need to handle that case if it happens. This is very simple. if the triangle and the ray are parallel, then the triangle's normal and the ray's direction should be perpendicular.
+If the ray and the plane are parallel they won't intersect (Figure 2). For robustness, we need to handle that case if it happens. This is very simple. if the triangle and the ray are parallel, then the triangle's normal and the ray's direction should be perpendicular.
 
 ![Figure 2: several situations can occur. The ray can intersect the triangle or miss it. If the ray is parallel to the triangle there is no possible intersection. This situation occurs when the normal of the triangle and the ray direction is perpendicular (and the dot product of these two vectors is 0).](/images/ray-triangle/trirays.png?)
 
@@ -78,7 +78,7 @@ Now that we have found the point P which is the point where the ray and the plan
 
 ![Figure 6: to find out if P is inside the triangle we can test if the dot product of the vector along the edge and the vector defined by the first vertex of the tested edge and P is positive (meaning P is on the left side of the edge). If P is on the left of all three edges, then P is inside the triangle.](/images/ray-triangle/triinsideout3.png?)
 
-The solution to this problem is simple and is also called the "inside-outside" test (we have already used this term in the lesson on rasterization. In the context of rasterization, the test was applied for 2D triangles. We will use it here for 3D triangles. Imagine that you have a vector A which is aligned with the x-axis (figure 4). Let's imagine that this vector is aligned with one edge of our triangle (the edge defined by the two vertices v0-v01). B, the second edge, is defined by the vertices v0 and v2 of the triangles as shown in figure 4\. Let's calculate the cross-product of these two vectors. As expected the result is a vector that is pointing in the same direction as the z-axis and as the normal of the triangle.
+The solution to this problem is simple and is also called the "inside-outside" test (we have already used this term in the lesson on rasterization. In the context of rasterization, the test was applied for 2D triangles. We will use it here for 3D triangles. Imagine that you have a vector A which is aligned with the x-axis (Figure 4). Let's imagine that this vector is aligned with one edge of our triangle (the edge defined by the two vertices v0-v01). B, the second edge, is defined by the vertices v0 and v2 of the triangles as shown in Figure 4. Let's calculate the cross-product of these two vectors. As expected the result is a vector that is pointing in the same direction as the z-axis and as the normal of the triangle.
 
 $$
 \begin{array}{l}
@@ -104,7 +104,7 @@ C = (0, 0, -1)
 \end{array}
 $$
 
-Because C and N are pointing in the same direction, their dot product returns a value greater than 0 (positive). However because C' and N are pointing in opposite directions, their dot product returns a value lower than 0 (negative). What does that test tell us? We know that the point where the ray intersects the triangle and the triangle are in the same plane. We also know from the test we have just made that if a point P which is in the triangle's plane (such as the vertex V2 or the intersection point) is on the left side of vector A, then the dot product between the triangle's normal and vector C is positive (C is the result of the cross product between A and B. In this scenario, A = (v1 - v0) and B = (P - v0)). However, if P is on the right side of A (as with v2') then this dot product is negative. You can see in figure 5, that point P is inside the triangle when it is located on the left side of A. To apply the technique we have just described to the ray-triangle intersection problem, we need to repeat the left/right test for each edge of the triangle. If for each one of the triangle's edges we find that point P is on the left side of vector C (where C is defined as v1-v0, v2-v1, and v0-v2 respectively for each edge of the triangle), then we know for sure that P is inside the triangle. If the test fails for any of the triangle edges, then P lies outside the triangle's boundaries. This process is illustrated in Figure 6.
+Because C and N are pointing in the same direction, their dot product returns a value greater than 0 (positive). However because C' and N are pointing in opposite directions, their dot product returns a value lower than 0 (negative). What does that test tell us? We know that the point where the ray intersects the triangle and the triangle are in the same plane. We also know from the test we have just made that if a point P which is in the triangle's plane (such as the vertex V2 or the intersection point) is on the left side of vector A, then the dot product between the triangle's normal and vector C is positive (C is the result of the cross product between A and B. In this scenario, A = (v1 - v0) and B = (P - v0)). However, if P is on the right side of A (as with v2') then this dot product is negative. You can see in Figure 5, that point P is inside the triangle when it is located on the left side of A. To apply the technique we have just described to the ray-triangle intersection problem, we need to repeat the left/right test for each edge of the triangle. If for each one of the triangle's edges we find that point P is on the left side of vector C (where C is defined as v1-v0, v2-v1, and v0-v2 respectively for each edge of the triangle), then we know for sure that P is inside the triangle. If the test fails for any of the triangle edges, then P lies outside the triangle's boundaries. This process is illustrated in Figure 6.
 
 Here is an example of the inside-outside test in pseudocode:
 

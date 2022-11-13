@@ -43,11 +43,11 @@ w ={\dfrac{TriangleBCP_{Area}}{TriangleABC_{Area}}}\\
 \end{array}
 $$
 
-In the rest of the lesson we will assume that u makes us move along the edge AB (if u=1 then P=B) and v along the edge AC (if v=1 then P=C). Which is the reason why we will use the area of the sub-triangle CAP to compute u and the area of the sub-triangle ABP to compute v. This is a convention that most people follow in the CG programming community (when we will learn how to use barycentric coordinates to interpolate vertex data you will have a visual example (figure 3) to better understand this).
+In the rest of the lesson we will assume that u makes us move along the edge AB (if u=1 then P=B) and v along the edge AC (if v=1 then P=C). Which is the reason why we will use the area of the sub-triangle CAP to compute u and the area of the sub-triangle ABP to compute v. This is a convention that most people follow in the CG programming community (when we will learn how to use barycentric coordinates to interpolate vertex data you will have a visual example (Figure 3) to better understand this).
 
 ![Figure 2: to compute the area of a triangle we start from the formula used to compute a parallelogram (its base multiplied by its height H). To compute H, we multiply sin(\(\theta\)) by the length of the vector AC.](/images/ray-triangle/parallelogram.png?)
 
-Now computing the area of a triangle is trivial. If you duplicate the triangle and mirror it along its longest edge, you get a parallelogram. To compute the area of a parallelogram, simply compute its base, and its side and multiply these two numbers together scaled by sin(\(\theta\)), where \(\theta\) is the angle subtended by the vectors AB and AC (figure 2). To create the parallelogram we used two triangles, therefore the area of one triangle is half the area of the parallelogram.
+Now computing the area of a triangle is trivial. If you duplicate the triangle and mirror it along its longest edge, you get a parallelogram. To compute the area of a parallelogram, simply compute its base, and its side and multiply these two numbers together scaled by sin(\(\theta\)), where \(\theta\) is the angle subtended by the vectors AB and AC (Figure 2). To create the parallelogram we used two triangles, therefore the area of one triangle is half the area of the parallelogram.
 
 With this in hand, it becomes easy to compute u and v (w is computed out of u and v as explained before).
 
