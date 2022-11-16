@@ -66,7 +66,9 @@ We are using some of the standard rules but we added a few that are specific to 
 - **Italic**: \_italic_
 - **Bold**: \*\*bold**
 - **Image**: \!\[Coment about the image](/relative/path/to/image.png)
-- **Link**: \[Link](/relative/path/to/content)
+- **Link**: \[Link](/relative/path/to/content). Regarding links if you make a link to a lesson on scratcahpixel, the link should start with `/lessons` or `lessons`. This is the path relative to the website's root. If you want to point to a given lesson, you don't need to include the name of the first page of that lesson. For example you can use `/lessons/3d-basic-rendering/introduction-to-ray-tracing/` instead of `/lessons/3d-basic-rendering/introduction-to-ray-tracing/how-does-it-work.html`. If you want to point to a particular chapter from a lesson though, you will of course need to include it in the path. For example: `/lessons/3d-basic-rendering/introduction-to-ray-tracing/raytracing-algorithm-in-a-nutshell.html`.
+  Note: you don't need to include the `.html` extension. It's done automatically through a the re-write rules. 
+  Also, all paths will be checked during the conversion of the MD to HTML pages. Bad paths will hopefully be identified then and fixed at this point of the process.
 - **Heading 2**:  \## Some text (space after \##).
 - **Heading 1**:  \# Some text (space after \#). Generally do not use h1's. They are reserved to lessons' titles. Lesson's content should only contain h2's.
 - **List**: start a paragraph with a - (numbered list not supported now). Don't forget to put a space after the sign -
