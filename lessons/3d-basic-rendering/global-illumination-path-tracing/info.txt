@@ -1,2 +1,3 @@
 @Global Illumination and Path Tracing
 introduction-global-illumination-path-tracing.md:An Intuitive Introduction to Global Illumination and Path Tracing
+global-illumination-path-tracing-practical-implementation.md:Global Illumination and Path Tracing: a Practical Implementation

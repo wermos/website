@@ -1,2 +1,10 @@
 @Introduction to Shading
 what-is-shading-light-matter-interaction.md:What is Shading: Light-Matter interaction
+shading-normals.md:Normals, Vertex Normals and Facing Ratio
+shading-lights.md:Lights
+diffuse-lambertian-shading.md:Diffuse and Lambertian Shading
+ligth-and-shadows.md:Light and Shadows
+shading-spherical-light.md:Spherical Light
+shading-multiple-lights.md:Multiple Lights
+reflection-refraction-fresnel.md:Reflection, Refraction and Fresnel
+procedural-texturing.md:Procedural Texturing

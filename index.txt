@@ -16,9 +16,9 @@ mathematics-physics-for-computer-graphics/geometry/
 3d-basic-rendering/introduction-polygon-mesh/*
 3d-basic-rendering/ray-tracing-polygon-mesh/*
 3d-basic-rendering/transforming-objects-using-matrices/*
-3d-basic-rendering/introduction-to-shading/
-3d-basic-rendering/phong-shader-BRDF/
-3d-basic-rendering/global-illumination-path-tracing/
+3d-basic-rendering/introduction-to-shading/*
+3d-basic-rendering/phong-shader-BRDF/*
+3d-basic-rendering/global-illumination-path-tracing/*
 3d-basic-rendering/introduction-acceleration-structure/
 3d-basic-rendering/volume-rendering-for-developers/*
 
