@@ -97,7 +97,7 @@ corner 8: (-1,  1, -3)
 
 ![Figure 8: the coordinates of the point P', the projection of P on the canvas can be computed using simple geometry. The rectangle ABC and AB'C' are said to be similar.](/images/rendering-3d-scene-overview/box-setup4.png)
 
-Let's look at our setup from the side and trace a line from one of the corners to the origin (the viewpoint). We can define two triangles: ABC and AB'C'. As you can see these two triangles have the same origin (A). They are also somehow copies of each other, in the sense that the angle defined by the edges AB and AC is the same as the angle defined by the edge AB', AC'. Such triangles are said to be **similar**. Similar triangles have an interesting property: the ratio between their adjacent and opposite sides is the same. In other words:
+Let's look at our setup from the side and trace a line from one of the corners to the origin (the viewpoint). We can define two triangles: ABC and AB'C'. As you can see these two triangles have the same origin (A). They are also somehow copies of each other, in the sense that the angle defined by the edges AB and AC is the same as the angle defined by the edge AB', AC'. Such triangles are said to be **similar**. Similar triangles have an interesting property: the ratio between their adjacent and opposite sides is the same (a lesson on similar triangles can be found on [Khan Academy](https://www.khanacademy.org/math/geometry/hs-geo-similarity/hs-geo-triangle-similarity-intro/v/similar-triangle-basics)). In other words:
 
 $$
 {BC \over AB} = {B'C' \over AB'}.
