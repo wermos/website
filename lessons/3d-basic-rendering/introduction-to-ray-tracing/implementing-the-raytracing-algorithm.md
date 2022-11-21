@@ -4,15 +4,15 @@ First of all, take a moment to notice that the propagation of light in nature is
 
 The ray-tracing algorithm takes an image made of pixels. For each pixel in the image, it shoots a primary ray into the scene. The direction of that primary ray is obtained by tracing a line from the eye to the center of that pixel. Once we have that primary ray's direction set, we check every object in the scene to see if it intersects with any of them. In some cases, the primary ray will intersect more than one object. When that happens, we select the object whose intersection point is the closest to the eye. We then shoot a shadow ray from the intersection point to the light (Figure 1). 
 
-![Figure 1: we shoot a primary ray through the center of the pixel to check for a possible object intersection. When we find one we then cast a shadow ray to find out if the point is illuminated or in shadow.](/images/introduction-to-ray-tracing/lightingnoshadow.gif)
+![Figure 1: We shoot a primary ray through the center of the pixel to check for a possible object intersection. When we find one we then cast a shadow ray to find out if the point is illuminated or in shadow.](/images/introduction-to-ray-tracing/lightingnoshadow.gif)
 
 If this particular ray does not intersect an object on its way to the light, the hit point is illuminated. If it does intersect with another object, that object casts a shadow on it (Figure 2).
 
-![Figure 2: the small sphere cast a shadow on the large sphere. The shadow ray intersects the small sphere before it gets to the light.](/images/introduction-to-ray-tracing/lightingshadow.gif)
+![Figure 2: The small sphere cast a shadow on the large sphere. The shadow ray intersects the small sphere before it gets to the light.](/images/introduction-to-ray-tracing/lightingshadow.gif)
 
 If we repeat this operation for every pixel, we obtain a two-dimensional representation of our three-dimensional scene (Figure 3).
 
-![Figure 3: to render a frame, we shoot a primary ray for each pixel of the frame buffer.](/images/introduction-to-ray-tracing/pixelrender.gif)
+![Figure 3: To render a frame, we shoot a primary ray for each pixel of the frame buffer.](/images/introduction-to-ray-tracing/pixelrender.gif)
 
 Here is an implementation of the algorithm in pseudocode:
 
