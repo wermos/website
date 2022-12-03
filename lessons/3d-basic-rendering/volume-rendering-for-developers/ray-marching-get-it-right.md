@@ -471,6 +471,6 @@ The source code for this chapter is available at the end of the lesson. And it s
 - Replace the sphere with a cube.
 - Add a timer, to measure how slow volume rendering is. This will be most noticeable in the next chapter.
 
-# What's next?
+## What's next?
 
 Congratulation if you made it that far. You graduated and Scratchapixel is delivering you a virtual certificate with honors. The core of how these algorithm works has been covered. The remaining chapters are more about using what we have learned and built so far, to finally have some fun and make some cool images. Finally, in the last chapter, we will take everything we have learned so far, and see how it translates into the actual equations used to describe the flux of light energy as it travels through and interacts with a participating medium (air, smoke, cloud, water, etc.)

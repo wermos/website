@@ -1,5 +1,6 @@
 @Mathematics for Computer Graphics:Most common mathematical tools/techniques used in computer graphics/computer vision. Go through the lessons of the basic section first, and then eventually start reading these lessons as you go along.
 mathematics-physics-for-computer-graphics/geometry/
+mathematics-physics-for-computer-graphics/lookat-function/*
 
 @3D Rendering for Beginners:Best read in chronological order (top to bottom).
 3d-basic-rendering/introduction-to-ray-tracing/*
