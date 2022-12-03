@@ -1,5 +1,5 @@
 <details>
-In this short lesson, we will study a simple but useful method to place 3D cameras. To understand this lesson, you will need to be familiar with the concept of transformation matrix and cross-product between vectors. If that's not already the case, it is recommended to read the lesson on [geometry](lessons/mathematics-physics-for-computer-graphics/geometry) first.
+In this short lesson, we will study a simple but useful method to place 3D cameras. To understand this lesson, you will need to be familiar with the concept of transformation matrix and cross-product between vectors. If that's not already the case, you might want to read the lesson [geometry](lessons/mathematics-physics-for-computer-graphics/geometry) first.
 </details>
 
 ## Moving the Camera
