@@ -1,4 +1,4 @@
-## In and Out-scattering.
+## In-Scattering and Out-Scattering.
 
 In the previous chapters, we only accounted for two types of interactions between light beams and particles making up the medium: absorption and in-scattering. But, to get an accurate result, we should consider four types. We can divide them into two categories. Interactions that attenuate the energy of light beams as they pass through the medium to the eye. And those that contribute to increasing their energy.
 
@@ -54,7 +54,9 @@ if (hit_object->intersect(sample_pos, light_dir, isect_vol) && isect_vol.inside)
 ...
 ```
 
-## The Density term (a heads up on our next chapter).
+## The Density Term
+
+_We will speak about this term in detail in the next chapter._
 
 Now so far we considered that the scattering and absorption coefficient which we have been using to control how "opaque" the volume is (remember that the higher these coefficients, the more opaque the volume) is uniform across the volume itself. In the scientific literature, this is often referred to as a **homogenous participating medium**. This is generally not the case with "volumes" in the real world. Think of clouds or smoke plumes for example. Their opacity varies spatially. We then speak of **heterogeneous participating medium**.
 
@@ -89,7 +91,7 @@ return background_color* transparency + result;
 
 if `result` wasn't 0 when there's no volume (because we would have omitted to multiply scattering in the in-scattering calculation by the density value for example), we would see something (result > 0) when we shouldn't (the result should be 0 in that case). That's why in the previous chapter, we mentioned that `result` was already "pre-multiplied". It is already multiplied by its own "opacity mask". It's greater than 0 where density/opacity is greater than 0; 0 otherwise.
 
-# The phase function.
+## The Phase Function.
 
 xx missing an image here with omega omega' xx
 
@@ -222,7 +224,7 @@ The sequence of images above shows our volume sphere in two different lighting s
 
 The Henyey-Greenstein phase function is simple but can offer a good fit to real-world data. You can use a two-lobe phase function for example by combining the result of the function for a value of g = 0.35 with the result for a negative value or higher value of g to achieve a more refined fit. Feel free to experiment. For objects such as clouds or haze, use a high value (around 0.8). Check the reference section at the end of the lesson for some pointers.
 
-# Jittering the sample positions
+## Jittering the Sample Positions
 
 ![](/images/volume-rendering-developers/voldev-jittering1.png?)
 
@@ -250,7 +252,7 @@ Stochastic sampling is a Monte Carlo technique in which we sample the function a
 
 We can't say that this is better (hence the quotes around "fixing the issue"), because we now replace banding with noise, which is a problem on its own. Still, the result is visually more pleasing than banding. You can reduce this noise using more elaborate ways of generating sequences of "random" numbers (see for example quasi Monte-Carlo methods). However, in this version of the lesson, we will skip this topic; an entire book can be written about that (for now, you can find some information on this method in the lesson [Monte Carlo in Practice](lessons/mathematics-physics-for-computer-graphics/monte-carlo-methods-in-practice/introduction-quasi-monte-carlo)).
 
-# Break out from the ray-marching loop when opaque (optimization)
+## Break From the Ray Marching Loop When Opaque (Optimization)
 
 Indeed if the volume's transparency after saying you've marched through half of the distance between t0 and t1 is, for example, lower than 1e-3, you might consider that computing the samples for the remaining half is not necessary (as shown in the adjacent figure). You can do so by just breaking out from the ray-marching loop as soon as you detect that the transparency variable is lower than this minimum threshold (see pseudo-code below). Considering that ray-marching is a rather slow computational method, we should use this optimization; it will save a lot of time particularly when volumetric objects are rather dense (the denser they are, the quicker the transparency drops). We mentioned in the previous chapter that this is one of the reasons why we might prefer the forward over backward integration method.
 
@@ -291,7 +293,7 @@ for (int n = 0; n < ns; ++ns) {
 
 This is a quick explanation of the Russian roulette technique, which, as already mentioned, is used in Monte Carlo simulation and integration. Please check these lessons for a more detailed explanation if you need to.
 
-# You can now read other people's code!
+## Reading Other People's Code!
 
 The first three chapters of this lesson cover what's needed to start rendering volumes. To a point where, if you are confronted with reading other people's code, you should now be able to make sense of what's going on. Let's do this exercise together. We will be using an open-source project called PBRT and looking at its implementation of volume rendering. There should be no secret for you in there any longer.
 
@@ -454,13 +456,13 @@ Spectrum SingleScatteringIntegrator::Li(const Scene *scene,
 }
 ```
 
-# Source Code
+## Source Code
 
 The source code for this chapter is available at the end of the lesson. And it should produce the following image. Note that in this version of the code the light color has higher values. The phase function introduces a division by \(4pi\) which is the reason why we now need to increase the light color a lot.
 
 ![](/images/volume-rendering-developers/voldev-resultchap3.png?)
 
-# Exercises?
+## Exercises
 
 - You can test that the russian roulette method works?
 - Make the code work for an arbitrary number of lights?

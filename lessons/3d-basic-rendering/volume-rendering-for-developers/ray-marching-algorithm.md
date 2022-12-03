@@ -157,8 +157,7 @@ If you look at what happens to just \(Li(X_0)\) as we go through the loop, you c
 
 ## Forward Ray-Marching.
 
-![Figure 4: forward ray-marching. Marching along the ray in small regular steps forward, from t0 to t1.
-](/images/volume-rendering-developers/voldev-raymarching.gif)
+![Figure 4: forward ray-marching. Marching along the ray in small regular steps forward, from t0 to t1.](/images/volume-rendering-developers/voldev-raymarching.gif)
 
 There is no difference with backward ray-marching when it comes to computing Li(x) and the sample's transmission value. What is different is how we combine samples because this time around, we will march from t0 to t1 (from front to back). In forward ray-marching, the contribution of light scattered by a sample has to be attenuated by the overall transmission (transparency) value of all samples (including the current one) that we've been processing so far: Li(X1) is attenuated by the transmission values of the samples X0 and X1, Li(X2) is occluded by the transmission values of the samples X0, X1, and X2, etc. Here is a description of the algorithm:
 
