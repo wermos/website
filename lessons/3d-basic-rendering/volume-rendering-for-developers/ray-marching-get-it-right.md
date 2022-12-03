@@ -13,7 +13,7 @@ These effects are illustrated in the image below.
 
 ![](/images/volume-rendering-developers/voldev-interactions.png?)
 
-In our computation for how much light we lose as light travels through the medium to the eye, we have to account for both absorption and out-scattering. Both out- and in-scattering are caused by the same type of light-particle interaction: scattering which, in the previous chapter, we've been defining with the variable $\sigma_s$ (the Greek letter sigma). So since scattering ($\sigma_s$) is also responsible for how much light we lose as light travels through the medium to the eye, we need to account for it in our Beer's law equation alongside the absorption coefficient $\sigma_a$. Remember, this equation is used to both compute the term Li(x) and the sample transmission value. Our code thus now becomes (changes in red):
+In our computation for how much light we lose as light travels through the medium to the eye, we have to account for both absorption and out-scattering. Both out- and in-scattering are caused by the same type of light-particle interaction: scattering which, in the previous chapter, we've been defining with the variable \(\sigma_s\) (the Greek letter sigma). So since scattering (\(\sigma_s\)) is also responsible for how much light we lose as light travels through the medium to the eye, we need to account for it in our Beer's law equation alongside the absorption coefficient \(\sigma_a\). Remember, this equation is used to both compute the term Li(x) and the sample transmission value. Our code thus now becomes (changes in red):
 
 ```
 ...
@@ -31,11 +31,11 @@ if (hit_object->intersect(sample_pos, light_dir, isect_vol) && isect_vol.inside)
 }
 ...
 ```
-Sometimes you will see the terms $\sigma_a$ and $\sigma_s$ summed up in a term called the **extinction coefficient** often denoted $\sigma_t$ (sigma t).
+Sometimes you will see the terms $\sigma_a$ and $\sigma_s$ summed up in a term called the **extinction coefficient** often denoted \(\sigma_t\) (sigma t).
 
 $$\sigma_t = \sigma_a + \sigma_t$$
 
-We are not entirely done with the scattering term... How much light is being scattered towards the eye due to in-scattering is also proportional to the scattering term. So we need to multiply the light contribution due to in-scattering by the $\sigma_s$ variable as well. Our code becomes (changes in red):
+We are not entirely done with the scattering term... How much light is being scattered towards the eye due to in-scattering is also proportional to the scattering term. So we need to multiply the light contribution due to in-scattering by the \(\sigma_s\) variable as well. Our code becomes (changes in red):
 
 ```
 ...
@@ -58,7 +58,7 @@ if (hit_object->intersect(sample_pos, light_dir, isect_vol) && isect_vol.inside)
 
 Now so far we considered that the scattering and absorption coefficient which we have been using to control how "opaque" the volume is (remember that the higher these coefficients, the more opaque the volume) is uniform across the volume itself. In the scientific literature, this is often referred to as a **homogenous participating medium**. This is generally not the case with "volumes" in the real world. Think of clouds or smoke plumes for example. Their opacity varies spatially. We then speak of **heterogeneous participating medium**.
 
-We will only see how to simulate volumetric objects with varying densities in the next chapter, but for now, let's just say that we want some kind of variables that will scale our scattering and absorption coefficient globally. Let's call this variable density. We will use it to scale both $\sigma_a$ and $\sigma_s$ as follows (changes in red):
+We will only see how to simulate volumetric objects with varying densities in the next chapter, but for now, let's just say that we want some kind of variables that will scale our scattering and absorption coefficient globally. Let's call this variable density. We will use it to scale both \(\sigma_a\) and \(\sigma_s\) as follows (changes in red):
 
 ```
 ...
@@ -78,7 +78,7 @@ if (hit_object->intersect(sample_pos, light_dir, isect_vol) && isect_vol.inside)
 ...
 ```
 
-Keep in mind that $\sigma_s$ is used in two places in the code. We will explain how to implement the concept of spatially varying density in the next chapter.
+Keep in mind that \(\sigma_s\) is used in two places in the code. We will explain how to implement the concept of spatially varying density in the next chapter.
 
 Now, note something interesting here. When the density is 0, nothing is added to the `result` variable. In other words, where there's no volume (empty space, or density = 0), there shouldn't be any accumulated light. This is important when it comes to this line:
 
@@ -97,7 +97,7 @@ The in-scattering contribution should be computed using the following equation:
 
 $$Li(x, \omega) = \sigma_s \int_{S^2} p(x, \omega, \omega')L(x,\omega')d\omega'$$
 
-$Li$ is in the in-scattering (radiance) contribution, $x$ the sample position and $\omega$ the view direction (our camera ray direction). **Normally, $\omega$ is always pointing in the direction of radiance flow, that is from the object to the eye**. The term $\omega'$ denotes the light direction (and $\omega'$ should be pointing from the object to the light). The term $L(x, \omega')$ here is nothing more than the L(x) term, the light contribution or incident radiance which we've been calculating the value of in our code so far. That one:
+$Li$ is in the in-scattering (radiance) contribution, $x$ the sample position and $\omega$ the view direction (our camera ray direction). **Normally, $\omega$ is always pointing in the direction of radiance flow, that is from the object to the eye**. The term \(\omega'\) denotes the light direction (and \(\omega'\) should be pointing from the object to the light). The term \(L(x, \omega')\) here is nothing more than the L(x) term, the light contribution or incident radiance which we've been calculating the value of in our code so far. That one:
 
 ```
 ...
@@ -111,7 +111,7 @@ if (hit_object->intersect(sample_pos, light_dir, isect_vol) && isect_vol.inside)
 
 It accounts for the amount of light that's coming from a particular light direction, $\omega'$ (the variable `light_dir` in the code), at sample point x `sample_pos` after it has traveled a certain distance through the volume `isect_vol.t1` in the code).
 
-But we haven't yet introduced the term right after the integral sign: $p(x, \omega, \omega')$. It is called **the phase function** and we will explain what it is next. But before that, let's put in words what this equation says. The integral with the symbol $S^2$ (which in the literature you will also eventually see written as $\Omega_{4\pi}$) means that the in-scattering contribution can be computed by taking into account light coming from all directions over the entire sphere $S^2$ of directions.
+But we haven't yet introduced the term right after the integral sign: \(p(x, \omega, \omega')\). It is called **the phase function** and we will explain what it is next. But before that, let's put in words what this equation says. The integral with the symbol $S^2$ (which in the literature you will also eventually see written as \(\Omega_{4\pi}\)) means that the in-scattering contribution can be computed by taking into account light coming from all directions over the entire sphere $S^2$ of directions.
 
 <details>
 To compute the appearance of solid objects, we use functions called BRDFs that gather light over the hemisphere of directions instead. For solid objects, we don't care about light coming from "under" the surface - except for translucent materials, but well, that's another long story. If you are interested in this topic please check lessons that are related to shading such as [global illumination](lessons/3d-basic-rendering/global-illumination-path-tracing") or [the mathematics of shading](lessons/mathematics-physics-for-computer-graphics/mathematics-of-shading)). Let's now get back to the phase functions.
@@ -119,31 +119,33 @@ To compute the appearance of solid objects, we use functions called BRDFs that g
 
 ![Figure 1: isotropic (light is scattered in all directions over the sphere of directions) vs anisotropic phase function (light is not uniformly distributed over the sphere of directions).](/images/volume-rendering-developers/voldev-iso-anisotropic.png)
 
-When a photon interacts with a particle, it can be scattered out in any direction within the sphere of possible directions around the particle where every direction is equally likely to be chosen than any others. In this particular case, we speak of an **isotropic** scattering volume. But isotropic scattering is not the norm. Most volumes tend to scatter light in a restricted range of directions. We then speak of an **anisotropic** scattering medium or volume. The phase function is simply a mathematical equation that tells you how much light is being scattered for a particular combination of directions: the view direction $\omega$ and the incoming light direction $\omega'$. The function returns a value in the range 0 to 1\. In mathematical terms, we say that the phase function models the angular distribution of light (or radiance) scattered.
+When a photon interacts with a particle, it can be scattered out in any direction within the sphere of possible directions around the particle where every direction is equally likely to be chosen than any others. In this particular case, we speak of an **isotropic** scattering volume. But isotropic scattering is not the norm. Most volumes tend to scatter light in a restricted range of directions. We then speak of an **anisotropic** scattering medium or volume. The phase function is simply a mathematical equation that tells you how much light is being scattered for a particular combination of directions: the view direction \(\omega\) and the incoming light direction $\omega'$. The function returns a value in the range 0 to 1. In mathematical terms, we say that the phase function models the angular distribution of light (or radiance) scattered.
 
-The phase function has a couple of properties. First, it necessarily integrates to 1 over its domain which is the sphere of direction $S^2$. Indeed particles making up the volume are hit by light beams coming from possibly all directions and that set of possible directions can be seen as a sphere centered around the particle. So if we consider all directions from which light can come around the particle, how much light is being scattered out around that same particle can't be greater than the sum of all incoming light. This is the reason why the phase function needs to be normalized over the sphere of directions:
+The phase function has a couple of properties. First, it necessarily integrates to 1 over its domain which is the sphere of direction \(S^2\). Indeed particles making up the volume are hit by light beams coming from possibly all directions and that set of possible directions can be seen as a sphere centered around the particle. So if we consider all directions from which light can come around the particle, how much light is being scattered out around that same particle can't be greater than the sum of all incoming light. This is the reason why the phase function needs to be normalized over the sphere of directions:
 
 $$\int_{S^2} f_p(x, \omega, \omega')d\omega' = 1$$
 
-If the phase function wasn't normalized, it would contribute to either "add" or "remove" light. Another property of phase functions is reciprocity. If you swap the $\omega$ and $\omega'$ terms in the equation, the result returned by the phase function is the same.
+If the phase function wasn't normalized, it would contribute to either "add" or "remove" light. Another property of phase functions is reciprocity. If you swap the \(\omega\) and \(\omega'\) terms in the equation, the result returned by the phase function is the same.
 
 $$f_p(x, \omega, \omega') = f_p(x, \omega', \omega)$$
 
 ![Figure 2: the phase function only considers the angle $\theta$ between the light and view direction.](/images/volume-rendering-developers/voldev-phasefunctheta.png)
 
-The phase function only depends on the angle between the view and the incoming light direction. This is why it is generally defined in terms of an angle $\theta$ (the Greek letter theta), the angle between the two vectors (and not $\omega$ and $\omega'$). If we take the dot product of the directions $\omega$ (the view direction) and $\omega'$ (the incoming light direction), $\cos(\theta$) spans over the range of [-1, 1] and thus $\theta$ itself spans over the range [0, $\pi$] as shown in the image below.
+The phase function only depends on the angle between the view and the incoming light direction. This is why it is generally defined in terms of an angle $\theta$ (the Greek letter theta), the angle between the two vectors (and not \(\omega\) and \(\omega'\)). If we take the dot product of the directions $\omega$ (the view direction) and \(\omega'\) (the incoming light direction), \(\cos(\theta\)) spans over the range of [-1, 1] and thus \(\theta\) itself spans over the range [0, $\pi$] as shown in the image below.
 
 ![](/images/volume-rendering-developers/voldev-phasefuncdir.png?)
 
 !!!
-In summary, the phase function tells you how much light is likely to be scattered towards the viewer ($\omega$) for any particular incoming light direction ($\omega'$).
+In summary, the phase function tells you how much light is likely to be scattered towards the viewer (\(\omega\)) for any particular incoming light direction (\(\omega'\)).
 !!!
 
 Enough chatting. What do these phase functions look like?
 
-The simplest one is the phase function of isotropic volumes. Because light coming from all sets of directions within the sphere of directions is also equally scattered in all sets of directions over the sphere, uniformly, the phase function (remember its integral over the spherical domain needs to be normalized to 1) simply is: $$f_p(x, \theta) = { 1 \over {4\pi}}$$
+The simplest one is the phase function of isotropic volumes. Because light coming from all sets of directions within the sphere of directions is also equally scattered in all sets of directions over the sphere, uniformly, the phase function (remember its integral over the spherical domain needs to be normalized to 1) simply is:
 
-Note that this function is independent of the view and incoming light direction. The $\theta$ angle is there in the function's definition but is not used in the equation itself (on the right-hand side of the equal sign). This is expected since the direction of the out-scattered photon is independent of the incoming light direction (there's no dependency between the two so it has no reason to appear in the equation) and all out-scattered directions are equally likely to be chosen (which is why the equation is a constant). It's not very hard to understand this equation. The area of a sphere is $4\pi$ steradians and so that's basically the surface covered by all our incoming directions if you think of this direction in terms of differential solid angles, and thus the phase function ought to be 1 over $4\pi$ to satisfy the normalization property: the surface covered by all incoming directions divided by $4\pi$ equals 1. This is a good time to mention that the unit of phase functions is 1/sr (sr here stands for [steradian](https://en.wikipedia.org/wiki/Steradian)).
+$$f_p(x, \theta) = { 1 \over {4\pi}}$$
+
+Note that this function is independent of the view and incoming light direction. The $\theta$ angle is there in the function's definition but is not used in the equation itself (on the right-hand side of the equal sign). This is expected since the direction of the out-scattered photon is independent of the incoming light direction (there's no dependency between the two so it has no reason to appear in the equation) and all out-scattered directions are equally likely to be chosen (which is why the equation is a constant). It's not very hard to understand this equation. The area of a sphere is $4\pi$ steradians and so that's basically the surface covered by all our incoming directions if you think of this direction in terms of differential solid angles, and thus the phase function ought to be 1 over \(4\pi\) to satisfy the normalization property: the surface covered by all incoming directions divided by \(4\pi\) equals 1. This is a good time to mention that the unit of phase functions is 1/sr (sr here stands for [steradian](https://en.wikipedia.org/wiki/Steradian)).
 
 The phase function for isotropic volumes is quite simple. Let's look at another one called the **Henyey-Greenstein** phase function. It looks like this:
 
@@ -151,18 +153,18 @@ $$f_p(x, g, \cos\theta) = {1 \over {4\pi}}{{1-g^2}\over{(1 + g^2 - 2g\cos\theta)
 
 ![Figure 3: plot of the Henyey-Greenstein ([polar coordinates](https://en.wikipedia.org/wiki/Polar_coordinate_system)) phase function for different values of the asymmetry factor g (g=0.3, 0.5, 0, -03, -0.5). The angle $\theta$ is defined over the range [0, $\pi$].](/images/volume-rendering-developers/voldev-phasefuncplot.png)
 
-It's a little bit more complex indeed. And as you can it has another variable $g$ called the **asymmetry factor**, where $-1 \leq g \leq 1$. This parameter lets you control whether light is scattered in the forward or backward direction. When $g \gt 0$ light is out-scattered mostly forward. When $g \lt 0$, it is scattered backward. And when $g = 0$, the function equals $1/{4\pi}$, the phase function for isotropic volumes. Figure 3 shows what the function looks like for different values of $g$.
+It's a little bit more complex indeed. And as you can it has another variable \(g\) called the **asymmetry factor**, where \(-1 \leq g \leq 1\). This parameter lets you control whether light is scattered in the forward or backward direction. When \(g \gt 0\) light is out-scattered mostly forward. When \(g \lt 0\), it is scattered backward. And when \(g = 0\), the function equals \(1/{4\pi}\), the phase function for isotropic volumes. Figure 3 shows what the function looks like for different values of \(g\).
 
 <details>
-If you want proof that this function is normalized over the sphere of directions, here it is. First, don't forget we need to integrate the function over the sphere of directions (over $4\pi$ steradians) because our directions here say $d\omega$ are defined in terms of differential solid angle. We can write differential solid angles $d\omega$ in terms of $\phi$ (longitude) and $\theta$ (latitude) as explained in the lesson [Introduction to Shading](lessons/3d-basic-rendering/introduction-to-shading/diffuse-lambertian-shading). So we get: 
+If you want proof that this function is normalized over the sphere of directions, here it is. First, don't forget we need to integrate the function over the sphere of directions (over \(4\pi\) steradians) because our directions here say \(d\omega\) are defined in terms of differential solid angle. We can write differential solid angles \(d\omega\) in terms of \(\phi\) (longitude) and \(\theta\) (latitude) as explained in the lesson [Introduction to Shading](lessons/3d-basic-rendering/introduction-to-shading/diffuse-lambertian-shading). So we get: 
 
 $$\int^{2\pi} \Big\{ \int_0^\pi p(\theta) \sin \theta d \theta \Big\} d\phi.$$
 
-Integrating $d\phi$ over $2\pi$ simply gives $2\pi$. So we are left with:
+Integrating \(d\phi\) over \(2\pi\) simply gives \(2\pi\). So we are left with:
 
 $$2\pi\int_0^{\pi} p(\theta) \sin \theta d \theta.$$
 
-We can write it as a function of $\mu = \cos \theta$, integrating over -1 and 1:
+We can write it as a function of \(\mu = \cos \theta\), integrating over -1 and 1:
 
 $$2\pi\int_{\mu=-1}^{1} {\color{red}{1 \over {4\pi}}}{{1-g^2}\over{(1 + g^2 - 2g\mu)^{3/2}}} d \mu.$$
 
@@ -174,7 +176,7 @@ To make this integration, we will use the second fundamental theorem of calculus
 
 $$\int_a^b f(x) dx = F(b) - F(a).$$
 
-Where $F$ is the anti-derivative of function $f$. So we need to compute the anti-derivative of:
+Where \(F\) is the anti-derivative of function \(f\). So we need to compute the anti-derivative of:
 
 $${{1-g^2}\over{(1 + g^2 - 2g\mu)^{3/2}}}.$$
 
@@ -267,7 +269,7 @@ for (int n = 0; n < ns; ++ns) {
 
 Now you can stop ray-marching when we pass this transparency test and do nothing else however this would be "statistically" wrong. This would somehow introduce some bias in your rendered image. This is more easily understood if you look at figure xx. As you can see, the red line indicates the threshold below which we stop ray-marching. If we do so, we sort of remove the contribution of the volume that's below and beyond the curve (along the x-axis). Sure, the amount is somehow "negligible" and that's why we decided to implement that cutoff solution in the first place, however, if you are a thermonuclear engineer trying to simulate how neutrons move through a plate, this is not acceptable. So how can we still take advantage of this optimization while still satisfying the thermonuclear engineer's expectations?
 
-The method we will be using is called the **Russian roulette** which we have already talked about already in the lesson dedicated to [Monte Carlo methods](lessons/mathematics-physics-for-computer-graphics/monte-carlo-methods-in-practice/monte-carlo-simulation). The idea is to apply the Russian roulette technique when the transparency value is lower than some threshold for example 1e-\. Then we pick a random number (uniformly distributed) in the range [0, 1] and test whether this random number is greater than 1/d where d is some positive real number (integer but doesn't have to be) greater than 1 (it can be equal to 1 but the test would be useless then). If this is the case, we break out from the loop, otherwise, we continue, however, we multiply the current transparency value by d. The value d here represents the likelihood that we will pass the test. For example for d = 5, the "chances" of the ray-marching loop being terminated would be 4 out of 5.
+The method we will be using is called the **Russian roulette** which we have already talked about already in the lesson dedicated to [Monte Carlo methods](lessons/mathematics-physics-for-computer-graphics/monte-carlo-methods-in-practice/monte-carlo-simulation). The idea is to apply the Russian roulette technique when the transparency value is lower than some threshold for example 1e-3. Then we pick a random number (uniformly distributed) in the range [0, 1] and test whether this random number is greater than 1/d where d is some positive real number (integer but doesn't have to be) greater than 1 (it can be equal to 1 but the test would be useless then). If this is the case, we break out from the loop, otherwise, we continue, however, we multiply the current transparency value by d. The value d here represents the likelihood that we will pass the test. For example for d = 5, the "chances" of the ray-marching loop being terminated would be 4 out of 5.
 
 This makes (hopefully sense). If the random number is lower than 1/d you kill say the photon. It's gone. You can't do anything with it anymore. But in exchange for killing it, we will give more power to the ones that survived the test (increase the transparency value in our case), Inversely proportionally to the likelihood of photons being killed. Here is the idea put into code:
 
@@ -454,7 +456,7 @@ Spectrum SingleScatteringIntegrator::Li(const Scene *scene,
 
 # Source Code
 
-The source code for this chapter is available at the end of the lesson. And it should produce the following image. Note that in this version of the code the light color has higher values. The phase function introduces a division by 4pi which is the reason why we now need to increase the light color a lot.
+The source code for this chapter is available at the end of the lesson. And it should produce the following image. Note that in this version of the code the light color has higher values. The phase function introduces a division by \(4pi\) which is the reason why we now need to increase the light color a lot.
 
 ![](/images/volume-rendering-developers/voldev-resultchap3.png?)
 

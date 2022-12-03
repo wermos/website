@@ -1,4 +1,4 @@
-# The almighty ray-marching algorithm
+## The almighty ray-marching algorithm
 
 To integrate incoming light along the ray due to in-scattering, we will break down the volume that the ray passes through into small volume elements and combine the contribution of each of these small volume elements to the overall volume object, a little bit like when we stack images with a mask or alpha channel (generally representing the objects' opacity) onto each other in a 2D editing software (such as Photoshop). That is why we spoke about the alpha compositing method in the first chapter. Each one of these small volume elements represents a sample in the Riemann sum mentioned in the first chapter.
 
@@ -223,7 +223,7 @@ Right now, rendering our volume sphere is rather quick but you will see as we pr
 
 We will implement this idea in the next chapter.
 
-# Choosing the Step Size
+## Choosing the Step Size
 
 ![Figure 5: we are not capturing the small details in the volume because our step size is too small. Of course, this example is extreme, but it was designed to help you get the idea.](/images/volume-rendering-developers/voldev-stepsizesmall.png)
 
@@ -247,7 +247,7 @@ Which you can optimize if you wish to. Where `tmin` is the distance where the ca
 
 xx insert illustration here
 
-# Other considerations of interest before we move on!
+## Other considerations of interest before we move on!
 
 Writing production code would require storing the ray opacity and color with the ray data. So that we can ray-trace the solid objects first, then the volumetric objects and combine the result as we go (in a similar fashion to what we did by combining the background color with the volumetric sphere object in the example above).
 
@@ -255,10 +255,10 @@ Note that several volumetric objects can be on the camera ray's path. Hence the 
 
 A volumetric object can be made of a collection of combined objects such as cubes or spheres overlapping each other. In this case, we may want to combine them in some sort of aggregate structure. Ray-marching such aggregates require computing the intersection boundaries of the objects making the aggregate with special care.
 
-# Next: add the missing terms to get a physically accurate result.
+## Next: add the missing terms to get a physically accurate result.
 
 In the third/next chapter of this lesson, we will add some of the terms that are missing to our current implementation to get a result that's physically (more) accurate. We will also show you that equipped with this knowledge, you should now be ready to read and understand other's people renderer's code. Ready?
 
-# Source Code
+## Source Code
 
 The source code to reproduce the images of the first two chapters is available for download with compilation instructions (embedded within the file) in the last chapter of the lesson (as usual). Be aware though the code is a bit different from the code snippets that were shown in this chapter. The differences are explained in the next chapter.

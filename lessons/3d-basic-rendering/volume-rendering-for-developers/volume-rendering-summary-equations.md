@@ -240,7 +240,7 @@ When photons from the light beam interact with particles making up the medium th
 The phase function gives the fraction of incoming light traveling along the direction \(\omega'\) (note the prime sign here) that's scattered in the \(-\omega\) direction. Keep in mind that the process is three-dimensional so light is scattered over a sphere of directions. The distribution of scattered light depends of course on the medium's properties and on the angle \(\theta\) (the Greek letter theta) between the light direction vector \(\omega'\) and the view direction vector \(\omega\) (these are the conventions used in the literature).
 
 !!!
-Note that you should be super careful here about the notation. When it comes to phase functions, the convention is as follows: the \(\omega\) vector points from the \(x\) to the eye, and the \(\omega'\) vector points from \(x\) to the light (as shown in figure 1). Rule of thumb: when it comes to calculating the angle between the two vectors, we will always assume that \(\omega\) points towards the eye and \(\omega'\) points towards the light. In your code, you may have to pay extra attention to this when you compute the angle theta using the light and camera direction vectors which may be pointing in the opposite direction than the expected convention.
+Note that you should be super careful here about the notation. When it comes to phase functions, the convention is as follows: the \(\omega\) vector points from the \(x\) to the eye, and the \(\omega'\) vector points from \(x\) to the light (as shown in Figure 1). Rule of thumb: when it comes to calculating the angle between the two vectors, we will always assume that \(\omega\) points towards the eye and \(\omega'\) points towards the light. In your code, you may have to pay extra attention to this when you compute the angle theta using the light and camera direction vectors which may be pointing in the opposite direction than the expected convention.
 !!!
 
 !!!
@@ -297,7 +297,12 @@ $$
 
 The term in @@\bblue@@ accounts for losses due to absorption and out-scattering. The term in @@\oorange@@ is the in-scattering term also sometimes referred to as the source term. Note the \(\sigma_s\) term in front of the integral. This is similar conceptually to the equations we introduced earlier in the chapter for the loss of energy due to absorption and out-scattering:
 
-$$dL = -\sigma_a L(x, \omega) \\ dL = -\sigma_s L(x, \omega)$$
+$$
+\begin{array}{l}
+dL &=& -\sigma_a L(x, \omega)\\
+dL &=& -\sigma_s L(x, \omega)
+\begin{end}
+$$
 
 The amount of in-scattering is proportional to the probability that light is being scattered. This probability is given by the scattering coefficient \(\sigma_s\). The rest of the in-scattering term was described above. The integral over the sphere of directions \(S^2\) means that for the in-scattering term, we need to account for light coming from every direction (\(\omega'\)), weighted by the phase function \(f_p(x,\omega,\omega')\).
 
