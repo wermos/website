@@ -139,30 +139,21 @@ Note that in this example, we've been using a top-down distant light (light dire
 Let's see again what happens to the samples as we march along the ray:
 
 $$
-A = Li(X_0) * \color{red}{Att};\text{ // first iteration n = 0} \\
-$$
+\begin{array}{l}
+A &=& Li(X_0) * \color{red}{Att};\text{ // first iteration n = 0} \\
 
-$$
-\begin{array}
-B = (A + Li(X_1)) * Att; \text{ // second iteration n = 1}\\
-B = (Li(X_0) * Att + Li(X_1)) * Att;\\
-B = (Li(X_0) * \color{red}{Att^2} + Li(X_1) * Att;\\
-\end{array}
-$$
+B &=& (A + Li(X_1)) * Att; \text{ // second iteration n = 1}\\
+B &=& (Li(X_0) * Att + Li(X_1)) * Att;\\
+B &=& (Li(X_0) * \color{red}{Att^2} + Li(X_1) * Att;\\
 
-$$
-\begin{array}
-C = (B + Li(X_2)) * Att;\text{ // third iteration n = 2}\\
-C = (Li(X_0) * Att^2 + Li(X_1) * Att + Li(X_2)) * Att;\\
-C = (Li(X_0) * \color{red}{Att^3} + Li(X_1) * Att^2 + Li(X_2) * Att;\\
-\end{array}
-$$
-
-$$
+C &=& (B + Li(X_2)) * Att;\text{ // third iteration n = 2}\\
+C &=& (Li(X_0) * Att^2 + Li(X_1) * Att + Li(X_2)) * Att;\\
+C &=& (Li(X_0) * \color{red}{Att^3} + Li(X_1) * Att^2 + Li(X_2) * Att;\\
 ...
+\end{array}
 $$
 
-If you look at what happens to just $Li(X_0)$ as we go through the loop, you can observe that it gets multiplied by the sample attenuation raised to some power. The more we march along the ray, the higher the exponent (first 1, then 2, then 3, ...) and thus the smaller the result (since the attenuation or sample transparency is lower than 1). In other words, the contribution of the first sample to the overall resulting light scattered by the volume decreases as more samples are accumulated.
+If you look at what happens to just \(Li(X_0)\) as we go through the loop, you can observe that it gets multiplied by the sample attenuation raised to some power. The more we march along the ray, the higher the exponent (first 1, then 2, then 3, ...) and thus the smaller the result (since the attenuation or sample transparency is lower than 1). In other words, the contribution of the first sample to the overall resulting light scattered by the volume decreases as more samples are accumulated.
 
 ## Forward Ray-Marching.
 
