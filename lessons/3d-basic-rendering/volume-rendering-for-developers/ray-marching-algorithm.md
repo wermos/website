@@ -143,15 +143,19 @@ A = Li(X_0) * \color{red}{Att};\text{ // first iteration n = 0} \\
 $$
 
 $$
-B= (A + Li(X_1)) * Att;\text{ // second iteration n = 1}\\
+\begin{array}
+B = (A + Li(X_1)) * Att; \text{ // second iteration n = 1}\\
 B = (Li(X_0) * Att + Li(X_1)) * Att;\\
 B = (Li(X_0) * \color{red}{Att^2} + Li(X_1) * Att;\\
+\end{array}
 $$
 
 $$
+\begin{array}
 C = (B + Li(X_2)) * Att;\text{ // third iteration n = 2}\\
 C = (Li(X_0) * Att^2 + Li(X_1) * Att + Li(X_2)) * Att;\\
 C = (Li(X_0) * \color{red}{Att^3} + Li(X_1) * Att^2 + Li(X_2) * Att;\\
+\end{array}
 $$
 
 $$
@@ -244,8 +248,6 @@ float projPixWidth = 2 * tanf(M_PI / 180 * fov / (2 * imageWidth)) * tmin;
 ```
 
 Which you can optimize if you wish to. Where `tmin` is the distance where the camera ray intersects the volume object. One could similarly compute the projected pixel width where the ray leaves the volume and linearly interpolate the projected pixel width at `tmin` and `tmax` to set the step size as we march along the ray.
-
-xx insert illustration here
 
 ## Other considerations of interest before we move on!
 
