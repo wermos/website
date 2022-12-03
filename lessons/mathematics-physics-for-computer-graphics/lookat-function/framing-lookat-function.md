@@ -1,10 +1,10 @@
 <details>
-In this short lesson, we will study a simple but useful method to place 3D cameras. To understand this lesson, you will need to be familiar with the concept of transformation matrix and cross-product between vectors. If that's not already the case, you might want to read the lesson [geometry](lessons/mathematics-physics-for-computer-graphics/geometry) first.
+In this short lesson, we will study a simple but useful method to place 3D cameras. To understand this lesson, you will need to be familiar with the concept of transformation matrix and cross-product between vectors. If that's not already the case, you might want to read the lesson [Geometry](lessons/mathematics-physics-for-computer-graphics/geometry) first.
 </details>
 
-## Moving the Camera
+## Placing the Camera
 
-Being able to move the camera in a 3D scene is essential. However, in most of the lessons from Scratchapixel, we usually set the camera position and rotation (remember that scaling a camera doesn't make sense) using a 4x4 matrix which is often labeled the **camera-to-world** matrix. However, setting up a 4x4 matrix by hand is not friendly.
+Being able to place the camera in a 3D scene is essential. However, in most of the lessons from Scratchapixel, we usually set the camera position and rotation (remember that scaling a camera doesn't make sense) using a 4x4 matrix which is often labeled the **camera-to-world** matrix. However, setting up a 4x4 matrix by hand is not friendly.
 
 Thankfully, we can use a method that is commonly referred to as the **look-at** method. The idea is simple. To set a camera position and orientation, all you need is a point in space to set the camera position and a point to define what the camera is looking at (an aim). Let's label our first point "from" and our second point "to".
 
