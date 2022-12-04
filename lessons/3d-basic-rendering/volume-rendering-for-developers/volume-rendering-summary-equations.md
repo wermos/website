@@ -193,8 +193,10 @@ Where \(P(x)\) is the anti-derivative of \(p(x)\).
 Where the result is the equation for the Beer-Lambert law. **This equation works if the medium is homogeneous**. For a heterogeneous medium see the full transmittance equation below. Hopefully, you have been able to see that \(dL(s)\) stands for \(dy\), \(ds\) for \(dx\), \(L(s)\) for \(y\) and \(-\sigma_a\) for \(c\). As mentioned earlier, we have only considered absorption so far. But we can include the attenuation due to out-scattering in the Beer law by replacing \(\sigma_a\) with the extinction coefficient \(\sigma_t\):
 
 $$
+\begin{array}{l}
 L(s) = e^{-(\sigma_a + \sigma_s) s}\\
 L(s) = e^{-\sigma_t s}
+\end{array}
 $$
 
 With \(\sigma_t = \sigma_a + \sigma_s\).
@@ -233,7 +235,7 @@ if you read the previous chapters, you maybe remember that we encountered the te
 
 Finally, the last piece of the puzzle we need to put together a global equation that defines how light energy propagates through a medium is the phase function. We already introduced the concept of phase function in the chapter [Ray Marching: Getting it Right!](lessons/3d-basic-rendering/volume-rendering-for-developers/ray-marching-get-it-right#phase-function).
 
-![Figure 1: only a fraction of the incoming light is scattered toward the eye. How much depends on the angle between the light and the view direction.](/images/volume-rendering-developers/voldev-phase function-theory2.png)
+![Figure 1: only a fraction of the incoming light is scattered toward the eye. How much depends on the angle between the light and the view direction.](/images/volume-rendering-developers/voldev-phasefunction-theory2.png)
 
 When photons from the light beam interact with particles making up the medium they can be scattered instead of absorbed. They are scattered in random directions. We know their incoming direction, but we can't predict in which direction they will be scattered. When the photons from our collimated light beam are scattered, the light beam loses energy. However, if some other light source shines on our cylinder from a direction over \(-\omega\), some of the photons from that light source traveling through the cylinder might be scattered along the \(-\omega\) direction. Because of that, the light beam traveling along the \(-\omega\) direction would gain energy. This is what we call in-scattering. The problem is that to know how much energy our light beam gains due to in-scattering, we need to know how much of the energy from the light beam passing through the cylinder at some oblique angle, would be scattered in the \(-\omega\) direction. This fraction is given by what we call the **phase function**.
 
@@ -301,7 +303,7 @@ $$
 \begin{array}{l}
 dL &=& -\sigma_a L(x, \omega)\\
 dL &=& -\sigma_s L(x, \omega)
-\begin{end}
+\end{array}
 $$
 
 The amount of in-scattering is proportional to the probability that light is being scattered. This probability is given by the scattering coefficient \(\sigma_s\). The rest of the in-scattering term was described above. The integral over the sphere of directions \(S^2\) means that for the in-scattering term, we need to account for light coming from every direction (\(\omega'\)), weighted by the phase function \(f_p(x,\omega,\omega')\).

@@ -1,0 +1,13 @@
+## Introduction
+
+Interpolation is a very commonly used technique in computer graphics. Very often data is specified on a **regular grid** (values are written at the vertex position of a 2D or 3D grid) or on a line (in the 1D case) but the program needs to evaluate values at random positions on that grid. If the sample is located on a grid vertex then we can simply use the value that is stored there. But if the sample is located anywhere else on the grid (somewhere in the cell) then, considering that we have no data there, we need to compute one by averaging values that are stored at the cell vertices. This technique is called interpolation because the key idea is to "interpolate" existing values at fixed grid locations to compute values anywhere else on the grid.
+
+In 2D the technique is called **bilinear interpolation**. Its 3D counterpart is called **trilinear interpolation**. Both techniques will be described in the next two chapters and the source code will be given as well. The word linear is in both terms because for that particular technique only linear interpolations are performed. Linear interpolation is an equation of the kind:
+
+$$a(1-t)+bt \quad with \quad 0 \le t \le 1$$
+
+![Figure 1: to compute the value at the grey point we linearly interpolate the values a and b. The value t is in the range 0 to 1.](/images/interpolation/lininterpfig.png)
+
+This is very similar to the process of evaluating a linear function. This method is simple and requires only two values (a and b) and a few simple arithmetic operations. Notice that t is in the range 0 to 1\. However, as we will show in the next chapter, linear interpolation creates "visual" patterns which are not always acceptable or desirable. It is possible to use interpolation methods of higher degrees that provide smoother results (depending on the context, such results are not always considered better). To achieve such interpolation though it is often necessary to take into consideration more than the four-cell corners surrounding a sample point. Therefore they provide better results but at a higher computation cost because they usually need a larger set of points and use functions of degree two or more. The function used to interpolate the values on the regular grid is called the **interpolant**.
+
+Interpolation techniques are commonly used  in image processing (to resize images for instance). But 3D techniques can also make use of 3D or 2D grids (textures can be seen as 2D grids) such as fluid simulation, volume rendering, texture mapping, and irradiance caching just to name a few. Wherever grids are involved, interpolation techniques are usually also needed.
