@@ -432,5 +432,5 @@ Now things are not different when it comes to mat * mat multiplication. The orde
 mt11 = ml11 * mr11 + ml12 * mr21 + ml13 * mr31 + ml14 * mr41 
 ```
 
-where `ml` is the left-hand matrix and `mr` is the right-hand one: `mt = ml * mr`. However, note that we haven't been using brackets `[]` for the access indices because we don't want to suggest we are accessing elements stored in a 1D array here. We are referring to the coefficients of matrices written on paper (and not stored in memory). If you want to write this in C++, then it all depends on how you have stored your coefficients in memory as explained above with the vector-matrix product.
+where `ml` is the left-hand matrix and `mr` is the right-hand one: `mt = ml * mr`. However, note that we haven't been using brackets `[]` for the indices because we don't want to suggest we are accessing elements stored in a 1D array here. We are referring to the coefficients of matrices as used in the mathematical notation (and not those stored in memory). If you want to write this in C++, then it all depends on how you have stored your coefficients in memory as explained above with the vector-matrix product.
 </details>
