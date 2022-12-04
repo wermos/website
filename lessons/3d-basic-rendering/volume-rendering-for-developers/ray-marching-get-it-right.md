@@ -458,7 +458,7 @@ Spectrum SingleScatteringIntegrator::Li(const Scene *scene,
 
 ## Source Code
 
-The source code for this chapter is available at the end of the lesson. And it should produce the following image. Note that in this version of the code the light color has higher values. The phase function introduces a division by \(4pi\) which is the reason why we now need to increase the light color a lot.
+The source code for this chapter is available at the end of the lesson. And it should produce the following image. Note that in this version of the code the light color has higher values. The phase function introduces a division by \(4\pi\) which is the reason why we now need to increase the light color a lot.
 
 ![](/images/volume-rendering-developers/voldev-resultchap3.png?)
 
