@@ -312,119 +312,121 @@ A reader posted a [question on Stackoverflow](http://stackoverflow.com/questions
 
 You have the theory (what you do in mathematics with a pen and paper) and what you do with your implementation (C++). These are two different problems.
 
-Mathematics: you can use two notations, either column or row-major. With row major vector, on paper, you need to write the vector-matrix multiplication vM where v is the row vector (1x4) and M your 4x4 matrix. Why? Because you can mathematically only write [1x4]*[4x4], and not the other way around. Similarly, if you use a column, then the vector needs to be written down vertically, or in notation [4x1] (4 rows, 1 column). Thus, the multiplication with a matrix can only be written as follows: [4x4][4x1]. Note that the matrix is put in front of the vector: Mv. The first notation is called a left or pre-multiplication (because the vector is on the left side of the product) and the second (Mv) is called a right or post-multiplication (because the vector is on the right side of the product). As you see the terms derive from whether the vector is on the left side (in front of, or "pre") or on the right side (after, or "post") of the matrix.
+- **Mathematics**: you can use two notations, either column or row-major. With row major vector, on paper, you need to write the vector-matrix multiplication vM where v is the row vector (1x4) and M your 4x4 matrix. Why? Because you can mathematically only write [1x4]*[4x4], and not the other way around. Similarly, if you use a column, then the vector needs to be written down vertically, or in notation [4x1] (4 rows, 1 column). Thus, the multiplication with a matrix can only be written as follows: [4x4][4x1]. Note that the matrix is put in front of the vector: Mv. The first notation is called a left or pre-multiplication (because the vector is on the left side of the product) and the second (Mv) is called a right or post-multiplication (because the vector is on the right side of the product). As you see the terms derive from whether the vector is on the left side (in front of, or "pre") or on the right side (after, or "post") of the matrix.
 
-Now, if you need to transform a vector (or a point) then you need to pay attention to the order of multiplication when you write them down on paper. If you want to translate something with matrix T and then rotate with R and then scale with S, then in a column-major world, you need to write v' = S * R * T * v. In a row-major world you need to write v' = v * T * R * S.
+  Now, if you need to transform a vector (or a point) then you need to pay attention to the order of multiplication when you write them down on paper. If you want to translate something with matrix T and then rotate with R and then scale with S, then in a column-major world, you need to write v' = S * R * T * v. In a row-major world you need to write v' = v * T * R * S.
 
-That's for the theory. Let's call this part the **row/column vector convention** issue.
+  That's for the theory. Let's call this part the **row/column vector convention** issue.
 
-Computer: then comes the point when you decide to implement this in C++ say. The good thing about this is that C++ doesn't impose anything about anything. You can map the values of your matrix's coefficients in memory the way you want, and you can write the code to perform a matrix multiplication by another matrix the way you want. Similarly how you access the coefficients for a vector-matrix multiplication is completely up to you. You need to make a clear distinction between how you map your coefficients in memory and what conventions you need to use from a mathematical point of you view to represent your vectors. These are two independent problems. Let's call this part the **row/column-major memory layout** issue.
+- **Computer**: then comes the point when you decide to implement this in C++ say. The good thing about this is that C++ doesn't impose anything about anything. You can map the values of your matrix's coefficients in memory the way you want, and you can write the code to perform a matrix multiplication by another matrix the way you want. Similarly how you access the coefficients for a vector-matrix multiplication is completely up to you. You need to make a clear distinction between how you map your coefficients in memory and what conventions you need to use from a mathematical point of you view to represent your vectors. These are two independent problems. Let's call this part the **row/column-major memory layout** issue.
 
-For instance, you can declare a matrix class as an array of say 16 contiguous floats. That's fine. Where coefficients m14, m24, and m34 represent the translation part of the matrix (Tx, Ty, Tz), you assume your "convention" is row-major even though you are told to use OpenGL matrix convention which is said to be column-major. Here the possible confusion comes from the fact that the mapping of the coefficients in memory is different from the mental representation you are making yourself of a "column-major" matrix. You code "row" but you were said to use (from a mathematical point of view) "column", hence your difficulty to make sense of whether you do things right or wrong.
+  For instance, you can declare a matrix class as an array of say 16 contiguous floats. That's fine. Where coefficients m14, m24, and m34 represent the translation part of the matrix (Tx, Ty, Tz), you assume your "convention" is row-major even though you are told to use OpenGL matrix convention which is said to be column-major. Here the possible confusion comes from the fact that the mapping of the coefficients in memory is different from the mental representation you are making yourself of a "column-major" matrix. You code "row" but you were said to use (from a mathematical point of view) "column", hence your difficulty to make sense of whether you do things right or wrong.
 
-What's important is to see a matrix as a representation of a coordinate system defined by three axes, and a translation. Where and how you store this data in memory is completely up to you. Assuming the three vectors representing the three axes of the coordinate system are named AX(x,y,z), AY(x,y,z), AZ(x,y,z), and the translation vector is denoted by (Tx, Ty, Tz), then mathematically if you use column vector you have:
+  What's important is to see a matrix as a representation of a coordinate system defined by three axes, and a translation. Where and how you store this data in memory is completely up to you. Assuming the three vectors representing the three axes of the coordinate system are named AX(x,y,z), AY(x,y,z), AZ(x,y,z), and the translation vector is denoted by (Tx, Ty, Tz), then mathematically if you use column vector you have:
 
-$$
-M =
-\begin{bmatrix}
-AXx & AYx & AZx & Tx\\
-AXy & AYy & AZy & Ty\\
-AXz & AYz & AZz & Tz\\
-0 & 0 & 1 & 1
-\end{bmatrix}
-$$
+  $$
+  M =
+  \begin{bmatrix}
+  AXx & AYx & AZx & Tx\\
+  AXy & AYy & AZy & Ty\\
+  AXz & AYz & AZz & Tz\\
+  0 & 0 & 1 & 1
+  \end{bmatrix}
+  $$
 
-The axes of the coordinate system are written vertically. Now if you have you use row-major:
+  The axes of the coordinate system are written vertically. Now if you have you use row-major:
 
-$$
-M =
-\begin{bmatrix}
-AXx & AXy & AXz & 0\\
-AYx & AYy & AYz & 0\\
-AZx & AZy & AZz & 0\\
-Tx & Ty & Tz & 1
-\end{bmatrix}
-$$
+  $$
+  M =
+  \begin{bmatrix}
+  AXx & AXy & AXz & 0\\
+  AYx & AYy & AYz & 0\\
+  AZx & AZy & AZz & 0\\
+  Tx & Ty & Tz & 1
+  \end{bmatrix}
+  $$
 
-The axes of the coordinate system are written horizontally. When it comes to the computer world, you have to choose the way you will store these values in the computer's memory. You can do:
+  The axes of the coordinate system are written horizontally. When it comes to the computer world, you have to choose the way you will store these values in the computer's memory. You can do:
 
-```
-float m[16] = { 
-    AXx, AXy, AXz, 0, 
-    AYx, AYy, AYz, 0, 
-    AZx, AZy, AZz, 0, 
-     Tx,  Ty,  Tz, 1}; 
-```
+  ```
+  float m[16] = { 
+      AXx, AXy, AXz, 0, 
+      AYx, AYy, AYz, 0, 
+      AZx, AZy, AZz, 0, 
+       Tx,  Ty,  Tz, 1}; 
+  ```
 
-Or:
+  Or:
 
-```
-float m[16] = { 
-    AXx, AXy, AXz, Tx, 
-    AYx, AYy, AYz, Ty, 
-    AZx, AZy, AZz, Tz, 
-      0,   0,   0,  1};
-```
+  ```
+  float m[16] = { 
+      AXx, AXy, AXz, Tx, 
+      AYx, AYy, AYz, Ty, 
+      AZx, AZy, AZz, Tz, 
+        0,   0,   0,  1};
+  ```
 
-Or:
+  Or:
 
-```
-float m[16] = { 
-    AXx, AYx, AZx, Tx, 
-    AXy, AYy, AZy, Ty, 
-    AXz, AYz, AZz, Tz, 
-      0,   0,   0,  1};
-```
+  ```
+  float m[16] = { 
+      AXx, AYx, AZx, Tx, 
+      AXy, AYy, AZy, Ty, 
+      AXz, AYz, AZz, Tz, 
+        0,   0,   0,  1};
+  ```
 
-None of these choices give you an indication of which "mathematical" **row/column vector convention** you use. You are just storing 16 coefficients in memory in different ways and that's perfectly fine as long as you know what that way is so that you can access them appropriately later on. Now keep in mind that a vector multiplied by a matrix should give you the same vector whether you use a row- or column-mathematical notation. Thus what's important is that you multiply the (x,y,z) coordinates of your vector by the right coefficients from the matrix, which requires the knowledge of how "you" have decided to store the matrix coefficient in memory:
+  None of these choices give you an indication of which "mathematical" **row/column vector convention** you use. You are just storing 16 coefficients in memory in different ways and that's perfectly fine as long as you know what that way is so that you can access them appropriately later on. Now keep in mind that a vector multiplied by a matrix should give you the same vector whether you use a row- or column-mathematical notation. Thus what's important is that you multiply the (x,y,z) coordinates of your vector by the right coefficients from the matrix, which requires the knowledge of how "you" have decided to store the matrix coefficient in memory:
 
-```
-Vector3 vecMatMult ( 
-    Vector3 v, 
-    float AXx, float AXy, float AXz, float Tx, 
-    float AYx, float AYy, float AYz, float Ty, 
-    float AZz, float AZy, float AZz, float Tz) 
-{ 
-    return Vector3( 
-        v.x * AXx + v.y * AYx + v.z * AZx + Tx, 
-        v.x * AXy + v.y * AYy + v.z * AZy + Ty, 
-        v.x * AXz + v.y * AZz + v.z * AZz + Tz 
-} 
-```
+  ```
+  Vector3 vecMatMult ( 
+      Vector3 v, 
+      float AXx, float AXy, float AXz, float Tx, 
+      float AYx, float AYy, float AYz, float Ty, 
+      float AZz, float AZy, float AZz, float Tz) 
+  { 
+      return Vector3( 
+          v.x * AXx + v.y * AYx + v.z * AZx + Tx, 
+          v.x * AXy + v.y * AYy + v.z * AZy + Ty, 
+          v.x * AXz + v.y * AZz + v.z * AZz + Tz 
+  } 
+  ```
 
-We wrote this function to underline the fact that no matter which convention you use, the result of the vector * matrix multiplication is just a multiplication and addition between the vector's input coordinates and the coordinate system's axis coordinates AX, AY, and AZ (regardless of the notation you use, and regardless of how you store them in memory). If you use:
+  We wrote this function to underline the fact that no matter which convention you use, the result of the vector * matrix multiplication is just a multiplication and addition between the vector's input coordinates and the coordinate system's axis coordinates AX, AY, and AZ (regardless of the notation you use, and regardless of how you store them in memory). If you use:
 
-```
-float m[16] = { 
-    AXx, AXy, AXz, 0, 
-    AYx, AYy, AYz, 0, 
-    AZx, AZy, AZz, 0, 
-     Tx,  Ty,  Tz, 1}; 
-```
+  ```
+  float m[16] = { 
+      AXx, AXy, AXz, 0, 
+      AYx, AYy, AYz, 0, 
+      AZx, AZy, AZz, 0, 
+       Tx,  Ty,  Tz, 1}; 
+  ```
 
-You need to call:
+  You need to call:
 
-```
-vecMatMult(v, m[0], m[1], m[2], m[12], m[4], m[5], m[6], m[13], ...
-```
+  ```
+  vecMatMult(v, m[0], m[1], m[2], m[12], m[4], m[5], m[6], m[13], ...
+  ```
 
-If you use:
+  If you use:
 
-```
-float m[16] = { 
-    AXx, AYx, AZx, Tx, 
-    AXy, AYy, AZy, Ty, 
-    AXz, AYz, AZz, Tz, 
-      0,   0,   0,  1}; 
-```
+  ```
+  float m[16] = { 
+      AXx, AYx, AZx, Tx, 
+      AXy, AYy, AZy, Ty, 
+      AXz, AYz, AZz, Tz, 
+        0,   0,   0,  1}; 
+  ```
 
-You need to call:
+  You need to call:
 
-```
-vecMatMult(v, m[0], m[4], m[8], m[3], m[1], m[5], m[9], m[10], ... 
-```
+  ```
+  vecMatMult(v, m[0], m[4], m[8], m[3], m[1], m[5], m[9], m[10], ... 
+  ```
 
-Does that tell you which convention you use? No. You just need to call the right coefficients in the right places when you do a vec * mat multiplication. And that's all there is to it, as disconcerting as it may seem. Now things are slightly different when it comes to mat * mat multiplication. You can assume that the order in which you multiply the matrices is not the same. So R * S * T is not the same as T * S * R. The order indeed matters. Now again if you use "row major" then mathematically you need to write:
+  Does that tell you which convention you use? No. You just need to call the right coefficients in the right places when you do a vec * mat multiplication. And that's all there is to it, as disconcerting as it may seem. 
+  
+Now things are not different when it comes to mat * mat multiplication. The order in which you multiply the matrices is not the same on paper. So R * S * T is not the same as T * S * R. The order indeed matters when you deal with the mathematical notation. If you use "row major" then mathematically you need to write:
 
 ```
 mt11 = ml11 * mr11 + ml12 * mr21 + ml13 * mr31 + ml14 * mr41 
