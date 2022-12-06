@@ -132,7 +132,7 @@ x & x & x & x
 \end{bmatrix}
 $$
 
-Operation 3 says that we can add coefficients of any of the matrix rows to our current row coefficients. If we use the coefficient of the row that is just below @@\rJoe@@ \(\textcolor{blue}{M_{22}}\) (which we know is equal to 4) we get 6:
+Operation 3 says that we can add coefficients of any of the matrix rows to our current row coefficients. If we use the coefficient of the row that is just below @@\rJoe@@, \(\textcolor{blue}{M_{22}}\) (which we know is equal to 4), we get 6:
 
 $$2 + 4 = 6$$
 
@@ -159,7 +159,7 @@ $$
 
 With:
 
-$$k = -\frac{M_{12}}{\textcolor{blue}{M_{22}}}$$
+$$k = -\frac{\textcolor{red}{M_{12}}}{\textcolor{blue}{M_{22}}}$$
 
 Let's now generalize:
 
@@ -172,7 +172,7 @@ Let's now generalize:
 - \(M_{ij}\) is now equal to 0.
 !!!
 
-Keep in mind that we loop through the columns and that for each column we process the coefficients from top to bottom (and skip the column's pivot coefficient).
+Keep in mind that we loop through the columns first (we loop through \(j\)) and that for each column we process the coefficients from top to bottom (for each given \(j\), we loop through \(i\)), and skip the column's pivot coefficient (when \(i == j\)).
 
 And the end of this process, all of these coefficients should be equal to 0 (except the pivot coefficients of course).
 
@@ -181,21 +181,26 @@ It's hard and tedious to explain in English but once you understand how this wor
 In C++ code we get:
 
 ```
-// Make each row in column = 0  
-for (unsigned row = 0; row < N; ++row) { 
-    if (row != column) { // don't process pivot coeffs
-        // that's our constant k
-        T coeff = m[row][column] / m[column][column]; 
-        if (coeff != 0) { 
-            for (unsigned j = 0; j < N; ++j) {
-                m[row][j] -= coeff * m[column][j]; 
-                inv[row][j] -=  coeff * inv[column][j]; 
+// go left to right
+for (unsigned column = 0; column < N; ++column) {
+...
+    // Make each row in column = 0. Proceed top to bottom
+    for (unsigned row = 0; row < N; ++row) { 
+         // skip pivot coefficients
+		if (row != column) {
+            // that's our constant k
+            T coeff = m[row][column] / m[column][column]; 
+            if (coeff != 0) { 
+                for (unsigned j = 0; j < N; ++j) {
+                    m[row][j] -= coeff * m[column][j]; 
+                    inv[row][j] -=  coeff * inv[column][j]; 
+                } 
+                // Set the element to 0 for safety
+                m[row][column] = 0; 
             } 
-            // Set the element to 0 for safety
-            m[row][column] = 0; 
         } 
-    } 
-} 
+    }
+}
 ```
 
 Note how we apply the same operations to the right-hand side of the augmented matrix.
