@@ -1,14 +1,53 @@
 In this lesson, we will show how the inverse of a matrix can be computed using a technique known as the Gauss-Jordan (or reduced row) elimination. Computing the inverse of a matrix implies a couple of things starting with the fact that the matrix is invertible in the first place (a matrix is not necessarily invertible). First, to be invertible a matrix has to be a **square matrix** (it has as many rows as it has columns for instance 2x2, 3x3, 4x4, etc.), and also the determinant of the matrix has to be different than zero (to learn about the determinant of a matrix check the Linear Algebra lesson in the Basic section). Any matrix that has a zero determinant is said to be singular (meaning it is not invertible).
 
-To compute the inverse of the matrix M we will write M and also write next to it the identity matrix (an identity matrix is a square matrix with ones on the diagonal and zeros elsewhere). We say that we augment M by identity. Then we will row reduce this **augmented** (or adjoined) matrix.
-
 ![](/images/matrix-inverse/mi-eq1.png)
 
-Before we get started, remember that a matrix can be seen as a system of linear equations which can be solved using what we call **row elementary operations**. Row elementary operations have the property to preserve the solution set by the matrix. There are three such operations: you can swap the rows of a matrix (operation 1), multiply each coefficient of a row by a non-zero constant (operation 2), and replace a row with the sum of itself and the multiple of another row (operation 3). These are illustrated with the following examples (row switching, row multiplication, and row addition):
+Before we get started, remember that a matrix can be seen as a system of linear equations that can be solved using what we call [**row elementary operations**](https://en.wikipedia.org/wiki/Elementary_matrix#Operations). Row elementary operations have the property to preserve the solution set by the matrix. There are three such operations: 
+
+- Operation 1: swapping the rows of a matrix (operation 1).
+- Operation 2: multiplying each coefficient of a row by a non-zero constant \(k\). Note that we say multiplying here but this implies that this can be a division too. We can multiply coefficients by \(\frac{1}{2}\) which is the same as dividing the coefficients by 2. Similarly, this constant can be positive or negative, 2 or -2.
+- Operation 3: replacing a row with the sum of itself and the multiple of another row. For instance, we can add the coefficients of row 4 to those of row 1. But we can also in the process multiply the coefficients of row 4 by some constant \(k\) as follows:
+
+$$
+\begin{array}{l}
+M_{11} += M_{41} * k,\\
+M_{12} += M_{42} * k,\\
+M_{13} += M_{43} * k,\\
+M_{14} += M_{44} * k
+\end{array}
+$$
+
+These are illustrated with the following examples (row switching, row multiplication, and row addition):
 
 ![](/images/matrix-inverse/mi-rowop.png)
 
-In the second example, we simply multiply all the coefficients of row 1 by 1/2 and the coefficients of row 3 by 2\. In the third example, we add the coefficients from row 1 to the coefficients of row 2\. The idea behind the Gauss-Jordan elimination is to use these elementary row operations to transform the 4x4 matrix on the left inside of the augmented matrix into the identity matrix (we say that M is row-reduced). By performing the same row operations to the 4x4 identity matrix on the right inside of the augmented matrix we obtain the inverse matrix.
+In the second example, we simply multiply all the coefficients of row 1 by 1/2 (or divide them by 2) and the coefficients of row 3 by 2. In the third example, we add the coefficients from row 1 to the coefficients of row 2. 
+
+The idea behind the Gauss-Jordan elimination is to use these elementary row operations to transform the 4x4 matrix on the left inside of the augmented matrix into the identity matrix (we say that M is row-reduced). By performing the same row operations to the 4x4 identity matrix on the right inside of the augmented matrix we obtain the inverse matrix. We say that we [augment M by identity](https://en.wikipedia.org/wiki/Augmented_matrix). 
+
+The Gauss-Jordan elimination method works as follows:
+
+- We will start with two matrices. The matrix \(M\) we want to invert alongside another matrix that we will set at the start of the process to the identity matrix. An identity matrix is a square matrix with ones on the diagonal and zeros elsewhere (the Matrix class constructor sets the matrix to the identity matrix by default). Our matrix \(M\) is augmented. 
+
+- We then have to use row elementary operations to transform the original \(M\) matrix into the identity matrix. This process is called **row reduction**. While we do so, we apply the same operations to the second matrix in parallel. 
+
+- Once the process is finished (if we have been successful in reducing \(M\) to the identity matrix), the second matrix will end up being \(M^{-1}\) our inverted matrix. At this point, you can decide to either return \(M^{-1}\) (the method named `inverse` below) or copy the inverted matrix into \(M\) (the method named `invertIt` below).
+
+```
+Matrix44& Matrix44::invertIt()
+{
+    Matrix44 inv; // start from identity matrix
+    ...
+    *this = inv;
+    return *this;
+}
+
+Matrix44 Matrix44::inverse(Matrix44& M) const
+{ Matrix44 temp(*this); temp.invertIt(); return temp; }
+
+```
+
+Let's see how this is done.
 
 ## Step 1: Set The Row So That The Pivot Is Different Than Zero
 
@@ -20,18 +59,20 @@ As we mentioned earlier, the goal of the matrix inversion process is to use the 
 
 ![](/images/matrix-inverse/mi-columns.gif)
 
-The first thing we will do is examine the value of the pivot coefficient for the current column (the column being processed). For our technique to work, this value has to be different than zero. If it is different than zero then we can directly move to step two. If it is equal to zero, we will need to find another row in the matrix for this column whose value is different than zero, and swap these two rows (operation 1). However, more than one row may have values different than zero. So which one should we select? We will pickup the row whose absolute value is the highest.
+The first thing we will do is examine the value of the pivot coefficient for the current column (the column being processed). This value has to be different than zero. If it is different than zero we can then directly move to step two. If it is equal to zero, we will need to find another row in the matrix for this column whose value is different than zero, and swap these two rows (which is the first of the permitted row elementary operations). However, more than one row may have values different than zero. So which one should we pick in this case? We will pick the row whose absolute value is the highest.
 
 ![](/images/matrix-inverse/mi-swap.gif)
 
-In the example on the right, we are looking at the pivot coefficient of the second column. Because the value of that coefficient is zero, we swap row 2 with the rows of the second column whose absolute value is the greatest (in this example row 3).
+In the example on the right, we are looking at the pivot coefficient of the second column. Because the value of that coefficient is zero, we swap row 2 with the row of the second column whose absolute value is the greatest (in this example row 3).
 
-We use the Gauss-Jordan elimination method to transform the original matrix to the identity matrix and perform at the same time the same operations on another matrix (mat) which, at the beginning of the function (line 3), is set to the identity matrix (the Matrix class constructor set the matrix to the identity matrix by default). At the end of this process, our original matrix is set with the coefficient from the second matrix (line 39 in the final code). If we can't find another value for the pivot coefficient (that is if all the other values in the column are zero) then the matrix can't be inverted and is singular (line 11).
+If we can't find another value for the pivot coefficient (that is if all the other values in the column are zero) then the matrix can't be inverted and is singular (line 11).
+
+If the current column we are processing has a valid pivot coefficient, then we can proceed to the next step.
 
 ```
-Matrix<T, N> & invert() 
+Matrix<T, N>& invertIt() 
 { 
-    Matrix<T, N> mat; 
+    Matrix<T, N> inv; 
     for (unsigned column = 0; column < N; ++column) { 
         // Swap row in case our pivot point is not working
         if (m[column][column] == 0) { 
@@ -43,7 +84,7 @@ Matrix<T, N> & invert()
             // Swap rows                               
             else for (unsigned j = 0; j < N; ++j) { 
                 std::swap(m[column][j], m[big][j]); 
-                std::swap(mat.m[column][j], mat.m[big][j]); 
+                std::swap(inv[column][j], inv[big][j]); 
             } 
         } 
         ... 
@@ -51,23 +92,104 @@ Matrix<T, N> & invert()
 } 
 ```
 
-## Step 2: Set Each Row In The Column To 0
+## Step 2: Set Each Coefficient In The Column To 0
 
-![](/images/matrix-inverse/mi-reduce.png)
+The Gauss-Jordan elimination method at this step processes the column one by one from left to right. We will row-reduce each coefficient of each column apart from the pivot coefficients which we won't touch for now. In order, \(M_{21}\) (we skip \(M_{11}\) since it's a pivot coefficient), \(M_{31}\), \(M_{41}\), then \(M_{12}\) (we skip \(M_{22}\) since it's a pivot coefficient), \(M_{32}\), \(M_{42}\), etc. until \(M_{34}\) (we skip \(M_{44}\) since it's a pivot coefficient).
 
-If the current column we are processing has a valid pivot coefficient, then we can proceed to the next step. We will reduce each coefficient of the column (apart from the pivot coefficient which we won't touch for now) to zero. In English, that won't make much sense but here it is. Let's call 'm', the current coefficient (for the current column/row) that we want to reduce to zero. We will subtract m multiplied by each coefficient of the row whose index is the same as the index of the current column, from each coefficient of the current row (operations 2 and 3). The technique will work if m itself is divided by the pivot coefficient value (line 4). This is illustrated for one coefficient in the following example. The second column is the current column. We want to reduce the first coefficient (row 0) from the current column (4.3) to zero. For each coefficient of the first row (say C0j), we take the corresponding coefficient (C1j) from the second row (because we are processing the second column), multiply this coefficient by the coefficient we want to reduce by zero (C02) divided by the pivot coefficient from the second column (C12) and subtract the resulting number from C0j.
+$$
+\begin{bmatrix}
+pivot  & M_{12} & M_{13} & M_{14}\\
+M_{21} & pivot  & M_{23} & M_{24}\\
+M_{31} & M_{32} & pivot  & M_{34}\\
+M_{41} & M_{42} & M_{34} & pivot
+\end{bmatrix}
+$$
+
+Now, remember that we can only use **row elementary operations**. That means that you can't modify one single coefficient through a series of operations on that coefficient, without modifying all the other coefficients from the same row with the same set of operations. If you don't do so, you do not preserve the solution set by the matrix. That's the condition by which **row-reduction** works. Do whatever you want to your coefficient, as long you process all the coefficients in the row that this coefficient is on with the same set of row elementary operations. You can multiply all the coefficients in a row by the same constant and/or swap rows, and/or add the coefficients of a given row to those of another row.
+
+Let's see how this works in practice. Let's imagine we are about to process the second column. Let's begin with the first coefficient \(\textcolor{red}{M_{12}}\). Let's call it @@\rJoe@@. Let's imagine that @@\rJoe@@'s value is 2. Now, remember that the goal is to somehow make @@\rJoe@@ 0 using one or a combination of any of the three possible row elementary operations. To make @@\rJoe@@ 0 we should somehow subtract from it the value 2. That's pretty elementary but how? Imagine that the coefficient \(\textcolor{blue}{M_{22}}\), the coefficient right below @@\rJoe@@, is equal to 4. Note that coincidentally, \(\textcolor{blue}{M_{22}}\) is also @@\rJoe@@'s column pivote coefficient. @@\rJoe@@ is in column 2 and the pivot coefficient of column 2 is \(\textcolor{blue}{M_{22}}\). 
+
+$$
+\begin{bmatrix}
+M_{11} & \textcolor{red}{M_{12}} & M_{13} & M_{14}\\
+M_{21} & \textcolor{blue}{M_{22}} & M_{23} & M_{24}\\
+M_{31} & M_{32} & M_{33} & M_{34}\\
+M_{41} & M_{42} & M_{34} & M_{44}
+\end{bmatrix}
+\;=\;
+\begin{bmatrix}
+x & \textcolor{red}{2} & x & x\\
+x & \textcolor{blue}{4} & x & x\\
+x & x & x & x\\
+x & x & x & x
+\end{bmatrix}
+\;=\;
+\begin{bmatrix}
+x & \textcolor{red}{Joe} & x & x\\
+x & \textcolor{blue}{pivot} & x & x\\
+x & x & x & x\\
+x & x & x & x
+\end{bmatrix}
+$$
+
+Operation 3 says that we can add coefficients of any of the matrix rows to our current row coefficients. If we use the coefficient of the row that is just below @@\rJoe@@ \(\textcolor{blue}{M_{22}}\) (which we know is equal to 4) we get 6:
+
+$$2 + 4 = 6$$
+
+That's not what we are looking for. However, remember that operation 2 says that can also multiply the coefficients of a row by a constant. Let's imagine that this constant for now is -1. If we multiply \(\textcolor{blue}{M_{22}}\) by this constant, we get:
+
+$$2 + -1 * 4 = -2$$
+
+Not yet 0 but we get a step closer. What if our constant was equal to \(-\frac{1}{2}\) or \(-\frac{2}{4}\)
+
+$$2 - \frac{2}{4}4 = 0$$
+
+Now we canceled out the value of coefficient \(\textcolor{red}{M_{12}}\) and made it 0. Maybe you have noticed that 2 is the value of the coefficient \(\textcolor{red}{M_{12}}\) itself (Joe) and 4 is the value of the coefficient \(\textcolor{blue}{M_{22}}\), which happens to be the pivot coefficient of the second column, the column than Joe belongs to.
+
+Keep in mind that the operations that we applied to Joe need to be applied also to all the coefficients of the row Joe belongs to. That's the rule if you are to use row-elementary operations. Every coefficient on the row that the coefficient being canceled out belongs to, needs to receive the same treatment as the one given to that coefficient (Joe). Like so for our Joe example:
+
+$$
+\begin{array}{l}
+M_{11} &-=& k * M_{21},\\
+\textcolor{red}{M_{12}} &-=& k * M_{22},\\
+M_{13} &-=& k * M_{23},\\
+M_{14} &-=& k * M_{24}.
+\end{array}
+$$
+
+With:
+
+$$k = -\frac{M_{12}}{\textcolor{blue}{M_{22}}}$$
+
+Let's now generalize:
+
+!!!
+- For every coefficient in \(M_{ij}\) in the matrix where \(i\) is the coefficient's row and \(j\) its  column that is not a pivot coefficient (proceeding in order through the columns first, and then for each column from top to bottom).
+- Create a constant \(k\) that's made up of \(M_{ij}\) divided by the pivot coefficient of the column \(i\): \(M_{ii}\). If you process \(M_{12}\) (row 1, column 2) then use the pivot coefficient \(M_{22}\) (column 2). If you process \(M_{14}\) (row 1, column 4) then use the pivot coefficient \(M_{44}\) (column 4). Etc.
+- Negate that number. 
+- Multiply the coefficients of row **\(j\)** (note that \(j\) is the coefficient \(M_{ij}\)'s column) by the constant \(k\). That's allowed by operation 2. We always pick row \(j\) for this operation where again \(j\) is \(M_{ij}\)'s column. If you process \(M_{12}\) (row 1, column 2) then use the coefficients from row 2. If you process \(M_{14}\) (row 1, column 4) then use the coefficients from row 4. Etc.
+- And finally, add the weighted coefficients from row \(j\) to the coefficients of row \(i\) (\(M_{ij}\)'s row). That's allowed by operation 3.
+- \(M_{ij}\) is now equal to 0.
+!!!
+
+Keep in mind that we loop through the columns and that for each column we process the coefficients from top to bottom (and skip the column's pivot coefficient).
+
+And the end of this process, all of these coefficients should be equal to 0 (except the pivot coefficients of course).
+
+It's hard and tedious to explain in English but once you understand how this works, figuring it out by yourself shouldn't be a problem, may you be stuck on a desert Island with no access to the Internet.
 
 In C++ code we get:
 
 ```
-// Set each row in the column to 0  
+// Make each row in column = 0  
 for (unsigned row = 0; row < N; ++row) { 
-    if (row != column) { 
+    if (row != column) { // don't process pivot coeffs
+        // that's our constant k
         T coeff = m[row][column] / m[column][column]; 
         if (coeff != 0) { 
-            for (unsigned j = 0; j < N; ++j) { 
+            for (unsigned j = 0; j < N; ++j) {
                 m[row][j] -= coeff * m[column][j]; 
-                mat.m[row][j] -=  coeff * mat.m[column][j]; 
+                inv[row][j] -=  coeff * inv[column][j]; 
             } 
             // Set the element to 0 for safety
             m[row][column] = 0; 
@@ -76,11 +198,11 @@ for (unsigned row = 0; row < N; ++row) {
 } 
 ```
 
-Note how we apply the same operation to the right-hand side of the augmented matrix (line 8).
+Note how we apply the same operations to the right-hand side of the augmented matrix.
 
 ## Step 3: Scale All The Pivots Coefficients To 1
 
-At the end of step 2, all the matrix coefficients should be 0 except the pivots coefficients which we need to set to 1\. To do so, we simply need to scale the coefficients by their value. Similarly to what we have done in step 2, we will loop over each row, then each column, and divide the current coefficient by the pivot coefficient value of the current row:
+At the end of step 2, all the matrix coefficients should be 0 except the pivots coefficients which we need to set to 1. To do so, we simply need to scale the coefficients by their value. Similarly to what we have done in step 2, we will loop over each row, then each column, and divide the current coefficient by the pivot coefficient value of the current row:
 
 ```
 for (unsigned row = 0; row < N; ++row) { 
@@ -90,14 +212,14 @@ for (unsigned row = 0; row < N; ++row) {
 } 
 ```
 
-Finally, we just set the result of the current matrix with the result of our right inside matrix (mat in the code). We have inverted the matrix using the Gauss-Jordan elimination technique.
+Finally, we set the result of the current matrix with the result of our right inside matrix (`inv` in the code). We have inverted the matrix using the Gauss-Jordan elimination technique.
 
 Here is the full code of the method:
 
 ```
-Matrix<T, N> & invert() 
+Matrix<T, N>& invertIt() 
 { 
-    Matrix<T, N> mat; 
+    Matrix<T, N> inv; 
     for (unsigned column = 0; column < N; ++column) { 
         // Swap row in case our pivot point is not working
         if (m[column][column] == 0) { 
@@ -109,17 +231,17 @@ Matrix<T, N> & invert()
             // Swap rows                               
             else for (unsigned j = 0; j < N; ++j) { 
                 std::swap(m[column][j], m[big][j]); 
-                std::swap(mat.m[column][j], mat.m[big][j]); 
+                std::swap(inv[column][j], inv[big][j]); 
             } 
         } 
-        // Set each row in the column to 0  
+        // Make each row in the column equal to 0  
         for (unsigned row = 0; row < N; ++row) { 
             if (row != column) { 
                 T coeff = m[row][column] / m[column][column]; 
                 if (coeff != 0) { 
                     for (unsigned j = 0; j < N; ++j) { 
                         m[row][j] -= coeff * m[column][j]; 
-                        mat.m[row][j] -= coeff * mat.m[column][j]; 
+                        inv[row][j] -= coeff * inv[column][j]; 
                     } 
                     // Set the element to 0 for safety
                     m[row][column] = 0; 
@@ -130,10 +252,10 @@ Matrix<T, N> & invert()
     // Set each element of the diagonal to 1
     for (unsigned row = 0; row < N; ++row) { 
         for (unsigned column = 0; column < N; ++column) { 
-            mat.m[row][column] /= m[row][row]; 
+            inv[row][column] /= m[row][row]; 
         } 
     } 
-    *this = mat;
+    *this = inv;
 
     return *this; 
 } 
