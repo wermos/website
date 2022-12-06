@@ -4,7 +4,7 @@ In this lesson, we will show how the inverse of a matrix can be computed using a
 
 Before we get started, remember that a matrix can be seen as a system of linear equations that can be solved using what we call [**row elementary operations**](https://en.wikipedia.org/wiki/Elementary_matrix#Operations). Row elementary operations have the property to preserve the solution set by the matrix. There are three such operations: 
 
-- **Operation 1**: swapping the rows of a matrix (operation 1).
+- **Operation 1**: swapping rows of a matrix.
 - **Operation 2**: multiplying each coefficient of a row by a non-zero constant \(k\). Note that we say multiplying here but this implies that this can be a division too. We can multiply coefficients by \(\frac{1}{2}\) which is the same as dividing the coefficients by 2. Similarly, this constant can be positive or negative, 2 or -2.
 - **Operation 3**: replacing a row with the sum of itself and the multiple of another row. For instance, we can add the coefficients of row 4 to those of row 1. But we can also in the process multiply the coefficients of row 4 by some constant \(k\) as follows:
 
