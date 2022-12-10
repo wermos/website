@@ -2,7 +2,7 @@
 
 ## Light Transport
 
-In a typical scene, light is likely to bounce off of the surface of many objects before it reaches the eye. As explained in the [previous chapter](http://localhost/lessons/3d-basic-rendering/rendering-3d-scene-overview/light-simulator), the direction in which light is reflected depends on the material type (is it diffuse, specular, etc.), thus light paths are defined by all the successive materials light rays do interact with on their way to the eye.
+In a typical scene, light is likely to bounce off of the surface of many objects before it reaches the eye. As explained in the [previous chapter](http://localhost/lessons/3d-basic-rendering/rendering-3d-scene-overview/light-simulator), the direction in which light is reflected depends on the material type (is it diffuse, specular, etc.), thus light paths are defined by all the successive materials the light rays interact with on their way to the eye.
 
 ![Figure 1: light paths.](/images/rendering-3d-scene-overview/lightpath.png?)
 
@@ -14,7 +14,7 @@ Researcher Paul Heckbert introduced the concept of labeling paths that way in a 
 
 ![Figure 3: to compute indirect lighting, we need to spawn secondary rays from P and check if these rays intersect other surfaces in the scene. If they do, we need to compute both indirect and direct lighting at these intersection points and return the amount of computed light to P. Note that this is a recursive process: each time a secondary ray hits a surface we need to compute both direct lighting and indirect lighting at the intersection point on this surface, which means spawning more secondary rays, etc.](/images/rendering-3d-scene-overview/indirect-lighting.png?)
 
-At this point, you may think, "this is all good, but how does that relate to rendering?". As mentioned several times already in this lesson and the previous one, in the real world, light goes from light sources to the eye. But only a fraction of the rays emitted by light sources reaches the eye. Therefore, rather than simulation light path from the source to the eye, a more efficient approach is to start from the eye, and walk back to the source.
+At this point, you may think, "this is all good, but how does that relate to rendering?". As mentioned several times already in this lesson and the previous one, in the real world, light goes from light sources to the eye. But only a fraction of the rays emitted by light sources reaches the eye. Therefore, rather than simulating light path from the source to the eye, a more efficient approach is to start from the eye, and walk back to the source.
 
 This is what we typically do in ray tracing. We trace a ray from the eye (we generally call the **eye ray**, **primary ray**, or **camera ray**) and check whether this ray intersects any geometry in the scene. If it does (let's call P, the point where the ray intersects the surface), we then need to do two things: compute how much light arrives at P from the light sources (direct lighting), and how much light arrives at P indirectly, as a result of light being reflected by other surfaces in the scene (indirect lighting).
 
@@ -91,4 +91,6 @@ Probably one of the most common myths in computer graphics is that ray tracing i
 - Those who are not using ray tracing such as photon or shadow mapping, radiosity, etc.
 - Those who are using ray tracing and ray tracing only.
 
-As long as the algorithm efficiently captures light paths that are difficult to capture with the traditional unidirectional path tracing algorithm, modern implementations do tend to favor the light transport method solely based on ray tracing, simply because ray tracing is a more natural way to think about light propagation in a scene, and offers a unified approach to computing global illumination (one in which using auxiliary structures or systems to store light information is not necessary). Note though that while such algorithms do tend to be the norm these days in off-line rendering, real-time rendering systems are still very much based on the former approach (they are generally not designed to use ray tracing, and still rely on things such as shadow maps or light fields to compute direct and indirect illumination).
+As long as the algorithm efficiently captures light paths that are difficult to capture with the traditional unidirectional path tracing algorithm, it can be viewed as one of the contendors to solve our LS+DE problem.
+
+Modern implementations do tend to favor the light transport method solely based on ray tracing, simply because ray tracing is a more natural way to think about light propagation in a scene, and offers a unified approach to computing global illumination (one in which using auxiliary structures or systems to store light information is not necessary). Note though that while such algorithms do tend to be the norm these days in off-line rendering, real-time rendering systems are still very much based on the former approach (they are generally not designed to use ray tracing, and still rely on things such as shadow maps or light fields to compute direct and indirect illumination).
