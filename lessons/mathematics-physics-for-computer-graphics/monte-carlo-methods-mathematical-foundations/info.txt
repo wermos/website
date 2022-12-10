@@ -1,0 +1,14 @@
+@Mathematical Foundations of Monte Carlo Methods
+quick-introduction-to-monte-carlo-methods.md:A Quick Introduction to Monte Carlo Methods
+random-variables-and-probability.md:Random Variables and Probability
+probability-distribution-part1.md:Probability Distribution: Part 1
+probability-properties.md:Probability Properties
+introduction-to-statistics.md:Introduction to Statistics
+expected-value.md:Expected Value
+variance-and-standard-deviation.md:Variance and Standard Deviation
+probability-distribution-part2.md:Probability Distribution: Part 2
+sampling-distribution.md:Sampling Distribution
+pdf-and-cdf.md:Probability Density Function (PDF) and Cumulative Distribution Function (CDF)
+expected-value-of-the-function-of-a-random-variable.md:Expected Value of the Function of a Random Variable: Law of the Unconscious Statistician
+inverse-transform-sampling-method.md:The Inverse Transform Sampling Method
+estimators.md:Estimators
