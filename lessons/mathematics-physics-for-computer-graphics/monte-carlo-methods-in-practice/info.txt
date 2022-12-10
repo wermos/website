@@ -1,0 +1,8 @@
+@Monte Carlo Methods in Practice
+monte-carlo-methods.md:Monte Carlo Methods
+monte-carlo-simulation.md:Monte Carlo Simulation
+monte-carlo-integration.md:Monte Carlo Integration
+monte-carlo-rendering-practical-example.md:Monte Carlo in Rendering (A Practical Example)
+generating-random-numbers.md:Generating Random Numbers
+variance-reduction-methods.md:Variance Reduction Methods: a Quick Introduction to Importance Sampling
+introduction-quasi-monte-carlo.md:Variance Reduction Methods: a Quick Introduction to Quasi Monte Carlo
