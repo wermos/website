@@ -163,31 +163,38 @@ When we transform a point from the world to the local coordinate system (or the 
 
 ### Camera Coordinate System and Camera Space
 
-![Figure 8: when you create a camera, it is by default aligned along the world coordinate system negative z-axis. This is a convention used by most 3D applications.](/images/perspective-matrix/camera.png?)
+![Figure 8: when you create a camera, by default it is aligned along the world coordinate system's negative z-axis. This is a convention used by most 3D applications.](/images/perspective-matrix/camera.png?)
 
-![Figure 9: transforming the camera coordinate system with the camera-to-word transformation matrix.](/images/perspective-matrix/camera2.png?)
+![Figure 9: transforming the camera coordinate system with the camera-to-world transformation matrix.](/images/perspective-matrix/camera2.png?)
 
-A camera, in CG (as well as in the real world), is no different than any other 3D object. When you take a photograph, you need to move and rotate the camera to adjust the viewpoint. So in a way, when you transform a camera (by translating and rotating it &mdash; note that scaling a camera doesn't make much sense), what you do is **transforming a local coordinate system which implicitly represents the transformations applied to that camera**. In CG we call this spatial reference system (the term spatial reference system or reference, is sometimes used in place of the term coordinate system), the **camera coordinate system** (you might also find it called the eye coordinate system in other references). This is an important coordinate system and we will explain why in a moment.
+A camera in CG (and in the real world) is no different than any other 3D object. When you take a photograph, you need to move and rotate the camera to adjust the viewpoint. So in a way, when you transform a camera (by translating and rotating it &mdash; note that scaling a camera doesn't make much sense), what you are doing is **transforming a local coordinate system, which implicitly represents the transformations applied to that camera**. In CG we call this spatial reference system (the term spatial reference system or reference, is sometimes used in place of the term coordinate system) the **camera coordinate system** (you might also find it called the eye coordinate system in other references). We will explain why this coordinate system is important in a moment.
 
-So a camera is nothing else than a coordinate system and thus the technique to transform points from one coordinate system to another we described just before, can also be applied here to transform points from the world coordinate system to the camera coordinate system (and vice versa). We say that we transform points from **world space to camera space** (or camera space to world space if we apply the transformation the other way around).
+A camera is nothing more than a coordinate system, and thus the technique that we described earlier to transform points from one coordinate system to another can also be applied here to transform points from the world coordinate system to the camera coordinate system (and vice versa). We say that we transform points from **world space to camera space** (or camera space to world space if we apply the transformation the other way around).
 
-Note though that cameras always point along the world coordinate system's negative z-axis. If you look at Figure 8, you will see that the camera z-axis is pointing in the opposite direction to the world coordinate system z-axis (when the x-axis points to the right, the z-axis goes inward, into the screen, rather than outward).
+Note though that cameras always point along the world coordinate system's negative z-axis. If you look at Figure 8, you will see that the camera's z-axis is pointing in the opposite direction of the world coordinate system's z-axis (when the x-axis points to the right and the z-axis goes inward into the screen rather than outward).
 
 <details>
-Cameras point along the world coordinate system's negative z-axis so that when a point is converted from world space to camera space (and then later from camera space to screen space) if the point is to the left of the world coordinate system y-axis, it will also map to the left of the camera coordinate system y-axis. In other words, we need the x-axis of the camera coordinate system to point to the right when the world coordinate system x-axis also points to the right; and the only way you can get that configuration is by having the camera look down the negative z-axis.
+Cameras point along the world coordinate system's negative z-axis, so that when a point is converted from world space to camera space (and then later from camera space to screen space), if the point is to the left of the world coordinate system's y-axis, the point will also map to the left of the camera coordinate system's y-axis. In other words, we need the x-axis of the camera coordinate system to point to the right when the world coordinate system x-axis also points to the right; and the only way you can get that configuration is by having the camera look down the negative z-axis.
 </details>
 
-Because of this, the sign of the z coordinate of points is inverted when we go from one system to the other. Keep this in mind, as it will play a role when we will (finally) get to studying the perspective projection matrix.
+Because of this, the sign of the z coordinate of points is inverted when we go from one system to the other. Keep this in mind as it will play a role when we (finally) get to study the perspective projection matrix.
 
 To summarize: if we want to convert the coordinates of a point in 3D from world space (which is the space in which points are defined in a 3D scene) to the space of a local coordinate system, we need to multiply the point world coordinates by the inverse of the local-to-world matrix.
 
 ### Of the Importance of Converting Points to Camera Space
 
-This a lot of reading but what for? Because, as already suggested we are now going to show that to "project" a point on the canvas (the 2D surface on which we will draw an image of the 3D scene), we will need to convert or transform points from world to camera space. And here is why.
+This a lot of reading, but what for? We are now going to show that to "project" a point on the canvas (the 2D surface on which we will draw an image of the 3D scene), we will need to convert or transform points from world to camera space. And here is why.
 
-![Figure 10: the coordinates of the point P', the projection of P on the canvas can be computed using simple geometry. The rectangle ABC and AB'C' are said to be similar (side view).](/images/rendering-3d-scene-overview/box-setup4.png?)
+![Figure 10: the coordinates of the point P', the projection of P on the canvas, can be computed using simple geometry. The rectangle ABC and AB'C' are said to be similar (side view).](/images/rendering-3d-scene-overview/box-setup4.png?)
 
-Let's recall that what we are trying to achieve, is to compute P', the coordinates of a point P from the 3D scene on the surface of a canvas, which as mentioned before, is the 2D surface on which the image of the scene will be drawn (the canvas is also called the projection plane or in CG, the **image plane**). If you trace a line from P to the eye (the origin of the camera coordinate system), P' is the line's point of intersection with the canvas (Figure 10). When the point P coordinates are defined with respect to the camera coordinate system, computing the position of P' is trivial. If you look at Figure 10 representing a side view of our setup, you can see that by construction we can trace two triangles \(\triangle ABC\) and \(\triangle AB'C'\), where A is the eye, B is the distance from the eye to P along the camera coordinate system z-axis, C is the distance from the eye to P along the camera coordinate system y-axis, B' is the distance from the eye to the canvas (for now, we will assume that this distance is 1 which is going to simplify our calculations) and C' is the distance from the eye to the P' along the camera coordinate system y-axis. The triangles \(\triangle ABC\) and \(\triangle AB'C'\) are said to be similar (similar strangles have the same shape, but eventually different sizes). Similar triangles have an interesting property: the ratio between their adjacent and opposite sides is the same. In other words:
+Let's recall that what we are trying to achieve, is to compute P', the coordinates of a point P from the 3D scene on the surface of a canvas, which is the 2D surface where the image of the scene will be drawn (the canvas is also called the projection plane, or in CG, the **image plane**). If you trace a line from P to the eye (the origin of the camera coordinate system), P' is the line's point of intersection with the canvas (Figure 10). When the point P coordinates are defined with respect to the camera coordinate system, computing the position of P' is trivial. If you look at Figure 10, which shows a side view of our setup, you can see that by construction, we can trace two triangles \(\triangle ABC\) and \(\triangle AB'C'\), where:
+* A is the eye
+* B is the distance from the eye to point P along the camera coordinate system's z-axis
+* C is the distance from the eye to P along the camera coordinate system's y-axis
+* B' is the distance from the eye to the canvas (for now, we will assume that this distance is 1, which is going to simplify our calculations)
+* C' is the distance from the eye to P' along the camera coordinate system y-axis
+ 
+The triangles \(\triangle ABC\) and \(\triangle AB'C'\) are said to be similar (similar triangles have the same shape, but different sizes). Similar triangles have an interesting property: the ratio between their adjacent and opposite sides is the same. In other words:
 
 $${ BC \over AB } = { B'C' \over AB' }.$$
 
@@ -199,15 +206,15 @@ Where y' is the y coordinate of P'. Thus:
 
 $$P'.y = { P.y \over P.z }.$$
 
-This is probably one the simplest and most fundamental relations in computer graphics, known as the z or **perspective divide**. The same principle applies to the x coordinate. The projected point x coordinate (x') is the corner's x coordinate divided by its z coordinate:
+This is probably one the simplest and most fundamental relations in computer graphics, known as the z or **perspective divide**. The same principle applies to the x coordinate. The projected point's x coordinate (x') is the corner's x coordinate divided by its z coordinate:
 
 $$P'.x = { P.x \over P.z }.$$
 
 !!!
-We described this method several times in the different lessons on the website, but what we want to show here, is that **to compute P' using these equations, the coordinates of P ought to be defined with respect to the camera coordinate system. However, points from the 3D scene are originally defined with respect to the world coordinate system. Therefore, the first and foremost operation we need to apply to points before projecting them onto the canvas is to convert them from world space to camera space**.
+We described this method several times in other lessons on the website, but what we want to show here is that **to compute P' using these equations, the coordinates of P ought to be defined with respect to the camera coordinate system. However, points from the 3D scene are originally defined with respect to the world coordinate system. Therefore, the first and foremost operation we need to apply to points before projecting them onto the canvas is to convert them from world space to camera space**.
 !!!
 
-How do we do that? If we know the camera-to-world matrix (which is similar to the local-to-camera matrix we studied in the previous case), we can transform any point whose coordinates are defined in world space to camera space, by multiplying this point by the camera-to-world inverse matrix (the world-to-camera matrix):
+How do we do that? If we know the camera-to-world matrix (which is similar to the local-to-camera matrix that we studied in the previous case), we can transform any point(whose coordinates are defined in world space) to camera space by multiplying this point by the camera-to-world inverse matrix (the world-to-camera matrix):
 
 $$P_{camera} = P_{world} * M_{world-to-camera}.$$
 
@@ -220,7 +227,7 @@ P'.y = \dfrac{P_{camera}.y}{P_{camera}.z}.
 \end{array}
 $$
 
-Recall that by default, cameras are oriented along the world coordinate system's negative z-axis. This means that when we convert a point from world space to camera space, the sign of the point z-coordinate in camera space is necessarily reversed; it becomes negative if the z-coordinate was positive in world space, and positive after the conversion if it was originally negative. **Note that a point defined in camera space can only be visible if its z-coordinate is negative** (take a moment to verify this statement). As a result, when the x- and y-coordinate of the original point are divided by the point's negative z-coordinate, the sign of the resulting projected point's x and y-coordinates is reversed as well. This is a problem because a point that is situated to the right of the screen coordinate system y-axis when you look through the camera or a point that appears above the horizontal line passing through the middle of the frame, ends up either to the left of the vertical line or below the horizontal line once projected. The point's coordinates are mirrored. The solution to this problem is simple. We just need to make the point z-coordinate positive which we can easily do by reversing its sign at the time that the projected point's coordinates are computed:
+Recall that by default, cameras are oriented along the world coordinate system's negative z-axis. This means that when we convert a point from world space to camera space, the sign of the point's z-coordinate in camera space is necessarily reversed; it becomes negative if the z-coordinate was positive in world space, or it becomes positive if it was originally negative. **Note that a point defined in camera space can only be visible if its z-coordinate is negative** (take a moment to verify this statement). As a result, when the x- and y-coordinate of the original point are divided by the point's negative z-coordinate, the sign of the resulting projected point's x and y-coordinates is reversed as well. This is a problem because a point that is situated to the right of the screen coordinate system's y-axis when you look through the camera or a point that appears above the horizontal line passing through the middle of the frame, ends up either to the left of the vertical line or below the horizontal line once projected. The point's coordinates are mirrored. The solution to this problem is simple. We just need to make the point's z-coordinate positive which we can easily do by reversing its sign at the time that the projected point's coordinates are computed:
 
 $$
 \begin{array}{l}
@@ -229,7 +236,7 @@ P'.y = \dfrac{P_{camera}.y}{-P_{camera}.z}.
 \end{array}
 $$
 
-To summarize: points in a scene are defined in the world coordinate space. However, to project them onto the surface of the canvas, we first need to convert the 3D point coordinates from world space to camera space. This can be done by multiplying the point world coordinates by the inverse of the camera-to-wold matrix. Here is the code for performing this conversion:
+To summarize: points in a scene are defined in the world coordinate space. However, to project them onto the surface of the canvas, we first need to convert the 3D point coordinates from world space to camera space. This can be done by multiplying the point world coordinates by the inverse of the camera-to-world matrix. Here is the code for performing this conversion:
 
 ```
 Matrix44f cameraToWorld(0.718762, 0.615033, -0.324214, 0, -0.393732, 0.744416, 0.539277, 0, 0.573024, -0.259959, 0.777216, 0, 0.526967, 1.254234, -2.53215, 1);
@@ -239,7 +246,7 @@ worldToCamera.multVecMatrix(Pworld, Pcamera);
 std::cerr << Pcamera << std::endl;
 ```
 
-We can use the resulting point now in camera space, to compute its 2D coordinates on the canvas, using the perspective projection equations (dividing the point coordinates with the **inverse** of the point's z-coordinate).
+We can now use the resulting point in camera space to compute its 2D coordinates on the canvas by using the perspective projection equations (dividing the point coordinates with the **inverse** of the point's z-coordinate).
 
 ### From Screen Space to Raster Space
 
