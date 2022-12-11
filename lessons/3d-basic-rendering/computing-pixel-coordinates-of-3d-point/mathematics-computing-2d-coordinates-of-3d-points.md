@@ -254,13 +254,13 @@ We can now use the resulting point in camera space to compute its 2D coordinates
 
 ![Figure 12: in this example, the canvas is 2 units along the x-axis and 2 units along the y-axis. You can change the dimension of the canvas if you wish. By making it bigger or smaller you will see more or less of the scene.](/images/rendering-3d-scene-overview/frustum.png?)
 
-At this point, we know how to compute the projection of a point on the canvas. We first need to transform points from world space to camera space, and then divide the point's x- and y-coordinates by their respective z-coordinate. Let's recall that the canvas lies on what we call in CG, the **image plane**. So you now have a point P' lying on the image plane, which is the projection of P onto that plane. **But in which space are the coordinates of P' defined into?** Note that because point P' lies on a plane, we are not interested in P' z-coordinate anymore. In other words, we don't need to declare P' as a 3D point; a 2D point suffices (this is partially true. To solve the visibility problem, the rasterization algorithm uses the z-coordinates of the projected points. However we will ignore this technical detail for now).
+At this point, we know how to compute the projection of a point on the canvas. We first need to transform points from world space to camera space, and then divide the point's x- and y-coordinates by their respective z-coordinate. Let's recall that the canvas lies on what we call in CG the **image plane**. So you now have a point P' lying on the image plane, which is the projection of P onto that plane. **But in which space are the coordinates of P' defined into?** Note that because point P' lies on a plane, we are not interested in the z-coordinate of P' anymore. In other words, we don't need to declare P' as a 3D point; a 2D point suffices (this is partially true. To solve the visibility problem, the rasterization algorithm uses the z-coordinates of the projected points. However we will ignore this technical detail for now).
 
-![Figure 13: changing the dimension of the canvas changes the extent of a given scene that is imaged by the camera. In this particular example, two canvases are represented. On the smaller one, the triangle is only partially visible. On the larger one, the entire triangle is visible. Canvas size and field-of-view relate to each other.](/images/perspective-matrix/canvassize.png?)
+![Figure 13: changing the dimensions/size of the canvas changes the extent of a given scene that is imaged by the camera. In this particular example, two canvases are represented. On the smaller one, the triangle is only partially visible. On the larger one, the entire triangle is visible. Canvas size and field-of-view relate to each other.](/images/perspective-matrix/canvassize.png?)
 
-Since P' is a 2D point, it is defined with respect to a 2D coordinate system which in CG we call the **image or screen coordinate system**. This coordinate system marks the center of the canvas; the coordinates of any point projected onto the image plane refer to this coordinative system. 3D points with positive x-coordinates are projected to the right of the image coordinate system y-axis. 3D points with positive y-coordinates are projected above the image coordinate system x-axis (Figure 11). An image plane is a plane so technically it is infinite. But images are not infinite in size; they have a width and a height. Thus, we will cut off a rectangular shape centered around the image coordinate system which we will define as the "bounded region" over which the image of the 3D scene will be drawn (Figure 11). You can see this region as the paintable or drawable surface of a canvas. The dimension of this rectangular region can be anything we want. Changing its size changes the extent of a given scene imaged by the camera (Figure 13). We will study the effect of the canvas size in the next lesson. In Figures 12 and 14 (top), the canvas is 2 units long in each dimension (vertical and horizontal).
+Since P' is a 2D point, it is defined with respect to a 2D coordinate system which in CG is called the **image or screen coordinate system**. This coordinate system marks the center of the canvas; the coordinates of any point projected onto the image plane refer to this coordinative system. 3D points with positive x-coordinates are projected to the right of the image coordinate system's  y-axis. 3D points with positive y-coordinates are projected above the image coordinate system's x-axis (Figure 11). An image plane is a plane, so technically it is infinite. But images are not infinite in size; they have a width and a height. Thus, we will cut off a rectangular shape centered around the image coordinate system which we will define as the "bounded region" over which the image of the 3D scene will be drawn (Figure 11). You can see that this region is the paintable or drawable surface of a canvas. The dimension of this rectangular region can be anything we want. Changing its size changes the extent of a given scene imaged by the camera (Figure 13). We will study the effect of the canvas size in the next lesson. In Figures 12 and 14 (top), the canvas is 2 units long in each dimension (vertical and horizontal).
 
-Any projected point whose absolute x- and y-coordinate is greater than half of the canvas' width **or** half of the canvas' height respectively is not visible in the image (is clipped).
+Any projected point whose absolute x- and y-coordinate is greater than half of the canvas' width **or** half of the canvas' height, respectively, is not visible in the image (the projected point is clipped).
 
 $$
 \text {visible} =
@@ -270,11 +270,11 @@ no & \text{otherwise}
 \end{cases}
 $$
 
-|a| means in mathematics, the [absolute value](https://en.wikipedia.org/wiki/Absolute_value) of a. The variables W and H are the width and height of the canvas.
+|a| in mathematics means the [absolute value](https://en.wikipedia.org/wiki/Absolute_value) of a. The variables W and H are the width and height of the canvas.
 
 ![Figure 14: to convert P' from screen space to raster space, we first need to go from screen space (top) to NDC space (middle), then NDC space to raster space (bottom). Note that the y-axis of the NDC coordinate system goes up, but that the y-axis of the raster coordinate system goes down. This implies that we invert P' y-coordinate when we go from NDC to raster space.](/images/perspective-matrix/canvascoordsys.png?)
 
-If the coordinates of P are real numbers (floats or doubles in programming), P's coordinates are also real numbers. If P's coordinates are within the canvas boundaries, then P' is visible, otherwise, the point is not visible and we can ignore it. If P' is visible it should appear as a dot in the image. A dot in a digital image is a pixel. Note that pixels too are 2D points, only their coordinates are integers, and the coordinate system these coordinates refer to is located in the upper-left corner of the image. Its x-axis points to the right (when the world coordinate system x-axis points to the right), and its y-axis points downwards (Figure 14). This coordinate system in computer graphics is called the **raster coordinate system**. A pixel in this coordinate system is one unit long in x and y. What we need to do, is convert P' coordinates which are defined with respect to the image or screen coordinate system into pixel coordinates (what's the position of P' in the image in terms of pixel coordinates). This is again, another change of coordinate system; we say that we need to go from **screen space to raster space**. How do we do that?
+If the coordinates of P are real numbers (floats or doubles in programming), P's coordinates are also real numbers. If P's coordinates are within the canvas boundaries, then P' is visible, otherwise, the point is not visible and we can ignore it. If P' is visible it should appear as a dot in the image. A dot in a digital image is a pixel. Note that pixels are also 2D points, only their coordinates are integers, and the coordinate system that these coordinates refer to is located in the upper-left corner of the image. Its x-axis points to the right (when the world coordinate system x-axis points to the right), and its y-axis points downwards (Figure 14). This coordinate system in computer graphics is called the **raster coordinate system**. A pixel in this coordinate system is one unit long in x and y. We need to convert P' coordinates, which are defined with respect to the image or screen coordinate system, into pixel coordinates (the position of P' in the image in terms of pixel coordinates). This is again, another change of coordinate system; we say that we need to go from **screen space to raster space**. How do we do that?
 
 The first thing we are going to do is to remap P' coordinates in the range [0,1]. This is mathematically easy. Since we know the dimension of the canvas, all we need to do is apply the following formulas:
 
@@ -287,7 +287,7 @@ $$
 
 Because the coordinates of the projected point P' are now in the range [0,1], we say that the coordinates are normalized. For this reason, we also call the coordinate system in which the points are defined after normalization, the **NDC coordinate system** or **NDC space**. NDC stands for **Normalized Device Coordinate**. The NDC coordinate system's origin is situated in the lower-left corner of the canvas. Note that at this point, the coordinates are still real numbers, only they are now in the range [0,1].
 
-The last step is simple. All we need to do is now multiply the projected point x- and y-coordinates in NDC space, by the actual image pixel width and pixel height respectively. This is a simple remapping of the range [0,1] to the range [0,Pixel Width] for the x-coordinate, and [0,Pixel Height] for the y-coordinate respectively. Now though the pixel coordinates are integers, thus rounding off the resulting numbers to the smallest following integer value is necessary (to do that, we will use the mathematical floor function; it rounds off a real number to its smallest following integer). After this final step, P's coordinates are defined in **raster space**:
+The last step is simple. All we need to do now is multiply the projected point's x- and y-coordinates in NDC space, by the actual image pixel width and image pixel height, respectively. This is a simple remapping of the range [0,1] to the range [0,Pixel Width] for the x-coordinate, and [0,Pixel Height] for the y-coordinate, respectively. Since the pixel coordinates need to be integers, we need to round off the resulting numbers to the smallest following integer value (to do that, we will use the mathematical floor function; it rounds off a real number to its smallest following integer). After this final step, P's coordinates are defined in **raster space**:
 
 $$
 \begin{array}{l}
@@ -296,7 +296,7 @@ P'_{raster}.y = \lfloor{ P'_{normalized}.y * \text{Pixel Height} }\rfloor
 \end{array}
 $$
 
-In mathematics, \(\lfloor{a}\rfloor\), denotes the [floor function](https://en.wikipedia.org/wiki/Floor_and_ceiling_functions). Pixel width and pixel height are the actual dimension of the image in pixels. There is a small detail though we need to take care of. The y-axis in the NDC coordinate system points up while in the raster coordinate system points down. Thus, to go from one coordinate system to the other, P' y-coordinate also needs to be inverted. We can easily account for this by doing a small modification to the above equations:
+In mathematics, \(\lfloor{a}\rfloor\), denotes the [floor function](https://en.wikipedia.org/wiki/Floor_and_ceiling_functions). Pixel width and pixel height are the actual dimensions of the image in pixels. Though there is a small detail that we need to take care of. The y-axis in the NDC coordinate system points up while in the raster coordinate system, the y-axis points down. Thus, to go from one coordinate system to the other, the y-coordinate of P' also needs to be inverted. We can easily account for this by doing a small modification to the above equations:
 
 $$
 \begin{array}{l}
@@ -305,21 +305,26 @@ P'_{raster}.y = \lfloor{ (1 - P'_{normalized}.y) * \text{Pixel Height} }\rfloor
 \end{array}
 $$
 
-In OpenGL, the conversion from NDC space to raster space is called the viewport transform. What we call the canvas in this lesson is generally called in CG the **viewport**. The viewport though means different things to different people. To some, it designates the "normalized window" of the NDC space. To others, it designates the window in pixels on the screen, in which the final image is displayed.
+In OpenGL, the conversion from NDC space to raster space is called the viewport transform. What we call the canvas in this lesson is generally called the **viewport** in CG. Though the viewport means different things to different people. To some, it designates the "normalized window" of the NDC space. To others, it designates the window of pixels on the screen, in which the final image is displayed.
 
-Done! You have converted a point P defined in world space into a visible point in the image, which pixel coordinates you have computed using a series of operations converting this point from world space to camera space, camera space to screen space, screen space to NDC space and finally, NDC space to raster space.
+Done! You have converted a point P defined in world space into a visible point in the image, whose pixel coordinates you have computed using a series of conversion operations:
+1. World space to camera space
+2. Camera space to screen space
+3. Screen space to NDC space
+4. NDC space to raster space
 
 ## Summary
 
-Because this process is so fundamental we will summarize everything we've learned in this chapter.
+Because this process is so fundamental, we will summarize everything that we've learned in this chapter:
 
 - Points in a 3D scene are defined with respect to the world coordinate system.
 - A 4x4 matrix can be seen as a "local" coordinate system.
-- We learned how to convert points from world to any local coordinate system. If we know the local-to-world matrix, we can multiply the world coordinate of the point by the inverse of the local-to-world matrix (the world-to-local matrix).
+- We learned how to convert points from the world coordinate system to any local coordinate system.
+  - If we know the local-to-world matrix, we can multiply the world coordinate of the point by the inverse of the local-to-world matrix (the world-to-local matrix).
 - We also use 4x4 matrices to transform cameras. Therefore, we can also convert points from world space to camera space.
-- Computing the coordinates of a point from camera space onto the canvas, can be done using perspective projection. It requires a simple division of the point's x- and y-coordinate by the point's z-coordinate. Before projecting the point onto the canvas, we need to convert the point from world space to camera space. The resulting projected point is defined in image space and is a 2D point (the z-coordinate can be discarded).
-- We then convert the 2D point in image space to NDC space. In NDC space, the coordinates of the point are remapped to the range [0,1].
-- Finally, we convert the 2D point in NDC space to raster space. For doing so we just need to multiply the points NDC x and y coordinates by the image width and height in pixels. Pixel coordinates are integers rather than real numbers, thus they need to be rounded off to the smallest following integer when converted from NDC space to raster space. Because in raster space, the y-axis is located in the upper-left corner of the image and is pointing down while the NDC coordinate system is located in the lower-left corner of the image with its y-axis pointing up, the y-coordinates needs to be inverted in the process.
+- Computing the coordinates of a point from camera space onto the canvas can be done using perspective projection. This process requires a simple division of the point's x- and y-coordinate by the point's z-coordinate. Before projecting the point onto the canvas, we need to convert the point from world space to camera space. The resulting projected point is a 2D point defined in image space (the z-coordinate can be discarded).
+- We then convert the 2D point in image space to Normalized Device Coordinate (NDC) space. In NDC space, the coordinates of the point are remapped to the range [0,1].
+- Finally, we convert the 2D point in NDC space to raster space. To do this, we just need to multiply the NDC point's x and y coordinates with the image width and height (in pixels). Pixel coordinates are integers rather than real numbers, thus they need to be rounded off to the smallest following integer when converting from NDC space to raster space. In the NDC coordinate system, the y-axis is located in the lower-left corner of the image and is pointing up. In raster space, the y-axis is located in the upper-left corner of the image and is pointing down. Therefore, when converting from NDC space to raster space, the y-coordinates needs to be inverted.
 
 |-table{Space,Description}
 |-row
@@ -331,22 +336,22 @@ The space in which the points are originally defined in the 3D scene. Coordinate
 |-cell
 **Camera Space**
 |-cell
-The space in which points are defined with respect to the camera coordinate system. To convert points from world to camera space, we need to multiply points in world space by the inverse of the camera-to-world matrix. By default, the camera is located at the origin and is oriented along the world coordinate system negative z-axis. Once points are in camera space, they can be projected on the canvas using perspective projection.
+The space in which points are defined with respect to the camera coordinate system. To convert points from world to camera space, we need to multiply points in world space by the inverse of the camera-to-world matrix. By default, the camera is located at the origin and is oriented along the world coordinate system's negative z-axis. Once the points are in camera space, they can be projected on the canvas using perspective projection.
 |-row
 |-cell
 **Screen Space**
 |-cell
-In this space, points are in 2D. They lie in the image plane. Because the plane is infinite, the canvas defines the region of this plane on which the scene can be drawn. The size of the canvas is arbitrary and defines "how much" of the scene we see. The image or screen coordinate system marks the center of the canvas (and the center of the image plane). If a point on the image plane is outside the boundaries of the canvas, it is not visible. It is of course visible otherwise.
+In this space, points are in 2D; they lie in the image plane. Because the plane is infinite, the canvas defines the region of this plane on which the scene can be drawn. The size of the canvas is arbitrary and defines "how much" of the scene that we see. The image or screen coordinate system marks the center of the canvas (and the center of the image plane). If a point on the image plane is outside the boundaries of the canvas, it is not visible. Otherwise the point is visible on the screen.
 |-row
 |-cell
 **NDC Space**
 |-cell
-2D points lying in the image plane and contained within the boundaries of the canvas are then converted to NDC space. The principle is to normalize the point's coordinates, in other words, to remap them to the range [0,1]. Note that NDC coordinates are still real numbers.
+2D points lying in the image plane and contained within the boundaries of the canvas are then converted to Normalized Device Coordinate (NDC) space. The principle is to normalize the point's coordinates, in other words, to remap them to the range [0,1]. Note that NDC coordinates are still real numbers.
 |-row
 |-cell
 **Raster Space**
 |-cell
-Finally, 2D points in NDC space are converted to 2D pixel coordinates. For doing so we multiply the normalized points x and y coordinates by the image width and height in pixels. Going from NDC to raster space also requires the y-coordinate of the point to be inverted. Final coordinates need to be rounded off to the nearest following integers (pixel coordinates are integers).
+Finally, 2D points in NDC space are converted to 2D pixel coordinates. To do this we multiply the normalized points' x and y coordinates by the image width and height in pixels. Going from NDC to raster space also requires the y-coordinate of the point to be inverted. Final coordinates need to be rounded off to the nearest following integers since pixel coordinates are integers.
 |-
 
 ## Code
