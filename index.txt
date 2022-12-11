@@ -30,3 +30,6 @@ mathematics-physics-for-computer-graphics/quaternion/
 3d-basic-rendering/volume-rendering-for-developers/*
 
 @Accelerating 3D Rendering:Coming soon.
+
+@Geometry:Methods to define shapes in computer graphics.
+geometry/bezier-curve-rendering-utah-teapot/*

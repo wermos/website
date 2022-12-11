@@ -1,0 +1,6 @@
+@Bézier Curves and Surfaces: the Utah Teapot
+bezier-curve.md:Bézier Curve
+bezier-surface.md:Bézier Surfaces
+fast-forward-differencing.md:Fast Forward Differencing
+bezier-patch-normal.md:Calculating Normals of Bézier Surfaces
+curves-as-geometry.md:Rendering Curves as Geometry: Hair Rendering
