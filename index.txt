@@ -5,7 +5,7 @@ mathematics-physics-for-computer-graphics/interpolation/*
 mathematics-physics-for-computer-graphics/lookat-function/*
 mathematics-physics-for-computer-graphics/mathematics-of-shading/*
 mathematics-physics-for-computer-graphics/monte-carlo-methods-mathematical-foundations/*
-mathematics-physics-for-computer-graphics/monte-carlo-methods-in-practice/
+mathematics-physics-for-computer-graphics/monte-carlo-methods-in-practice/*
 mathematics-physics-for-computer-graphics/quaternion/
 
 @3D Rendering for Beginners:Best read in chronological order (top to bottom).
