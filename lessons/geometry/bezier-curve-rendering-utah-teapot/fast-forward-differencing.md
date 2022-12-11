@@ -309,7 +309,7 @@ It is important to keep in mind that as we iterate through the loop, x increases
 
 $$\color{\red}{f'(x + h) = f'(x) } + \color{\green}{f''(x)h + {f''(x) h^2\over 2}}$$
 
-What you need to see in this formula, is that f'(x + h), only relies on f'(x) (text in red). Of course we have f'' and f''' in the formula (text in green) which are both multiplied with h but let's ignore them for the time being. If we find an initial value for f' at x = 0, computing the next point in the loop f'(x=0 + h) can be done from adding f'(0) plus some other terms. And the next point in the loop can be computed as f'(x=h + h) = f'(x=h) plus some other terms, etc. Notice that computing f'(x+h) only requires additions. The final obstacle is the multiplication of f'(x) by h in equation 10\. But note that if:
+What you need to see in this formula, is that f'(x + h), only relies on f'(x) (text in red). Of course we have f'' and f''' in the formula (text in green) which are both multiplied with h but let's ignore them for the time being. If we find an initial value for f' at x = 0, computing the next point in the loop f'(x=0 + h) can be done from adding f'(0) plus some other terms. And the next point in the loop can be computed as f'(x=h + h) = f'(x=h) plus some other terms, etc. Notice that computing f'(x+h) only requires additions. The final obstacle is the multiplication of f'(x) by h in equation 10. But note that if:
 
 $$f'(x + h) = f'(x) + ...$$
 
@@ -477,6 +477,6 @@ void evalBezierPatchFFD(const uint32_t &divs, const Vec3f *controlPoints, Vec3f 
 
 ![Figure 2: a render of Newell's teapot (each of the 32 Bézier patches has a different color).](/images/bezier/teapotpatches.png?)
 
-The source of the updated ray tracer is available in the download section. You will also need the files from lesson 8\. To compile the program, follow the instructions from lesson 8.
+The source of the updated ray tracer is available in the download section. You will also need the files from lesson 8. To compile the program, follow the instructions from lesson 8.
 
 The bad news though is that on modern processors and compilers there is almost no difference (in terms of execution time) between this code and the code we used in chapter 2. In the early days of computer graphics though, anything that could possibly save some CPU cycles was considered worth it hence the success of the fast forward differencing technique. It is not so much the case anymore today, but having a chance to use it here in this chapter to convert Bézier patches to poly grids, is a very good opportunity to learn about it by showing how the technique applies to a practical case, as well as learn about Taylor series which are used in many other common computer graphics algorithms.
