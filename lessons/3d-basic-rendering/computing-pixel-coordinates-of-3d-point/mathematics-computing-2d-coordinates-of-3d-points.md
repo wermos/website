@@ -356,7 +356,7 @@ Finally, 2D points in NDC space are converted to 2D pixel coordinates. To do thi
 
 ## Code
 
-The following function converts a point from 3D world coordinates to 2D pixel coordinates. This implementation is quite naive but we didn't write it for efficiency. We wrote it so that every step is visible and contained within a single function.
+The following function converts a point from 3D world coordinates to 2D pixel coordinates. If the point is not visible in the canvas, the function returns `false`. This implementation is quite naive but we didn't write it for efficiency. We wrote it so that every step is visible and contained within a single function.
 
 ```
 bool computePixelCoordinates(
@@ -370,7 +370,7 @@ bool computePixelCoordinates(
 {
     // First transform the 3D point from world space to camera space. 
     // It is of course inefficient to compute the inverse of the cameraToWorld
-    // matrix in this function. It should be done outside the function, only once
+    // matrix in this function. It should be done only once outside the function
     // and the worldToCamera should be passed to the function instead. 
     // We only compute the inverse of this matrix in this function ...
     Vec3f pCamera;
@@ -421,29 +421,37 @@ int main(...)
 }
 ```
 
-We will use a similar function in our example program (look at the source code chapter). To demonstrate the technique, we created a simple object in Maya (a tree with a star sitting on top) and rendered an image of that tree from a given camera in Maya (see the image below). To simplify the exercise we triangulated the geometry. We then stored a description of that geometry and the Maya camera 4x4 transform matrix (the camera-to-world matrix) in our program. To create an image of that object, we need to loop over each triangle making up the geometry, extract from the vertex list the vertices making up the current triangle, convert these vertices' world coordinates to 2D pixel coordinates, and finally draw lines connecting the resulting 2D points to draw an image of that triangle as viewed from the camera (we trace a line from the first point to the second point, from the second point to the third, and then from the third point back to the first point). We will store the resulting lines in an SVG file. The SVG format is designed to create images using simple geometric shapes such as lines, rectangles, circles, etc. which are described in XML. Here is how we define a line in SVG for instance:
+We will use a similar function in our example program (look at the source code chapter). To demonstrate the technique, we created a simple object in Maya (a tree with a star sitting on top) and rendered an image of that tree from a given camera in Maya (see the image below). To simplify the exercise we triangulated the geometry. We then stored a description of that geometry and the Maya camera 4x4 transform matrix (the camera-to-world matrix) in our program.
+
+To create an image of that object, we need to:
+1. Loop over each triangle that make up the geometry
+2. Extract from the vertex list the vertices making up the current triangle
+3. Convert these vertices' world coordinates to 2D pixel coordinates
+4. Draw lines connecting the resulting 2D points to draw an image of that triangle as viewed from the camera (we trace a line from the first point to the second point, from the second point to the third, and then from the third point back to the first point).
+
+We then store the resulting lines in an SVG file. The SVG format is designed to create images using simple geometric shapes such as lines, rectangles, circles, etc. which are described in XML. Here is how we define a line in SVG for instance:
 
 ```
 <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
 ```
 
-SVG files themselves can be read and displayed as images by most Internet browsers. Storing the result of our programs in SVG is very convenient. Rather than rendering these shapes ourselves, we can simply store their description in an SVG file and have other applications render the final image for us (we don't need to care for anything that relates to rendering these shapes and displaying the image to the screen which is far from being obvious from a programming point of view).
+SVG files themselves can be read and displayed as images by most Internet browsers. Storing the result of our programs in SVG is very convenient. Rather than rendering these shapes ourselves, we can simply store their description in an SVG file and have other applications render the final image for us (we don't need to care for anything that relates to rendering these shapes and displaying the image to the screen, which is not obvious from a programming point of view).
 
-The complete source code of this program can be found in the source code chapter. Finally here is the result of our program (left) compared to a render of the same geometry from the same camera in Maya (right). As expected the visual results are the same (you can read the SVG file produced by the program in any Internet browser).
+The complete source code of this program can be found in the source code chapter. Finally here is the result of our program (left) compared to a render of the same geometry from the same camera in Maya (right). As expected, the visual results are the same (you can read the SVG file produced by the program in any Internet browser).
 
 ![](/images/perspective-matrix/projexample.png?)
 
-If you wish to reproduce this result in Maya, you will need to import the geometry (which we provide in the next chapter as an obj file, create a camera, set its angle of view to 90 degrees (we will explain why in the next lesson), and make the film gate square (by setting up the vertical and horizontal film gate parameters to 1). Set the render resolution to 512x512 and render from Maya. You then need to export the camera's transformation matrix using for example the following Mel command:
+If you wish to reproduce this result in Maya, you will need to import the geometry (which we provide in the next chapter as an obj file), create a camera, set its angle of view to 90 degrees (we will explain why in the next lesson), and make the film gate square (by setting up the vertical and horizontal film gate parameters to 1). Set the render resolution to 512x512 and render from Maya. You then need to export the camera's transformation matrix using for example the following Mel command:
 
 ```
 getAttr camera1.worldMatrix;
 ```
 
-Set the camera-to-world matrix in our program with the result of this command (the 16 coefficients of the matrix). Compile the source code, and run the program. The result exported to the SVG file should match Maya's render.
+Set the camera-to-world matrix in our program with the result of this command (the 16 coefficients of the matrix). Compile the source code, and run the program. The result that is exported to the SVG file should match Maya's render.
 
 ## What Else?
 
-This chapter contains a lot of information. Most resources devoted to the process focus their explanation on the perspective process but forget to mention everything that comes before and after the perspective projection itself such as the world-to-camera transformation, or the conversion of the screen coordinates to raster coordinates. Our goal what for you to be able to produce an actual result at the end of this lesson, which we could also match to a render from a professional 3D application such as Maya. We wanted you to have a complete picture of the process from beginning to end. However, dealing with cameras is slightly more complicated than just what we've described in this chapter. For instance, if you used a 3D program before, you are probably familiar with the fact that the camera transform is not the only parameter you can change to adjust what you see in the camera's view. You can also change for example its focal length. How the focal length affects the result of the conversion process is not something we have explained in this lesson. The near and far clipping planes associated with cameras are also affecting the perspective projection process and more notably the perspective and orthographic projection matrix. In this lesson, we assumed that the canvas was located one unit away from the camera coordinate system. However, this is not always the case and can be controlled through the near-clipping plane. How do we compute pixel coordinates then, when the distance between the camera coordinate system's origin and the canvas is different than 1? All these unanswered questions will be addressed in the next lesson, devoted to the topic of 3D viewing.
+This chapter contains a lot of information. Most resources devoted to the process focus their explanation on the perspective process, but forget to mention everything that comes before and after the perspective projection itself (such as the world-to-camera transformation, or the conversion of the screen coordinates to raster coordinates). Our goal was for you to be able to produce an actual result at the end of this lesson, which we could also match to a render from a professional 3D application such as Maya. We wanted you to have a complete picture of the process from beginning to end. However, dealing with cameras is slightly more complicated than just what we've described in this chapter. For instance, if you used a 3D program before, you are probably familiar with the fact that the camera transform is not the only parameter you can change to adjust what you see in the camera's view. You can also change, for example, its focal length. How the focal length affects the result of the conversion process is not something we have explained in this lesson. The near and far clipping planes associated with cameras also affect the perspective projection process and more notably the perspective and orthographic projection matrix. In this lesson, we assumed that the canvas was located one unit away from the camera coordinate system. However, this is not always the case, and this can be controlled through the near-clipping plane. How do we compute pixel coordinates when the distance between the camera coordinate system's origin and the canvas is different than 1? All of these unanswered questions will be addressed in the next lesson, devoted to the topic of 3D viewing.
 
 ## Exercises
 
