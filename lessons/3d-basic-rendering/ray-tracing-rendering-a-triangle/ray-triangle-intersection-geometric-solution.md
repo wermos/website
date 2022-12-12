@@ -22,7 +22,7 @@ Where A, B, C can be seen as the components (or coordinates) of the normal to th
 We know the plane's normal and we know that the three triangle's vertices (V0, V1, V2) lie in the plane. It is therefore possible to compute \(D\). Any of the three vertices can be chosen. Let's choose V0:
 
 ```
-float D = dotProduct(N, v0);
+float D = -dotProduct(N, v0);
 // or if you want to compute the dot product directly
 float D = -(N.x * v0.x + N.y * v0.y + N.z * v0.z);
 ```
