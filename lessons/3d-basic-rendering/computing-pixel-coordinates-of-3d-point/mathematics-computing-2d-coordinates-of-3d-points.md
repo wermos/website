@@ -41,10 +41,10 @@ In Figure 4, the purple coordinates define the position. The coordinates of the 
 
 The upper-left 3x3 matrix inside of our 4x4 matrix contains the coordinates of our arbitrary coordinate system's axes. We have three axes, each with three coordinates, which makes nine coefficients. If the 4x4 matrix stores its coefficients using the row-major order convention (this is the convention used by Scratchapixel), then:
 
-- The first three coefficients of the matrix's first row (c00, c01, c02) correspond to the coordinates of the coordinate system's x-axis.
-- The first three coefficients of the matrix's second row (c10, c11, c12) are the coordinates of the coordinate system's y-axis.
-- The first three coefficients of the matrix's third row (c20, c21, c22) are the coordinates of the coordinate system's z-axis.
-- The first three coefficients of the matrix's fourth row (c30, c31, c32) are the coordinates of the coordinate system's position (translation values).
+- @@\rThe first three coefficients of the matrix's first row (c00, c01, c02) correspond to the coordinates of the coordinate system's x-axis.@@
+- @@\gThe first three coefficients of the matrix's second row (c10, c11, c12) are the coordinates of the coordinate system's y-axis.@@
+- @@\bThe first three coefficients of the matrix's third row (c20, c21, c22) are the coordinates of the coordinate system's z-axis.@@
+- @@\pThe first three coefficients of the matrix's fourth row (c30, c31, c32) are the coordinates of the coordinate system's position (translation values).@@
 
 For example, here is the transformation matrix of the coordinate system of Figure 4:
 
