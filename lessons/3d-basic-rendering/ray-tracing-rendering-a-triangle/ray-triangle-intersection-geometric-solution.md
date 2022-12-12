@@ -29,12 +29,12 @@ float D = -dotProduct(N, v0);
 float D = -(N.x * v0.x + N.y * v0.y + N.z * v0.z);
 ```
 
-We also know that point P is the intersection point of the ray, and the plane lies in the plane. Consequently, we can substitute (x, y, z) in equation 2 for  P in equation 1 and solve for t (equation 3):
+We also know that point P is the intersection point of the ray, and the plane lies in the plane. Consequently, we can substitute @@\b(x, y, z)@@ (equation 2) for  @@\rP@@ or @@\gO + tR@@ that P is equal to (equation 1) and solve for t (equation 3):
 
 $$
 \begin{array}{l}
 \textcolor{red}{P} = \textcolor{green}{O + tR}\\
-Ax + By + Cz + D = 0\\
+A\textcolor{blue}{x} + B\textcolor{blue}{y} + C\textcolor{blue}{z} + D = 0\\
 A * \textcolor{red}{P_x} + B * \textcolor{red}{P_y} + C * \textcolor{red}{P_z} + D = 0\\
 A * \textcolor{green}{(O_x + tR_x)} + B * \textcolor{green}{(O_y + tR_y)} + C * \textcolor{green}{(O_z + tR_z)} + D = 0\\
 A * O_x + B * O_y + C * O_z + A * tR_x + B * tR_y + C * tR_z + D = 0\\
