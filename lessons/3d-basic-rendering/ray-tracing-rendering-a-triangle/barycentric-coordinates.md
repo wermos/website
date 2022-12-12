@@ -161,10 +161,10 @@ bool rayTriangleIntersect(
         return false; // they are parallel so they don't intersect! 
 
     // compute d parameter using equation 2
-    float d = N.dotProduct(v0);
+    float d = -N.dotProduct(v0);
     
     // compute t (equation 3)
-    t = (N.dotProduct(orig) + d) / NdotRayDirection;
+    t = -(N.dotProduct(orig) + d) / NdotRayDirection;
     // check if the triangle is behind the ray
     if (t < 0) return false; // the triangle is behind
  
@@ -267,10 +267,10 @@ bool rayTriangleIntersect(
         return false; // they are parallel so they don't intersect! 
 
     // compute d parameter using equation 2
-    float d = N.dotProduct(v0);
+    float d = -N.dotProduct(v0);
     
     // compute t (equation 3)
-    t = (N.dotProduct(orig) + d) / NdotRayDirection;
+    t = -(N.dotProduct(orig) + d) / NdotRayDirection;
     // check if the triangle is behind the ray
     if (t < 0) return false; // the triangle is behind
  
@@ -341,10 +341,10 @@ bool rayTriangleIntersect(
         return false; // they are parallel so they don't intersect! 
 
     // compute d parameter using equation 2
-    float d = N.dotProduct(v0);
+    float d = -N.dotProduct(v0);
     
     // compute t (equation 3)
-    t = (N.dotProduct(orig) + d) / NdotRayDirection;
+    t = -(N.dotProduct(orig) + d) / NdotRayDirection;
     // check if the triangle is behind the ray
     if (t < 0) return false; // the triangle is behind
  
@@ -410,7 +410,7 @@ int main(int argc, char **argv)
         }
     }
     
-    // Save the result to a PPM image (keep these flags if you compile under Windows)
+    // Save the result to a PPM image (keep these flags if you are on Windows)
     ...
 
     return 0;
