@@ -31,6 +31,7 @@ If you want to help, first thank you). We want to avoid conflicts in the process
 
 - You need a GitHub account. Once logged in into your account, go to [Scratchapixel's website repository]().
 - Fork the repository. This will create a copy of the repository in your own account.
+- **Please be sure you regularly pull changes from the repisotry before making edits**.
 - How you want to edit the content after that point is entirely up to you. You can edit the content directly from GitHub (from your account, using the "forked" repo) or clone the project on your local computer to use the text editor of your choice.
 - If you work with a cloned copy (remotely) you will need to install [Git Credential Manager](http://microsoft.github.io/Git-Credential-Manager-for-Windows/Docs/CredentialManager.html). An alternative solution to using Git Credential Manager is to use SSH keys as explained in these two documents: [Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and [Adding a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account?tool=webui). The most useful commands you might need if you work with a remote copy are likely to be `git add`, `git commit`, and `git push`. Note that at this point, your changes will only be saved into your fork.
 - When you are ready to psuh your edits to the main website, create a pull request (from which we will be to able to merge your changes into the master branch). Your edits will go through an approval process before being merged to the main branch. Ideally, review a lesson completely and when you feel that you are done with your work, then generate a pull request (rather than making making a pull request for each incremental change).
@@ -71,7 +72,7 @@ We are using some of the standard rules but we added a few that are specific to 
   Also, all paths will be checked during the conversion of the MD to HTML pages. Bad paths will hopefully be identified then and fixed at this point of the process.
 - **Heading 2**:  \## Some text (space after \##).
 - **Heading 1**:  \# Some text (space after \#). Generally do not use h1's. They are reserved to lessons' titles. Lesson's content should only contain h2's.
-- **List**: start a paragraph with a - (numbered list not supported now). Don't forget to put a space after the sign -
+- **List**: start a paragraph with a - (**numbered list not supported now**). Don't forget to put a space after the sign -. Add a closing point at the end of each item.
 - **Quote**: \> my quote text
 - **Table**: see below
 - **Inline-code**: \'example of inline code\' (surround the text with a `  - back single quote).
