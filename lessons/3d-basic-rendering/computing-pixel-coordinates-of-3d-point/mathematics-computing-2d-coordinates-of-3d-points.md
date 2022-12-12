@@ -41,10 +41,10 @@ In Figure 4, the purple coordinates define the position. The coordinates of the 
 
 The upper-left 3x3 matrix inside of our 4x4 matrix contains the coordinates of our arbitrary coordinate system's axes. We have three axes, each with three coordinates, which makes nine coefficients. If the 4x4 matrix stores its coefficients using the row-major order convention (this is the convention used by Scratchapixel), then:
 
-- the first three coefficients of the matrix's first row (c00, c01, c02) correspond to the coordinates of the coordinate system's x-axis
-- the first three coefficients of the matrix's second row (c10, c11, c12) are the coordinates of the coordinate system's y-axis
-- the first three coefficients of the matrix's third row (c20, c21, c22) are the coordinates of the coordinate system's z-axis
-- the first three coefficients of the matrix's fourth row (c30, c31, c32) are the coordinates of the coordinate system's position (translation values)
+- The first three coefficients of the matrix's first row (c00, c01, c02) correspond to the coordinates of the coordinate system's x-axis.
+- The first three coefficients of the matrix's second row (c10, c11, c12) are the coordinates of the coordinate system's y-axis.
+- The first three coefficients of the matrix's third row (c20, c21, c22) are the coordinates of the coordinate system's z-axis.
+- The first three coefficients of the matrix's fourth row (c30, c31, c32) are the coordinates of the coordinate system's position (translation values).
 
 For example, here is the transformation matrix of the coordinate system of Figure 4:
 
@@ -194,7 +194,7 @@ Let's recall that what we are trying to achieve, is to compute P', the coordinat
 - C is the distance from the eye to P along the camera coordinate system's y-axis.
 - B' is the distance from the eye to the canvas (for now, we will assume that this distance is 1, which is going to simplify our calculations).
 - C' is the distance from the eye to P' along the camera coordinate system y-axis.
- 
+
 The triangles \(\triangle ABC\) and \(\triangle AB'C'\) are said to be similar (similar triangles have the same shape, but different sizes). Similar triangles have an interesting property: the ratio between their adjacent and opposite sides is the same. In other words:
 
 $${ BC \over AB } = { B'C' \over AB' }.$$
@@ -309,6 +309,7 @@ $$
 In OpenGL, the conversion from NDC space to raster space is called the viewport transform. What we call the canvas in this lesson is generally called the **viewport** in CG. Though the viewport means different things to different people. To some, it designates the "normalized window" of the NDC space. To others, it designates the window of pixels on the screen, in which the final image is displayed.
 
 Done! You have converted a point P defined in world space into a visible point in the image, whose pixel coordinates you have computed using a series of conversion operations:
+
 - World space to camera space.
 - Camera space to screen space.
 - Screen space to NDC space.
