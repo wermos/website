@@ -3,7 +3,7 @@
 When a point or vertex is defined in the scene and is visible to the eye or the camera, the point appears in the image as a dot (or more precisely, as a pixel, if the image is a digital one). We already talked about the perspective projection process, which is used to convert the position of that point in 3D space to a position on the surface of the image. But this position is not expressed in terms of pixel coordinates. So how do we find the final 2D pixel coordinates of the projected point in the image? In this chapter, we will review the entire process by which points are converted from their original world position to their final raster position (their position in the image in terms of pixel coordinates).
 
 <details>
-The technique we will describe in this lesson is specific to the rasterization algorithm (the rendering technique used by GPUs to produce images of 3D scenes). If you are interested to learn how it is done in ray-tracing, check the lesson [Ray-Tracing: Generating Camera Rays](lessons/3d-basic-rendering/ray-tracing-generating-camera-rays).
+The technique we will describe in this lesson is specific to the rasterization algorithm (the rendering technique used by GPUs to produce images of 3D scenes). If you are interested to learn how it is done in ray-tracing, check the lesson [Ray-Tracing: Generating Camera Rays](/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/).
 </details>
 
 ### World Coordinate System and World Space
@@ -12,7 +12,7 @@ When a point is first defined in the scene, we say its coordinates are defined i
 
 ### 4x4 Matrix Visualized as a Cartesian Coordinate System
 
-Objects in 3D can be transformed using any of the three following operators: translation, rotation, and scale. If you remember what we said in the lesson dedicated to [Geometry](lessons/mathematics-physics-for-computer-graphics/geometry), linear transformations (in other words, any combination of these three operators) can be represented by a 4x4 matrix. If you are not sure why and how this works, read the lesson on Geometry again and particularly the following two chapters: How Does Matrix Work [Part 1](lessons/mathematics-physics-for-computer-graphics/geometry/how-does-matrix-work-part-1) and [Part 2](lessons/mathematics-physics-for-computer-graphics/geometry/how-does-matrix-work-part-2). Remember that the first three coefficients along the diagonal encode the scale (the coefficients c00, c11 and c22 in the matrix below), the first three values of the last row encode the translation (the coefficients c30, c31, and c32 &mdash; assuming you use the row-major order convention) and the 3x3 upper-left inner matrix encodes the rotation (the red, green and blue coefficients).
+Objects in 3D can be transformed using any of the three following operators: translation, rotation, and scale. If you remember what we said in the lesson dedicated to [Geometry](lessons/mathematics-physics-for-computer-graphics/geometry), linear transformations (in other words, any combination of these three operators) can be represented by a 4x4 matrix. If you are not sure why and how this works, read the lesson on Geometry again and particularly the following two chapters: How Does Matrix Work [Part 1](/lessons/mathematics-physics-for-computer-graphics/geometry/how-does-matrix-work-part-1/) and [Part 2](/lessons/mathematics-physics-for-computer-graphics/geometry/how-does-matrix-work-part-2/). Remember that the first three coefficients along the diagonal encode the scale (the coefficients c00, c11 and c22 in the matrix below), the first three values of the last row encode the translation (the coefficients c30, c31, and c32 &mdash; assuming you use the row-major order convention) and the 3x3 upper-left inner matrix encodes the rotation (the red, green and blue coefficients).
 
 $$
 \begin{bmatrix}
@@ -188,11 +188,12 @@ This a lot of reading, but what for? We are now going to show that to "project" 
 ![Figure 10: the coordinates of the point P', the projection of P on the canvas, can be computed using simple geometry. The rectangle ABC and AB'C' are said to be similar (side view).](/images/rendering-3d-scene-overview/box-setup4.png?)
 
 Let's recall that what we are trying to achieve, is to compute P', the coordinates of a point P from the 3D scene on the surface of a canvas, which is the 2D surface where the image of the scene will be drawn (the canvas is also called the projection plane, or in CG, the **image plane**). If you trace a line from P to the eye (the origin of the camera coordinate system), P' is the line's point of intersection with the canvas (Figure 10). When the point P coordinates are defined with respect to the camera coordinate system, computing the position of P' is trivial. If you look at Figure 10, which shows a side view of our setup, you can see that by construction, we can trace two triangles \(\triangle ABC\) and \(\triangle AB'C'\), where:
-* A is the eye
-* B is the distance from the eye to point P along the camera coordinate system's z-axis
-* C is the distance from the eye to P along the camera coordinate system's y-axis
-* B' is the distance from the eye to the canvas (for now, we will assume that this distance is 1, which is going to simplify our calculations)
-* C' is the distance from the eye to P' along the camera coordinate system y-axis
+
+- A is the eye.
+- B is the distance from the eye to point P along the camera coordinate system's z-axis.
+- C is the distance from the eye to P along the camera coordinate system's y-axis.
+- B' is the distance from the eye to the canvas (for now, we will assume that this distance is 1, which is going to simplify our calculations).
+- C' is the distance from the eye to P' along the camera coordinate system y-axis.
  
 The triangles \(\triangle ABC\) and \(\triangle AB'C'\) are said to be similar (similar triangles have the same shape, but different sizes). Similar triangles have an interesting property: the ratio between their adjacent and opposite sides is the same. In other words:
 
@@ -308,10 +309,10 @@ $$
 In OpenGL, the conversion from NDC space to raster space is called the viewport transform. What we call the canvas in this lesson is generally called the **viewport** in CG. Though the viewport means different things to different people. To some, it designates the "normalized window" of the NDC space. To others, it designates the window of pixels on the screen, in which the final image is displayed.
 
 Done! You have converted a point P defined in world space into a visible point in the image, whose pixel coordinates you have computed using a series of conversion operations:
-1. World space to camera space
-2. Camera space to screen space
-3. Screen space to NDC space
-4. NDC space to raster space
+- World space to camera space.
+- Camera space to screen space.
+- Screen space to NDC space.
+- NDC space to raster space.
 
 ## Summary
 
@@ -424,10 +425,11 @@ int main(...)
 We will use a similar function in our example program (look at the source code chapter). To demonstrate the technique, we created a simple object in Maya (a tree with a star sitting on top) and rendered an image of that tree from a given camera in Maya (see the image below). To simplify the exercise we triangulated the geometry. We then stored a description of that geometry and the Maya camera 4x4 transform matrix (the camera-to-world matrix) in our program.
 
 To create an image of that object, we need to:
-1. Loop over each triangle that make up the geometry
-2. Extract from the vertex list the vertices making up the current triangle
-3. Convert these vertices' world coordinates to 2D pixel coordinates
-4. Draw lines connecting the resulting 2D points to draw an image of that triangle as viewed from the camera (we trace a line from the first point to the second point, from the second point to the third, and then from the third point back to the first point).
+
+- Loop over each triangle that make up the geometry.
+- Extract from the vertex list the vertices making up the current triangle.
+- Convert these vertices' world coordinates to 2D pixel coordinates.
+- Draw lines connecting the resulting 2D points to draw an image of that triangle as viewed from the camera (we trace a line from the first point to the second point, from the second point to the third, and then from the third point back to the first point).
 
 We then store the resulting lines in an SVG file. The SVG format is designed to create images using simple geometric shapes such as lines, rectangles, circles, etc. which are described in XML. Here is how we define a line in SVG for instance:
 

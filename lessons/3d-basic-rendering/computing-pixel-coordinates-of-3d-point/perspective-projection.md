@@ -1,6 +1,6 @@
 ## How Do I Find the 2D Pixel Coordinates of a 3D Point?
 
-"**How do I find the 2D pixel coordinates of a 3D point?**" is one of the most common questions in 3D rendering on the Web. It is an important question because it is the fundamental method to create an image of a 3D scene. In the context of this lesson, we will use the term **rasterization** to describe the process of finding 2D pixel coordinates of 3D points. Rasterization in its broader sense refers to the process of converting 3D shapes into a raster image. A raster image, as explained in the [previous lesson](http://localhost/lessons/3d-basic-rendering/rendering-3d-scene-overview), is the technical term given to a digital image; it designates a two-dimensional array (or rectangular grid if you prefer) of pixels.
+"**How do I find the 2D pixel coordinates of a 3D point?**" is one of the most common questions in 3D rendering on the Web. It is an important question because it is the fundamental method to create an image of a 3D scene. In the context of this lesson, we will use the term **rasterization** to describe the process of finding 2D pixel coordinates of 3D points. Rasterization in its broader sense refers to the process of converting 3D shapes into a raster image. A raster image, as explained in the [previous lesson](/lessons/3d-basic-rendering/rendering-3d-scene-overview), is the technical term given to a digital image; it designates a two-dimensional array (or rectangular grid if you prefer) of pixels.
 
 Don't be mistaken: different rendering techniques exist for producing images of 3D scenes. Rasterization is only one of them. Ray-tracing is another. Note though that all these techniques rely on the same concept to produce that image: the concept of **perspective projection**. Therefore, for a given camera and a given 3D scene, all rendering techniques produce the same visual result; they just use a different approach to produce that result.
 
@@ -9,9 +9,9 @@ Also note that computing the 2D pixel coordinates of 3D points is only one of th
 ![](/images/perspective-matrix/xtree.png?)
 
 To understand rasterization, you first need to be familiar with a series of very important techniques that we will also introduce in this chapter, such as:
-* The concept of local vs. global coordinate system
-* Learning how to interpret 4x4 matrices as coordinate systems
-* Converting points from one coordinate system to another
+- The concept of local vs. global coordinate system.
+- Learning how to interpret 4x4 matrices as coordinate systems.
+- Converting points from one coordinate system to another.
 
 Read this lesson carefully as it will provide you with the fundamental tools that almost all rendering techniques are built upon.
 
@@ -36,7 +36,7 @@ It is important to understand that perspective projection is just an arbitrary w
 In the aforementioned lesson, we also explained how the world coordinates of a point located in front of the camera (and enclosed within the viewing frustum of the camera, thus visible to the camera), can be computed using a simple geometric construction based on one of the properties of similar triangles (Figure 3). We will review this technique one more time in this lesson. It turns out that the equations to compute the coordinates of projected points can be conveniently expressed in the form of a 4x4 matrix. The computation is not very complex but requires nonetheless a series of operations on the original point's coordinates: this is what you will learn in this lesson. However, by expressing the computation as a matrix, you can reduce these series of operations to a single point-matrix multiplication. Being able to represent this critical operation in such a compact and easy-to-use form is the main advantage of this approach. It turns out that the perspective projection process, and its associated equations, can be expressed in the form of a 4x4 matrix, as we will demonstrate in the lesson devoted to the [the perspective and orthographic projection matrices](lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix). This is what we call the **perspective projection matrix**. Multiplying any point, whose coordinates are expressed with respect to the **camera coordinate system** (see below), with this perspective projection matrix will give you the position (or coordinates) of that point on the canvas.
 
 <details>
-In CG, transformations are almost always linear. But it is important to know that the perspective projection, which belongs to the more generic family of **projective transformation**, is a non-linear transformation.
+In CG, transformations are almost always linear. But it is important to know that the perspective projection, which belongs to the more generic family of **projective transformation**, is a non-linear transformation. If you're looking for a visual explanation of which transformations are linear and which transformations are not, this Youtube video does a good job. [Linear Transformation and matrices](https://www.youtube.com/watch?v=kYB8IZa5AuE)
 </details>
 
 Again, in this lesson, we will learn about computing the 2D pixel coordinates of a 3D point without using the perspective projection matrix. To do so, we will need to learn how we can "project" a 3D point onto the surface of a 2D drawable surface (which we will call in this lesson, a canvas) using some simple geometry rules. Once we understand the mathematics of this process (and all the other steps involved in computing these 2D coordinates), we will then be ready to study the construction and use of the perspective projection matrix: a matrix used to simplify the projection step (and the projection step only). This will be the topic of the next lesson.
@@ -47,7 +47,7 @@ Again, in this lesson, we will learn about computing the 2D pixel coordinates of
 
 The mathematics behind perspective projection started to be understood and mastered by artists towards the end of the fourteenth century and the beginning of the fifteenth century. Artists greatly contributed to educating others about the mathematical basis of perspective drawing through books that they wrote and illustrated themselves. A notable example is "The Painter's Manual" published by Albrecht Dürer in 1538 (the illustration above comes from this book). Perspective drawing is largely characterized by two concepts:
 
-* Objects appear smaller as their distances to the viewer increase
-* **Foreshortening**: the impression, or optical illusion, that an object or a distance is smaller than it is, due to being angled towards the viewer.
+- Objects appear smaller as their distances to the viewer increase.
+- **Foreshortening**: the impression, or optical illusion, that an object or a distance is smaller than it is, due to being angled towards the viewer.
 
 Another rule in foreshortening states that vertical lines are parallel, while nonvertical lines converge to a perspective point, thereby appearing shorter than they are. These effects give a sense of depth, which is useful in evaluating the distance of objects from the viewer. Today, the same mathematical principles are used in computer graphics to create a perspective view of a 3D scene.

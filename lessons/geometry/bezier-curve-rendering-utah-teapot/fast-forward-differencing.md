@@ -8,7 +8,7 @@ Remember from chapter 1 that the Bézier curve can be seen as a sum of polynomia
 
 $$f(x) = a_0 + a_1x + a_2x^2 + a_3x^3 + a_4x^4 + ... = \sum_{n=0}^\infty c_n x^n$$
 
-Where n defines the degree of the function. In the case of cubic Bézier curves, n = 3\. However, let's not try to show how this relates to the Bézier example too much, and let's keep this demonstration as generic as possible. In mathematics, this sum is called a **power series** in one variable, x.
+Where n defines the degree of the function. In the case of cubic Bézier curves, n = 3. However, let's not try to show how this relates to the Bézier example too much, and let's keep this demonstration as generic as possible. In mathematics, this sum is called a **power series** in one variable, x.
 
 The power series expansion for f(x) can be differentiated term by term, and the resulting series is a valid representation of f′( x) (equation 2):
 
@@ -32,9 +32,9 @@ $$c_n = {{f^{(n)}(0)} \over {n!}}$$
 
 These are called the **Taylor coefficients** of f and the resulting power series:
 
-$$\sum_{n=0}^\infty {{f^{(n)}(0)} \over {n!}}x^n$$
+$$\sum_{n=0}^\infty {{f^{(n)}(0)} \over {n!}}x^n,$$
 
-It is called the **Taylor series** of the function f. How can this help us in any way? This Taylor series has a remarkable property for some functions. For these functions, it converges to the original function f(x). That is:
+is called the **Taylor series** of the function f. How can this help us in any way? This Taylor series has a remarkable property for some functions. For these functions, it converges to the original function f(x). That is:
 
 $$f(x) = \sum_{n=0}^\infty {{f^{(n)}(0)} \over {n!}}x^n$$
 
@@ -54,7 +54,7 @@ The value h (usually a small value) represents the difference in x between the t
 
 ![Figure 1: you can think about the derivative as the slope of a tangent line. Using forward difference, we can approximate this derivative. When h decreases, the estimation of this derivative becomes more accurate. In this example, the black line is the actual tangent an f(x), and the blue line is the approximated tangent using forward differencing for two values of h.](/images/bezier/derivative.gif?)
 
-What does it mean exactly? As shown in figure 1, the line we obtain using this method approximates the expected derivative at x. The error of this approximation depends on h: as h decreases (towards a limit which is 0), the approximation of this derivative gets closer to the exact solution (figure 1). But before we say more about the magnitude of the difference between this approximation and the expected solution, let's mention that we can compute the next position f(x + h) on the curve by rearranging the term of the previous equation:
+What does it mean exactly? As shown in figure 1, the line we obtain using this method approximates the expected derivative at x. The error of this approximation depends on h: as h decreases (towards a limit which is 0), the approximation of this derivative gets closer to the expected solution (Figure 1). But before we say more about the magnitude of the difference between this approximation and the expected solution, let's mention that we can compute the next position f(x + h) on the curve by rearranging the term of the previous equation:
 
 $$f(x + h) \approx f(x) + hf'(x)$$
 
@@ -64,7 +64,7 @@ Now let's get back to this approximation problem. Equation 4 can be written as:
 
 $$f'(x) = { { f(x + h) - f(x) } \over h } + \text{ term which goes to 0 as } h \rightarrow 0$$
 
-In other words, the exact solution to the derivative of the function f can be seen as an approximation plus a value which can be seen as the error of this approximation. As h goes to 0, the approximation converges to the expected solution, and the error term vanishes to 0. Therefore, we can establish a direct link between the magnitude of h and the magnitude of this error. In other words, we can write:
+In other words, the expected solution to the derivative of the function f can be seen as an approximation plus a value which can be seen as the error of this approximation. As h goes to 0, the approximation converges to the expected solution, and the error term vanishes to 0. Therefore, we can establish a direct link between the magnitude of h and the magnitude of this error. We can write:
 
 $$O(h) \equiv \text{ terms of the form } h \times \text{ something. }$$
 
@@ -72,7 +72,7 @@ Where \(O(h)\) is the notation representing the approximation's error. So:
 
 $$f'(x) = { { f(x + h) - f(x) } \over h } + O(h)$$
 
-Multiplying this formula by h, we have:
+If we multiply this equation by h, we get:
 
 $$hf'(x) = { f(x + h) - f(x) }+ O(h^2)$$
 
@@ -82,11 +82,11 @@ $$f(x+h) = f(x) + hf'(x) + O(h^2)$$
 
 // explain why the sign of O(h) doesn't change
 
-Which is a Taylor expansion of order 2\. Note than when \(h\) is small (e.g. \(h = 0.1\)), then \(h^2\) is even smaller (\(h^2 = 0.01\)). This expansion can be done with as many terms as we like (equation 5):
+Which is a Taylor expansion of order 2. Note than when \(h\) is small (e.g. \(h = 0.1\)), then \(h^2\) is even smaller (\(h^2 = 0.01\)). This expansion can be done with as many terms as we like (equation 5):
 
 $$f(a + h) = f(a) + f'(a)h + f''(a) { {h^2} \over {2!} } + ... + f^{ (n) }(a){ {h^n} \over {n!}} + O(h^{n+1})$$
 
-Where \(f^(k) \) is the k-th derivative of f. When a = 0, this expansion is also called the **Maclaurin's expansion** (the value n + 1 defines the order of this Taylor series). In other words, the more terms we use, the smaller the error.
+Where \(f^{(k)}\) is the k-th derivative of f. When a = 0, this expansion is also called the **Maclaurin's expansion** (the value n + 1 defines the order of this Taylor series). The more terms we use, the smaller the error.
 
 <details>
 For completeness, let's mention two additional ways of computing this approximation: the backward and centered approximations (we will only use the forward difference approximation in this chapter). Respectively they are:
@@ -101,9 +101,9 @@ $$
 
 Hopefully, by now, you will understand where we are heading and how these techniques can be used to compute positions along the Bézier curve. Equation 5 says that we can approximate the value of a function f at a + h using a Taylor series (we will use this idea to evaluate positions along the Bézier curve for increasing value of the parametric value t), and the error of this approximation depends of the number of terms we use in this series. The error decreases as the number of terms used increases. The error increases as h increases. That is for the theory. Next, we will show that the equation used to compute positions along Bézier curves belongs to a class of functions for which the Taylor series converges to the function f. In other words (we are using a Maclaurin's expansion here, a = 0):
 
-$$f(x) = \sum_{n=0}^\infty {{f^{(n)}(0)} \over {n!}}x^n$$
+$$f(x) = \sum_{n=0}^\infty {{f^{(n)}(0)} \over {n!}}x^n,$$
 
-Holds for the polynomials used in the computation of Bézier curves. Furthermore, we will show that the Taylor series used to compute these polynomials have a finite number of terms (in other words, the term \(O(h^n) = 0\)). It means practically that using the Taylor series to compute positions along the Bézier curve does not return an approximation but the exact solution.
+holds for the polynomials used in the computation of Bézier curves. Furthermore, we will show that the Taylor series used to compute these polynomials have a finite number of terms (the term \(O(h^n) = 0\)). Practically, it means that using the Taylor series to compute positions along the Bézier curve does not return an approximation but the expected solution.
 
 ## Bézier curve as a Taylor series
 
@@ -240,11 +240,19 @@ You may still wonder why we are computing B(x) with equation 8, as it seems a mo
 
 However, the equation in its current form still requires a multiplication by x. We could rewrite equation 8 to hide this multiplication (equation 9):
 
-$$B(x) = B(0) + Bd + { Bdd \over 2 } + { Bddd \over 6 }$$
+$$B(x) = B(0) + Bd + { Bdd \over 2 } + { Bddd \over 6 },$$
 
 where
 
-$$\left\{ \begin{array}{l} Bd = B'(0)x,\\ Bdd = {{B''(0) x^2} },\\ Bdd = {{B'''(0) x^3} } \end{array} \right.$$
+$$
+\left\{
+\begin{array}{l}
+Bd  &=& B'(0)x,\\
+Bdd &=& {{B''(0) x^2} },\\
+Bdd &=& {{B'''(0) x^3} }
+\end{array}
+\right.
+$$
 
 This is a trick, but if we could compute B(x) using additions and divisions only, the code would run faster. How could we make that trick work? First, it is essential to understand that the previous technique (the pseudocode above) computes positions on the curve for any values of x (or \(t\) to stick with the term used in the previous chapter) on the interval [0,1]. Values on the curve are computed using the result of the function and the result of the function's first, second, and third derivatives at x = 0 (remember that we are using a Maclaurin series). Intuitively, you can see this as computing points about f(0) for values of x greater than 0. With equation 8, we don't necessarily have to compute the points on the curve in sequential order. We can pick any random value for x in the interval [0,1], and it would work. As for equation 9, a solution exists, but on the condition that t varies uniformly from 0 to 1 (to phrase things differently, to the contrary of equation 8, we won't be able to use equation 9 to compute points on the curve for nonsequential and non regularly spaced values of x). This constraint is the price to pay to get a solution faster to compute than a straightforward implementation of equation 8. This time we will use the general form of the Taylor series (equation 10):
 
