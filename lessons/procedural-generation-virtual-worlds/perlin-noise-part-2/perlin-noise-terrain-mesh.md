@@ -4,7 +4,7 @@ This technique will be useful to better understand the importance of computing t
 
 After reading this chapter, you will be able to reproduce the image below.
 
-![](/images/upload/noise-part-2/perlin-noise-terrain-mesh1.png?)
+![](/images/noise-part-2/perlin-noise-terrain-mesh1.png?)
 
 The idea behind this technique is very simple and similar to what we call **displacement mapping**. If you look at the grid from the top, you can more easily see that if you overlay the noise image onto the grid you get a perfect match: to each vertex of the grid corresponds a pixel in the noise image. As you know we can define the coordinates of the pixels in some sort of normal device coordinates (the pixel coordinates are then in the range [0,1]). The same can be done with the grid vertices: these are technically called **texture coordinates**. Let's look at the function we will be using to create the grid:
 
@@ -104,7 +104,7 @@ for (uint32_t i = 0; i < imageWidth * imageHeight; ++i)
 
 A fractal image generally contains details of higher frequency than in a single layer of noise. Thus, to see these details in the displacement, it is likely that you will have to increase the density of the mesh itself. Here is a render of the mesh displaced with a fractal image.
 
-![](/images/upload/noise-part-2/perlin-noise-terrain-mesh2.png?)
+![](/images/noise-part-2/perlin-noise-terrain-mesh2.png?)
 
 As suggested in the previous lesson, this technique can be used to generate realistic terrains (hopefully the image above is convincing enough). We can also use the noise function to create and animate water surfaces. In this example, the procedural pattern we used (a fractal) is pretty simple. You can play with the parameters a bit to modify the look of the terrain, but we will also learn in another lesson how to add effects such as erosion to increase the realism of the terrain.
 

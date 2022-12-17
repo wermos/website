@@ -4,7 +4,7 @@ As we said earlier, our version of the noise function doesn't create the most in
 
 ## 1D Noise Examples
 
-![Figure 1: the fractal sum is a sum a noises which frequency and amplitude varies from layer to layer. In this example we have 5 layers. From layer to layer we double the frequency and halve the amplitude.](/images/upload/noise-part-1/1dnoise-fractal.png?)
+![Figure 1: the fractal sum is a sum a noises which frequency and amplitude varies from layer to layer. In this example we have 5 layers. From layer to layer we double the frequency and halve the amplitude.](/images/noise-part-1/1dnoise-fractal.png?)
 
 One of the fist examples we will describe works well in all dimensions. But we will start with the 1D case, and give an example later with 2D noise. For a 3D noise example of this technique have a look at the second lesson. The idea behind it is to sum up the contribution of several noises (each layer is often called an **octave** in the CG literature but avoid this term if possible). We could vary the parameters of these various noise **layers** (or octaves) - for example change their **frequency** and **amplitude** - in a coherent manner. In other words, we can establish a connection between the change in frequency and amplitude from layer to layer.
 
@@ -131,7 +131,7 @@ void createNoiseImage(const char *filename)
 
 Our first example is trivial. To demonstrate the use of our program and test our noise function we first output a simple noise image.
 
-![](/images/upload/noise-part-1/2dnoise-simple.png)
+![](/images/noise-part-1/2dnoise-simple.png)
 
 ```
 float noiseSum = 0; 
@@ -144,13 +144,13 @@ for (unsigned i = 0; i < numLayers; ++i) {
 
 ## Fractal Sum
 
-![Figure 2: example of a fractal sum using 2D noise. The principle is the same as with the 1D example. Layer n + 1 has twice the frequency and half the amplitude of layer n.](/images/upload/noise-part-1/2dnoise-fractal-sum.png?)
+![Figure 2: example of a fractal sum using 2D noise. The principle is the same as with the 1D example. Layer n + 1 has twice the frequency and half the amplitude of layer n.](/images/noise-part-1/2dnoise-fractal-sum.png?)
 
 Our second example is a demonstration of the fractal sum that we have already explained for the 1D case. We accumulate the contribution of five layers of noise. Between each successive layer we multiply the frequency of the point from the previous layer by two and divide the amplitude from the previous layer by two.
 
 Here is the resulting image and the code used to compute this result (the code is already slightly optimised. We could have used the function pow(2, k) to change the frequency and the amplitude of the noise function. But this function is quite slow and we can replace it with a recursive multiplication of the frequency (2) and amplitude (0.5) parameters:
 
-![](/images/upload/noise-part-1/2dnoise-fractal.png)
+![](/images/noise-part-1/2dnoise-fractal.png)
 
 ```
 unsigned numLayers = 5; 
@@ -169,14 +169,14 @@ for (unsigned j = 0; j < imageHeight; ++j) {
 } 
 ```
 
-![Figure 3: fractal noise can be used to generate terrain by texture displacement. It can be used for generating terrain like in this example but also water surfaces or clouds. Check the lessons on displacement and terrain generation.](/images/upload/noise-part-1/2dnoise-displacement.png?)
+![Figure 3: fractal noise can be used to generate terrain by texture displacement. It can be used for generating terrain like in this example but also water surfaces or clouds. Check the lessons on displacement and terrain generation.](/images/noise-part-1/2dnoise-displacement.png?)
 
 
-![Figure 4: many interesting patterns can be created by changing the values for the lacunarity and the gain.](/images/upload/noise-part-1/2dnoise-fractal-examples.png?)
+![Figure 4: many interesting patterns can be created by changing the values for the lacunarity and the gain.](/images/noise-part-1/2dnoise-fractal-examples.png?)
 
 Note that because we sum up several layers of noise, the result could be greater than 1 which will be a problem when we will convert this value to a pixel color. We can clamp the value when it is converted to a pixel color, but a better solution is to normalize the array of noise values by dividing all the values in the array by the maximum computed value. To do so, we store the maximum value as we compute all the entry in the noise map in the `maxNoiseVal` variable and then once all the values are computed we divide them all again by `maxNoiseVal` (line 12).
 
-As mentioned before, the fractal sum can be used to create convincing terrains and many other natural patterns (seascapes, landscapes, etc.). We can easily create a 2D texture and use it to displace a mesh (figure 3). More details can be found in the lessons on texture synthesis, terrain generation and modelling of ocean surfaces.
+As mentioned before, the fractal sum can be used to create convincing terrains and many other natural patterns (seascapes, landscapes, etc.). We can easily create a 2D texture and use it to displace a mesh (Figure 3). More details can be found in the lessons on texture synthesis, terrain generation and modelling of ocean surfaces.
 
 In the code you can experiment by changing the multiplier for the frequency and the amplitude, turning your fractal noise function into a more generic fBm function which we have described earlier on.
 
@@ -206,11 +206,11 @@ for (unsigned i = 0; i < imageWidth * imageHeight; ++i) noiseMap[i] /= maxNoiseV
 
 ## Turbulence
 
-![Figure 5: turbulence works like the fractal sum but instead of using the noise function directly, we use the absolute value of a signed noise. In blue, the original signed noise for the first layer. Wherever the curve is negative we mirror its values about the x-axis. The resulting curves (in red, which overlaps the blue curve when the signed noise is positive) looks bumpy.](/images/upload/noise-part-1/1dnoise-turb.png?)
+![Figure 5: turbulence works like the fractal sum but instead of using the noise function directly, we use the absolute value of a signed noise. In blue, the original signed noise for the first layer. Wherever the curve is negative we mirror its values about the x-axis. The resulting curves (in red, which overlaps the blue curve when the signed noise is positive) looks bumpy.](/images/noise-part-1/1dnoise-turb.png?)
 
 Turbulence is a function built on the same principle as the fractal sum. However instead of using the noise function directly for each layer, we will use the absolute value of the signed noise. We will first convert the result of the noise into a signed noise, and then take the absolute value of this result. As you can see in the following figure, processing the noise function that way, creates a profile that seems to be made of bumps. Wherever the curve is negative (black line) we will mirror the curve in these areas along the x axis. The red line curve is the result. Using this technique with a 2D noise can produce patterns suitable to simulate fire, smoke or clouds.
 
-![](/images/upload/noise-part-1/2dnoise-turbulence.png)
+![](/images/noise-part-1/2dnoise-turbulence.png)
 
 ```
 ValueNoise noise; 
@@ -238,7 +238,7 @@ for (unsigned i = 0; i < imageWidth * imageHeight; ++i) noiseMap[i] /= maxNoiseV
 
 A marble texture can created by modulating the phase of sine pattern with a noise function or a fractal sum. The idea here is not to use the noise function directly to create the pattern but to perturb the function we are using to create the pattern. In that case, we perturb or shift the phase of the sine function with a fractal sum. This idea can be use to introduce randomness in any periodic or regular function. Our example is quite simple and only draw a black and white marble texture. However by introducing some color in the mix, it might be possible to create more realistic patterns. The lesson on texture synthesis contains more sophisticated examples.
 
-![](/images/upload/noise-part-1/2dnoise-marble.png)
+![](/images/noise-part-1/2dnoise-marble.png)
 
 ```
 float frequency = 0.02f; 
@@ -260,11 +260,11 @@ noiseMap[j * imageWidth + i] = (sin((i + noiseValue * 100) * 2 * M_PI / 200.f) +
 
 ## Wood Texture
 
-![Figure 6: the blue curve is the result of the noise multiplied by 4\. The red curve is the result of the wood texture function. We subtract the blue curve from its integer part.](/images/upload/noise-part-1/1dnoise-wood.png?)
+![Figure 6: the blue curve is the result of the noise multiplied by 4\. The red curve is the result of the wood texture function. We subtract the blue curve from its integer part.](/images/noise-part-1/1dnoise-wood.png?)
 
 Like the marble texture, the wood texture relies on a very simple trick. The idea is to multiply the noise function by a certain value greater than 1. Let's call the result of this multiplication g (historically it was called g in reference to wood grain). The texture is obtained by subtracting g from its integer part. Casting a positive float number to an integer will result in an integer necessarily smaller or equal to g. The result of that subtraction is therefore necessarily in the range [0:1) (1 exclusive). Figure 6 illustrates the process. In this example, we have multiplied the noise function by 4\. The blue curve represents the value g, while the red curve represents the result of subtracting g from its integer part. Multiplying the noise function by a value greater than 4 would result in more breakups in the red curve. In 2D, these breakups mark the boundary between regions of lighter and darker color (see the image below).
 
-![](/images/upload/noise-part-1/2dnoise-wood.png)
+![](/images/noise-part-1/2dnoise-wood.png)
 
 ```
 float g = noise.eval(Vec2f(i, j) * frequency) * 10; 

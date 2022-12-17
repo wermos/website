@@ -42,5 +42,5 @@ digital-imaging/simple-image-manipulations/*
 @Procedural Generation of Virtual Worlds:Pocedural simulation of natural phenonema.
 procedural-generation-virtual-worlds/procedural-patterns-noise-part-1/*
 procedural-generation-virtual-worlds/perlin-noise-part-2/*
-procedural-generation-virtual-worlds/simulating-sky/
+procedural-generation-virtual-worlds/simulating-sky/*
 procedural-generation-virtual-worlds/simulating-ocean-waves/

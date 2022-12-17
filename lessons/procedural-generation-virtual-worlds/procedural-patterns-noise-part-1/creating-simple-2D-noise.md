@@ -2,15 +2,15 @@ We have explained most of the techniques used for creating noise in the previous
 
 Remember that all noise functions return a float but that its input can be a float, a 2D point or a 3D point. The name given to the noise function is related to the dimension of its input value. A 2D noise is therefore a noise function that takes a 2D point as input. A 3D noise takes a 3D point and we even mentioned a 4D noise in the first chapter of this lesson where the fourth dimension accounts in fact for time (it will produce a noise pattern based on a 3D point but animated through time).
 
-![Figure 1: for a 2D noise the random values are created at the vertex positions of a regular grid.](/images/upload/noise-part-1/2dnoise-grid4x4.png?)
+![Figure 1: for a 2D noise the random values are created at the vertex positions of a regular grid.](/images/noise-part-1/2dnoise-grid4x4.png?)
 
 If you read the lesson on Interpolation (we suggest you do it now if you have not) you may already have an idea of how things work for 2D noise. For the 2D case we will distribute random values at the vertex position of a regular 2D grids (figure 1). The 2D version of the noise function will take a 2D point as input. Let's call this point P. Similarly to the 1D version we will need to find the position of that point on the grid. Like for the 1D case, our 2D grid has a predefined resolution (the grid is square so the resolution is the same along the x and y axis). Let's say 4 (which is a power of two) for the sake of this explanation. We will use the same modulo trick to remap the position of P on the grid if the point is outside the grid boundaries (if P's coordinates are lower than 0 or greater than 4). We will perform the modulo operation on P's x and y coordinates. That will give us a new coordinates for the point on the grid (let's call this new point Pnoise).
 
-![Figure 2: if the point is outside the grid boundary we need to compute its position in the grid using the modulo trick on the point x and y coordinates.](/images/upload/noise-part-1/2dnoise-grid8x8.png?)
+![Figure 2: if the point is outside the grid boundary we need to compute its position in the grid using the modulo trick on the point x and y coordinates.](/images/noise-part-1/2dnoise-grid8x8.png?)
 
 As you can see on figure 2 and 3, the point is surrounded by the four vertices of a cell. We will use the same technique described in the lesson on interpolation to find a value for that point by linearly interpolating the values from the cell corners. To do this, we will first compute tx and ty which are the counterpart of t in our 1D noise.
 
-![Figure 3: bilinear interpolation.](/images/upload/noise-part-1/2dnoise-interpo.png?)
+![Figure 3: bilinear interpolation.](/images/noise-part-1/2dnoise-interpo.png?)
 
 We can now interpolate the values from the two corners on the left with the values from the two corners on the right using tx. That would give us two values nx0 and nx1 which corresponds to the linear interpolation along the x axis of c01/c10 (nx0) and c01/c11 (nx1). We have now two interpolated values on the lower and upper edge of the cell vertically aligned on Pnoise's x coordinate that we will in turn linearly interpolate using ty. The result of this interpolation along the y axis, is our final noise value for P.
 
@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 
 Figure 4 shows the result of this program.
 
-![Figure 4: on the left, the result of our noise function. On the right, the result of the Ken Perlin version of the noise function. His version looks much more convincing that ours, but in this lesson we are just learning about the concepts upon which it is built and its properties. To learn about Perlin's noise, check the lesson Noise part 2.](/images/upload/noise-part-1/2dnoise-result.png?)
+![Figure 4: on the left, the result of our noise function. On the right, the result of the Ken Perlin version of the noise function. His version looks much more convincing that ours, but in this lesson we are just learning about the concepts upon which it is built and its properties. To learn about Perlin's noise, check the lesson Noise part 2.](/images/noise-part-1/2dnoise-result.png?)
 
 Note that the result is probably not as good as we had hoped for. The resulting noise is quite blocky. Noise from professional applications produces much smoother results. Remember that this lesson's goal is to teach you the basics concepts the noise function is built upon. To improve the results we will need to use more elaborate techniques but it will be hard to study them unless you can build a simple function first. Don't worry too much about the result of the noise function for now, and just try to grasp how it works, learn and understand its properties. You can still have fun playing around with this code and create some interesting effects/images as we will see in the next chapter. You will learn about creating a better looking noise in the next lesson (part 2).
 
