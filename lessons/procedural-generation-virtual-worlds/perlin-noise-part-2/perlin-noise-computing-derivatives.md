@@ -1,25 +1,25 @@
-There is very few documents on the Web and few books that explain the Perlin noise method in an intuitive way; but finding information on how to compute Perlin noise derivatives (especially in an analytical way) is even harder. Though, for those of you who don't know what these derivatives are and why they are useful, let's first go through a quick introduction on derivatives.
+Very few documents on the Web and books explain the Perlin noise method intuitively; finding information on how to compute Perlin noise derivatives (especially in an analytical way) is even more challenging. Though, for those who don't know what these derivatives are and why they are helpful, let's first briefly introduce them.
 
 ## A Quick Introduction to (Partial) Derivatives
 
 ![Figure 1: computing the noise function variation along the horizontal and vertical axis using a discrete approach.](/images/noise-part-2/noise-derivative1.png?)
 
-Derivatives of any function (whether it is a one-, two- or three-dimensional function) are very useful. But before we give an example, let's first review what they are. If you create an image of a 2D noise and apply some sort of regular grid on top of that image, then we may want to know by how much the noise function varies along the x and y direction at each point of the grid (figure 1). Maybe this idea sounds familiar already? Remember that in the previous chapter, we used the result of a 2D noise function to displace a mesh. But let's get back to what we are trying to achieve here: how do know the **rate of change** of our 2D noise function along the x- or y-axis? A very simple solution to this problem consists of taking the value of the noise at the point where you want to compute this variation (let's call this point \(Gn_x\)), the value of the noise at the point a step further to the right from \(Gn_x\) (let's call this second point \(Gn_{x+1}\)), and then subtract the second value from the first. Example: if at the grid position \(Gn_{11}\) the noise is equal to 0.1 and at that the grid position \(Gn_{12}\) the noise value is equal to 0.7, then we can assume that the noise has varied from \(Gn_{11}\) to \(Gn_{12}\) (along the x-axis) by 0.6 (figure 1). In equation form, we would write:
+Derivatives of any function (whether a one-, two- or three-dimensional function) are beneficial. But before we give an example, let's first review what they are. If you create an image of a 2D noise and apply some regular grid on top of that image, then we may want to know how much the noise function varies along the x and y direction at each grid point (figure 1). Does this idea sound familiar already? Remember that in the previous chapter, we used the result of a 2D noise function to displace a mesh. But let's get back to what we are trying to achieve here: how do we know the **rate of change** of our 2D noise function along the x- or y-axis? A straightforward solution to this problem consists of taking the value of the noise at the point where you want to compute this variation (let's call this point \(Gn_x\)), the value of the noise at the point a step further to the right from \(Gn_x\) (let's call this second point \(Gn_{x+1}\)), and then subtract the second value from the first. Example: if at the grid position \(Gn_{11}\) the noise is equal to 0.1 and at that the grid position \(Gn_{12}\) the noise value is equal to 0.7, then we can assume that the noise has varied from \(Gn_{11}\) to \(Gn_{12}\) (along the x-axis) by 0.6 (figure 1). In equation form, we would write:
 
 $$\Delta_x Gn_{11} = Gn_{12} - Gn_{11}.$$
 
 <details>
-Of course to compute the rate of change along the y-axis, we would be doing the same thing but move a step downward. Our equation would look like \(\Delta_y Gn_{11} = Gn_{21} - Gn_{11}\).
+To compute the rate of change along the y-axis, we would do the same thing but move a step downward. Our equation would look like \(\Delta_y Gn_{11} = Gn_{21} - Gn_{11}\).
 </details>
 
-Technically it is best to normalize this difference so that we get consistent results regardless of the distance that separates two points on the grids (if the results are normalised, measurements made with different grid spacing can then be compared to each other). To normalize this result, we just need to divide the difference by the distance between \(G_{11}\) and \(G_{12}\). So if the distance between two points on the grid is 2 for example, then we would need to write:
+Technically it is best to normalize this difference so that we get consistent results regardless of the distance that separates two points on the grids (if the results are normalized, measurements made with different grid spacing can then be compared to each other). To normalize this result, we need to divide the difference by the distance between \(G_{11}\) and \(G_{12}\). So if the distance between two points on the grid is 2, for example, then we would need to write:
 
 $$\Delta_x Gn_{11} = {\dfrac{Gn_{12} - Gn_{11}}{2}}.$$
 
-In mathematics this technique is called a **forward difference**. Forward because we take the next computed point and subtract the value at the current point from the value at the next point.
+In mathematics, this technique is called a **forward difference**. Forward because we take the next computed point and subtract the value at the current point from the value at the next point.
 
 <details>
-Backward differencing is also possible: you use the previous point instead of the next point. You can also use a [central difference](https://en.wikipedia.org/wiki/Finite_difference).
+Backward differencing is possible: you use the previous point instead of the next one. You can also use a [central difference](https://en.wikipedia.org/wiki/Finite_difference).
 </details>
 
 Mathematically we can formalize this concept with the following equation:
@@ -32,63 +32,63 @@ The notation \(f'(x)\) means that this is the derivative of the function \(f(x)\
 
 ![Figure 2: the smaller the spacing, the more accurate the computation of the rate of change.](/images/noise-part-2/noise-derivative2.png?)
 
-This means that we can compute the derivative of the function \(f(x)\) using the forward difference technique that we just introduced but that the value of this derivative will become more and more accurate as the distance between the two points becomes smaller (in theory \(h\) tends toward 0). When the spacing is large you get some sort of very crude value for what the derivative is at a given point \(x\) but as the spacing becomes small this approximation improves. In the case of our noise image, the spacing of the grid is pretty large, so in fact, you would get a much better approximation of the variation of the noise function at each point on the grid, if the grid spacing was smaller (figure 2).
+This means that we can compute the derivative of the function \(f(x)\) using the forward difference technique that we just introduced but that the value of this derivative will become more and more accurate as the distance between the two points becomes smaller (in theory \(h\) tends toward 0). When the spacing is large, you get some very crude value for the derivative at a given point \(x\), but this approximation improves as the spacing becomes small. In the case of our noise image, the grid spacing is pretty large, so you would get a much better approximation of the variation of the noise function at each point on the grid if the grid spacing was smaller (figure 2).
 
 ![Figure 3: computing the tangent at P using central difference works better if we take smaller values for \(h\).](/images/noise-part-2/noise-differential1.png?)
 
-This concept is more easily understood with a 1D example. Figure 3 shows the profile of one-dimensional function. Let's assume that we now want to know by how much this function varies within the proximity of P. Using the principle of forward differencing, we can take a point further down along the x-axis such as for example \(x_1\), compute the value of the function at that point and then subtract \(f(x_1)\) to \(f(x)\). Note that that when we trace a line from \(f(x)\) to\(f(x_1)\) that line is tangent to the function at \(x\). That's because in fact, the derivative of a one-dimensional function gives **the slope of the line tangent to the function where the function's derivative is being computed**. So now that we know how to geometrically interpret the derivative of a function, you can easily see that if we take a point further away than \(x_1\) such as for example \(x_2\), then the line between \(x\) and \(x_2\) is not "as tangent" to \(x\) than is the line \(x\)-\(x_1\). Conclusion, if you use forward difference to compute the derivative of a function, then the smaller the distance between \(x\) and \(x+h\) the better.
+This concept is more easily understood with a 1D example. Figure 3 shows the profile of the one-dimensional function. Let's assume that we now want to know by how much this function varies within the proximity of P. Using the principle of forward differencing, we can take a point further down along the x-axis such as \(x_1\), compute the value of the function at that point and then subtract \(f(x_1)\) to \(f(x)\). Note that when we trace a line from \(f(x)\) to\(f(x_1)\), that line is tangent to the function at \(x\). That's because the derivative of a one-dimensional function gives **the slope of the line tangent to the function where the function's derivative is being computed**. So now that we know how to interpret the derivative of a function geometrically, you can easily see that if we take a point further away than \(x_1\), such as, for example, \(x_2\), then the line between \(x\) and \(x_2\) is not "as tangent" to \(x\) than is the line \(x\)-\(x_1\). In conclusion, if you use the forward difference to compute the derivative of a function, then the smaller the distance between \(x\) and \(x+h\), the better.
 
 What have we learned so far?
 
 - We learned that the derivative \(f'(x)\) of a one-dimensional function \(f(x)\) can be interpreted as the slope of the line tangent to the function \(f(x)\) at \(x\)
 
   <details>
-  Beside the slope, the derivative \(f'(x)\) can also be considered as the instantaneous rate of change of the function \(f(x)\) at \(x\).
+  Besides the slope, the derivative \(f'(x)\) can also be considered as the instantaneous rate of change of the function \(f(x)\) at \(x\).
   </details>
 
-- We also learned that we could use a technique called forward difference (the general method is called finite difference) to compute a "approximation" of that slope, but also that this approximation gets better as \(h\) in the forward difference equation gets smaller.
+- We also learned that we could use a technique called forward difference (the general method is called finite difference) to compute an "approximation" of that slope, but also that this approximation gets better as \(h\) in the forward difference equation gets smaller.
 
 ![Figure 4: visual representation of the function derivative or slope.](/images/noise-part-2/noise-differential2.png?)
 
-There is something really important to understand in order to make sense of how we will be using derivatives (actually partial derivatives) later on this chapter. So far, we explained that the derivative of a function can be interpreted as the slope of the function \(f(x)\) at any value of \(x\). The way we trace the tangent at \(x\) (where we computed the derivative of the function \(f(x)\)) is by simply drawing the line \(y = mx\) at the point on the function where we computed the derivative of the function. The value \(m\) here is of course the slope of the function derivative we computed. Why is this important? It's important because note that when \(x=1\) then \(y=m\). This means that using this observation, we can say that the 2D vector tangent to the curve at the point where we evaluated the derivative is equal to `Vec2f(1, m)`. Do you agree? Of course you then need to normalize this vector, but nonetheless note how this vector is tangent to the point where we evaluated the function's derivative (and that's what we want you to remember). It is important you understand this idea (which is illustrated in Figure 4).
+There is something significant to understand to make sense of how we will use derivatives (actually partial derivatives) later in this chapter. So far, we have explained that the derivative of a function can be interpreted as the slope of the function \(f(x)\) at any value of \(x\). The way we trace the tangent at \(x\) (where we computed the derivative of the function \(f(x)\)) is by simply drawing the line \(y = mx\) at the point on the function where we computed the derivative of the function. The value \(m\) here is, of course, the slope of the function derivative we calculated. Why is this important? It's essential because note that when \(x=1\), then \(y=m\). Using this observation, we can say that the 2D vector tangent to the curve at the point where we evaluated the derivative is equal to `Vec2f(1, m)`. Do you agree? Of course, you then need to normalize this vector but note how this vector is tangent to the point where we evaluated the function's derivative (and that's what we want you to remember). You must understand this idea (which is illustrated in Figure 4).
 
 ![Figure 5: computing the normal by taking the cross product of the tangent and bi-tangent.](/images/noise-part-2/noise-normal-const.png?)
 
-You can see the 3D Perlin noise function as two 2D functions perpendicular to each other at the point where the derivative is computed. So you will have a 1D function to compute the derivative of the 2D function in the xy plane if you wish, and another 1D function to compute the derivative of 2D noise function in the yz plane as showed in Figure 5. Now if we apply the technique we just learned to compute the tangent at each one of these functions, note that the two obtained tangents are perpendicular to each other. But more interestingly by now taking the cross product of these two vectors you get a vector which is in fact perpendicular to the plane tangent to the point where the 2D noise function derivative was originally computed (as shown again in figure 5). This vector is the **normal of our function at P**. Hopefully by now you start to get it. These derivatives are going to be useful to compute the normals of our mesh displaced by a 3D or 2D noise function.
+You can see the 3D Perlin noise function as two 2D functions perpendicular to each other at the point where the derivative is computed. So you will have a 1D function to compute the derivative of the 2D function in the xy plane if you wish and another 1D function to calculate the derivative of the 2D noise function in the yz plane, as shown in Figure 5. Now, if we apply the technique, we just learned to compute the tangent at each of these functions, noting that the two obtained tangents are perpendicular to each other. But more interestingly, by now taking the cross product of these two vectors, you get a vector that is perpendicular to the plane tangent to the point where the 2D noise function derivative was computed initially (as shown again in figure 5). This vector is **normal of our function at P**. Hopefully, by now, you will get it. These derivatives will help compute the normals of our mesh displaced by a 3D or 2D noise function.
 
 !!!
-This is an important result, because this is how we are going to compute the normal of a mesh displaced by a 3D noise function. We will evaluate the derivative of the function along the x-axis at a given point (say P), then compute the vector tangent to P along the x-axis (let's call this vector \(T_x\)). Then we will compute the derivative of the noise function along the z-axis at P, from there compute the tangent to P along the z-axis (let's call this vector \(T_z\)). Finally we will use the two vectors in a cross product to compute the normal at P: $N_P = T_z \times T_x.$
+This is a significant result because this is how we will compute the normal of a mesh displaced by a 3D noise function. We will evaluate the derivative of the function along the x-axis at a given point (say P), then compute the vector tangent to P along the x-axis (let's call this vector \(T_x\)). Then we will compute the derivative of the noise function along the z-axis at P, and from there, compute the tangent to P along the z-axis (let's call this vector \(T_z\)). Finally, we will use the two vectors in a cross-product to compute the normal at P: $N_P = T_z \times T_x.$
 !!!
 
 This is simple and elegant. Now one remark and one question.
 
-Remark: note that we don't really compute the derivative of the noise function here. We sort of cheat by computing a derivative of the function along the x-axis and then another derivative along the z-axis. What's interesting when we do that is that only one of the quantities varies. For example when compute the derivative of the 3D noise function along the x-axis then of course the value we get doesn't change because of a variation of the noise along the z-axis (since we evaluate the noise function in the plane xy - aka there's no variation in z). In mathematics when you have a function with several variables but that you compute its derivative with respect to one of its variables only, with the others held constant, then we say that we compute the function's **partial derivatives**. Let's take an example, if you have the function:
+Remark: note that we don't compute the derivative of the noise function here. We cheat by computing a derivative of the function along the x-axis and then another derivative along the z-axis. What's interesting when we do that is that only one of the quantities varies. For example, when computing the derivative of the 3D noise function along the x-axis, then, of course, the value we get doesn't change because of a variation of the noise along the z-axis (since we evaluate the noise function in the plane xy - aka there's no variation in z). In mathematics, when you have a function with several variables but that you compute its derivative with respect to one of its variables only, with the others held constant. We say that we compute the function's **partial derivatives**. Let's take an example if you have the function:
 
 $$f(x,y) = x^2 + xy + y^2$$
 
-Then if you wish to compute the derivative of the function while holding \(y\) constant then you get:
+Then if you wish to compute the derivative of the function while holding \(y\) constant, you get:
 
 $${\dfrac{f(x,y)}{\partial x}} = 2x + y,$$
 
-which you can read as the function \(f(x,y)\) partial derivative with respect to \(x\). In other words, we ignore all the terms in which \(x\) doesn't show up such as \(y^2\) in our example (including any constant term), then compute the derivative of \(x\) for each term in which \(x\) shows up. For example, if in one of the terms we have a \(x^2y\) then we replace it in the partial derivative by \(2xy\). If we have \(xy\), then we replace the term in the partial derivative by \(y\). Simple?
+which you can read as the function \(f(x,y)\) partial derivative with respect to \(x\). In other words, we ignore all the terms in which \(x\) doesn't show up, such as \(y^2\) in our example (including any constant term), then compute the derivative of \(x\) for each term in which \(x\) shows up. For example, if in one of the terms we have a \(x^2y\), then we replace it in the partial derivative by \(2xy\). If we have \(xy\), we replace the term in the partial derivative with \(y\). Simple?
 
-Question: how do we compute these partial derivatives then?
+Question: how do we compute these partial derivatives, then?
 
 ![Figure 6: Perslin Noise geometric derivatives.](/images/noise-part-2/perlin-noise-geom-deriv.png?)
 
-One method consists of using the forward difference technique (which is why we learned about it at the beginning of this chapter). If we take the example of our displaced meshed, then we can compute the derivate along the x-axis at the vertex \(V_{x,z}\) by subtracting the derivate from the noise value at the vertex \(V_{x+1,z}\) from the noise value at the vertex \(V_{x,z}\) (figure 6). In other words we can write:
+One method consists of using the forward difference technique (which is why we learned about it at the beginning of this chapter). If we take the example of our displaced meshed, then we can compute the derivate along the x-axis at the vertex \(V_{x,z}\) by subtracting the derivate from the noise value at the vertex \(V_{x+1,z}\) at the vertex \(V_{x,z}\) (figure 6). In other words, we can write:
 
 $$\partial Nx = N_{Vx+1,z} - N_{Vx,z}.$$
 
-Where \(\partial Nx\) is the partial derivative of the noise function along the x-axis. Note that at this point in time, this is a real value, not a vector. We can similarly compute the partial derivative of the noise function along the z-axis:
+Where \(\partial Nx\) is the partial derivative of the noise function along the x-axis. This is a real value, not a vector, at this point. We can similarly compute the partial derivative of the noise function along the z-axis:
 
 $$\partial Nz = N_{Vx,z+1} - N_{Vx,z} .$$
 
-The question is now, how do we transform this real value (in other words a float) into a vector (the vector tangent to the noise function at the point where the derivative is computed along the x- and z-axis). Well this is simple. Remember that when we compute the partial derivative along the x-axis we work in the xy plane. Thus the z-coordinate of the vector tangent to the noise function along the x-axis is necessarily 0:
+How do we transform this real value (in other words, a float) into a vector (the vector tangent to the noise function at the point where the derivative is computed along the x- and z-axis)? Well, this is simple. Remember that when we compute the partial derivative along the x-axis, we work in the xy plane. Thus the z-coordinate of the vector tangent to the noise function along the x-axis is necessarily 0:
 
 $$T_x = \{?, ?, 0\}.$$
 
-To compute the other two coordinates, you need to look at figure 4 again where we explained that to compute the tangent to the function in a plane, you need to set the x coordinate to 1 and the y coordinate of the vector to function partial derivative value (if you want to compute the tangent of the vector in the yz plane then you need to set the z-coordinate of the tangent to 1, the y-coordinate of the vector to the function partial derivative with respect to z, and then the x-coordinate of the tangent vector to 0). Finally we have:
+To compute the other two coordinates, you need to look at figure 4 again, where we explained that to compute the tangent to the function in a plane, you need to set the x coordinate to 1 and the y coordinate of the vector to function partial derivative value (if you want to compute the tangent of the vector in the yz plane then you need to set the z-coordinate of the tangent to 1, the y-coordinate of the vector to the function partial derivative with respect to z, and then the x-coordinate of the tangent vector to 0). Finally, we have:
 
 $$
 \begin{array}{l}
@@ -97,14 +97,14 @@ T_z = \{0, Nz, 1\}.
 \end{array}
 $$
 
-Finally to compute the normal of the vertex, all you need to do now is to compute the cross product of these two vectors (the result of the cross product will be correct even of the two input vectors are not normalized: the resulting vector will be perpendicular to the two input vectors, though it might not be normalized itself):
+Finally, to compute the normal of the vertex, all you need to do now is to compute the cross product of these two vectors (the result of the cross product will be correct even if the two input vectors are not normalized: the resulting vector will be perpendicular to the two input vectors, though it might not be normalized itself):
 
 $$Normal_{Vx,z} = T_z \times T_x.$$
 
 This technique works great but:
 
-- First what happens when we want to compute the derivatives for the vertices at the edges of the grid? Well you can't.
-- We also explained (figure 3) that the smaller the space between two samples when we compute the derivative using a forward difference, the more accurate the result. In other words the larger the space between the vertices, the less accurate the computation of the partial derivatives. Later on in this chapter we will show the difference between the partial derivative computed with a forward difference and the analytical solution that we are now going to study.
+- First, what happens when we want to compute the derivatives for the vertices at the grid's edges? Well, you can't.
+- We also explained (figure 3) that the smaller the space between two samples when we compute the derivative using a forward difference, the more accurate the result. In other words, the larger the space between the vertices, the less accurate the computation of the partial derivatives. Later in this chapter, we will show the difference between the partial derivative computed with a forward difference and the analytical solution we will now study.
 
 ## Analytical Partial Derivatives of the Perlin Noise Function
 
@@ -116,7 +116,7 @@ with respect to x is:
 
 $${\dfrac{f(x,y)}{\partial x}} = 2x + y.$$
 
-Now let's re-write the Noise function a little. Let's first replace all the dot products with letters (as shown below):
+Let's re-write the Noise function. Let's first replace all the dot products with letters (as shown below):
 
 ```
 a = dot(c000, p000)
@@ -129,7 +129,7 @@ g = dot(c011, p011)
 h = dot(c111, p111)
 ```
 
-For the sake of the exercise let's recall that the parameters \(u\), \(v\) and \(w\) are computed as follows (we use the smoothstep function):
+For the sake of the exercise, let's recall that the parameters \(u\), \(v\), and \(w\) are computed as follows (we use the smoothstep function):
 
 ```
 u = tx * tx * (3 - 2 * tx)
@@ -169,7 +169,7 @@ aw + auw - buw + avw - auvw + buvw - cvw + cuvw - duvw +
 ew - euw + fuw - evw + euvw - fuvw + gvw - guvw + huvw
 ```
 
-And then finally regroup the terms as follows:
+And then, finally, regroup the terms as follows:
 
 ```
 a + u(b - a) + v(c - a) + w(e - a) +
@@ -177,7 +177,7 @@ uv(a + d - b - c) + uw(a + f - b - e) + vw(a + g - c - e) +
 uvw(b + c + e + h - a - d - f - g)
 ```
 
-As you can see (and as expected) this is a function of three variables: \(u\), \(v\) and \(w\). If we apply the technique we learned to compute the partial derivative of a function with respect to one of its variable, we need to remove all the terms that do not contain the variable in question, and then replace the variable by its derivative in the remaining terms. For example, if we wish to compute the noise function partial derivative with respect to \(u\) we get:
+As you can see (and as expected), this is a function of three variables: \(u\), \(v\), and \(w\). Suppose we apply the technique we learned to compute the partial derivative of a funcconcerningct to one of its variables. In that case, we need to remove all the terms that do not contain the variable in question and then replace the variable with its derivative in the remaining terms. For example, if we wish to compute the noise function partial derivative concerning \(u\), we get:
 
 ```
 u'(b - a) +
@@ -225,7 +225,7 @@ w' = 6tz - 6tz^2\\
 \end{array}
 $$
 
-Et voila! All you need to do now is compute these derivatives, and then construct the vectors tangent to the point where the function is evaluated using the technique we provided above. Here is a modified version of our <span class="code-inline">eval</span> function that evaluates the 3D noise function and its partial derivatives at a given location:
+Et voila! All you need to do now is compute these derivatives and then construct the vectors tangent to the point where the function is evaluated using the abovementioned technique. Here is a modified version of our <span class="code-inline">eval</span> function that evaluates the 3D noise function and its partial derivatives at a given location:
 
 ```
 float eval(const Vec3f &p, Vec3f& derivs) const 
@@ -297,9 +297,9 @@ float eval(const Vec3f &p, Vec3f& derivs) const
 }
 ```
 
-## Analytical Solution vs Forward Difference
+## Analytical Solution vs. Forward Difference
 
-We can now compete two versions of the displaced mesh, one using the geometric solution to compute the vertex normals of the mesh, and one using the analytic solution. To code to compute either one of these solutions is as follows:
+We can now compete for two versions of the displaced mesh, one using the geometric solution to compute the vertex normals of the mesh and one using the analytic solution. To code to compute either one of these solutions is as follows:
 
 ```
 int main(int argc, char **argv) 
@@ -352,7 +352,7 @@ Here is an image of these two meshes with their associate vertex normals (displa
 
 ![](/images/noise-part-2/geom-vs-analytic-normals.png?)
 
-Note that the vertex normals are not defined at the edge of the mesh whose normals were computed using the forward difference method (geometric solution). Note also the directions of the vertex normals are significantly different between the two meshes (even though their shape is the same). This obviously causes the shading of the two meshes to be noticeably different as well (remember that normals are used in shading).
+Note that the vertex normals are not defined at the edge of the mesh whose normals were computed using the forward difference method (geometric solution). Note also the directions of the vertex normals are significantly different between the two meshes (even though their shape is the same). This causes the shading of the two meshes to be noticeably different (remember that normals are used in shading).
 
 <details>
 Note that you can replace the code:  
@@ -361,7 +361,7 @@ Note that you can replace the code:
 poly->normals[i] = bitangent.cross(tangent);
 ```
 
-with:  
+With:  
 
 ```
 poly->normals[i] = Vec3f(-derivs.x, 1, -derivs.z);
@@ -386,7 +386,7 @@ z = va.x * vb.x - va.y * vb.x,
 \end{array}
 $$
 
-you will see that you will end up with:
+You will see that you will end up with the following:
 
 $$N = Tz \times Tx = \{-Nx, 1, -Nz\}$$
 </details>

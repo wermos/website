@@ -6,7 +6,7 @@ After reading this chapter, you can reproduce the image below.
 
 ![](/images/noise-part-2/perlin-noise-terrain-mesh1.png?)
 
-The idea behind this technique is very simple and similar to what we call **displacement mapping**. If you look at the grid from the top, you can see that if you overlay the noise image onto the grid, you get a perfect match: each grid vertex corresponds to a pixel in the noise image. As you know, we can define the coordinates of the pixels in some normalized device coordinates (the pixel coordinates are then in the range [0,1]). The same can be done with the grid vertices: these are technically called **texture coordinates**. Let's look at the function we will be using to create the grid:
+The idea behind this technique is straightforward and similar to what we call **displacement mapping**. If you look at the grid from the top, you can see that if you overlay the noise image onto the grid, you get a perfect match: each grid vertex corresponds to a pixel in the noise image. As you know, we can define the coordinates of the pixels in some normalized device coordinates (the pixel coordinates are then in the range [0,1]). The same can be done with the grid vertices: these are technically called **texture coordinates**. Let's look at the function we will be using to create the grid:
 
 ```
 PolyMesh* createPolyMeshPlane( 
@@ -48,13 +48,13 @@ PolyMesh* createPolyMeshPlane(
 }
 ```
 
-The texture coordinate of the vertex is computed line 16. This is also a space in which the coordinates are in the range [0,1]. The vertex in the upper left corner of the grid has the texture coordinates [0,0], while the vertex in the lower-right coordinate has the texture coordinate [1,1]. It becomes thus easy to use the vertex texture coordinates to do a lookup in the noise image.
+The texture coordinate of the vertex is computed in line 16. This is also a space where the coordinates are in the range [0,1]. The vertex in the upper left corner of the grid has the texture coordinates [0,0], while the vertex in the lower-right coordinate has the texture coordinate [1,1]. Thus, it becomes easy to use the vertex texture coordinates to look up the noise image.
 
 !!!
-Note that in this example, we use the noise image to read the values from the 2D noise function, but we could evaluate the 2D noise function directly if we wanted to. We just decided to re-use the array we created in the first chapter to output the result of the 2D noise function to an image file. When an image is used to displace the vertices of an object, we say that this image is a **height map**.
+In this example, we use the noise image to read the values from the 2D noise function, but we could evaluate the 2D noise function directly if we wanted to. We just decided to re-use the array we created in the first chapter to output the result of the 2D noise function to an image file. When an image is used to displace the vertices of an object, we say that this image is a **height map**.
 !!!
 
-In case of a height map, we generally use the brightness (the luminance for example) of the pixels' color to control the amplitude of displacement. Generally the brighter the pixel, the greater the displacement though of course you can map the pixel value to displacement in a completely different way if you wish. It all depends on the effect you intend to create. All you need to remember is that you use an image to somehow control the amount by which the vertices of the object are displaced or moved along for example their normal.
+In the case of a height map, we generally use the brightness (the luminance, for example) of the pixels' color to control the displacement amplitude. Typically, the brighter the pixel, the greater the displacement, though, of course, you can map the pixel value to displacement in a completely different way if you wish. It all depends on the effect you intend to create. All you need to remember is that you use an image to somehow control the amount by which the object's vertices are displaced or moved along, for example, their normal.
 
 ```
 for (unsigned j = 0; j < imageHeight; ++j) { 
@@ -74,11 +74,11 @@ for (uint32_t i = 0; i < poly->numVertices; ++i) {
 }
 ```
 
-Keep in mind that the values of the Perlin noise are in the range [-1,1]. But we remapped these values to the range [0,1] when we stored the values in the image buffer (line 5). Though the values are mapped again back to the range [-1,1] when we displace the vertices later on (line 15) because that way, the mesh will stay centred around the origin along the y-axis. We will either push the vertices upward (if the values are greater than 0) or downward (if the values are lower than 0) and if the value is 0, the vertex y-coordinate will stay 0.
+Keep in mind that the values of the Perlin noise are in the range [-1,1]. But we remapped these values to the range [0,1] when we stored the values in the image buffer (line 5). However, the values are mapped again back in the range of [-1,1] when we displace the vertices later on (line 15) because that way, the mesh will stay centered around the origin along the y-axis. We will push the vertices upward (if the values are greater than 0) or downward (if the values are lower than 0), and if the value is 0, the vertex y-coordinate will stay 0.
 
-If you render this mesh with the noise image applied on top as a texture map, you should get something similar to the first image of this chapter. Note how the white/bright area of the noise image corresponds to bump in the mesh, while dark areas in the image corresponds to dents or valleys (and note how the amount of displacement is proportional to the pixel values).
+If you render this mesh with the noise image applied on top as a texture map, you should get something similar to the first image of this chapter. Note how the white/bright area of the noise image corresponds to bumps in the mesh, while dark regions of the image correspond to dents or valleys (and note how the displacement is proportional to the pixel values).
 
-As mentioned in the introduction of this chapter, you can use more interesting procedural patterns to displace the mesh vertices, such as a fractal pattern which can be construct as a weighted sum of noise layers. Check the [previous lesson on noise](/lessons/procedural-generation-vritual-worlds%20/procedural-patterns-noise-part-1/simple-pattern-examples) to learn now to generate a fractal pattern using the noise function. Here is the code to generate the fractal image that was used to displace the mesh:
+As mentioned in the introduction of this chapter, you can use more interesting procedural patterns to displace the mesh vertices, such as a fractal pattern which can be constructed as a weighted sum of noise layers. Check the [previous lesson on noise](/lessons/procedural-generation-vritual-worlds%20/procedural-patterns-noise-part-1/simple-pattern-examples) to learn how to generate a fractal pattern using the noise function. Here is the code to generate the fractal image that was used to displace the mesh:
 
 ```
 uint32_t numLayers = 5; 
@@ -102,10 +102,10 @@ for (uint32_t i = 0; i < imageWidth * imageHeight; ++i)
     noiseMap[i] /= maxVal;
 ```
 
-A fractal image generally contains details of higher frequency than in a single layer of noise. Thus, to see these details in the displacement, it is likely that you will have to increase the density of the mesh itself. Here is a render of the mesh displaced with a fractal image.
+A fractal image generally contains higher frequency details than a single layer of noise. Thus, to see these details in the displacement, you will likely have to increase the density of the mesh itself. Here is a render of the mesh displaced with a fractal image.
 
 ![](/images/noise-part-2/perlin-noise-terrain-mesh2.png?)
 
-As suggested in the previous lesson, this technique can be used to generate realistic terrains (hopefully the image above is convincing enough). We can also use the noise function to create and animate water surfaces. In this example, the procedural pattern we used (a fractal) is pretty simple. You can play with the parameters a bit to modify the look of the terrain, but we will also learn in another lesson how to add effects such as erosion to increase the realism of the terrain.
+As suggested in the previous lesson, this technique can generate realistic terrains (hopefully, the image above is convincing enough). We can also use the noise function to create and animate water surfaces. In this example, the procedural pattern we used (a fractal) is pretty simple. You can play with the parameters a bit to modify the look of the terrain, but we will also learn how to add effects such as erosion to increase the realism of the terrain in another lesson.
 
-As a final note, we haven't computed the normal of the mesh after displacement. How do we do that? This is the topic of our next chapter. We will learn how to use the noise function derivatives to compute a "true" normal at the vertex position after displacement.
+As a final note, we haven't computed the normal of the mesh after displacement. How do we do that? This is the topic of our next chapter. We will learn how to compute a "true" normal at the vertex position after displacement using the noise function derivatives.
