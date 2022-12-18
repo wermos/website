@@ -1,12 +1,12 @@
-In this chapter, we will learn about a fun technique that consists of using a 2D Perlin noise to displace the vertex of a mesh to create a terrain. As we mentioned in the first lesson on noise, the noise function is a very useful "procedural texture" primitive from which more complex procedural textures can be created such as for example the fractal or the turbulence pattern. We will use the Perlin noise to start with, and then show an example of a terrain generated using a fractal pattern instead.
+In this chapter, we will learn about a fun technique that uses a 2D Perlin noise to displace the vertex of a mesh to create a terrain. As we mentioned in the first lesson on noise, the noise function is an instrumental "procedural texture" primitive from which more complex procedural textures can be created, such as the fractal or the turbulence pattern. We will use the Perlin noise and then show an example of a terrain generated using a fractal pattern instead.
 
-This technique will be useful to better understand the importance of computing the derivatives of the Perlin noise function which is the topic of the next chapter.
+This technique will help us understand better the importance of computing the Perlin noise function's derivatives, which is the next chapter's topic.
 
-After reading this chapter, you will be able to reproduce the image below.
+After reading this chapter, you can reproduce the image below.
 
 ![](/images/noise-part-2/perlin-noise-terrain-mesh1.png?)
 
-The idea behind this technique is very simple and similar to what we call **displacement mapping**. If you look at the grid from the top, you can more easily see that if you overlay the noise image onto the grid you get a perfect match: to each vertex of the grid corresponds a pixel in the noise image. As you know we can define the coordinates of the pixels in some sort of normal device coordinates (the pixel coordinates are then in the range [0,1]). The same can be done with the grid vertices: these are technically called **texture coordinates**. Let's look at the function we will be using to create the grid:
+The idea behind this technique is very simple and similar to what we call **displacement mapping**. If you look at the grid from the top, you can see that if you overlay the noise image onto the grid, you get a perfect match: each grid vertex corresponds to a pixel in the noise image. As you know, we can define the coordinates of the pixels in some normalized device coordinates (the pixel coordinates are then in the range [0,1]). The same can be done with the grid vertices: these are technically called **texture coordinates**. Let's look at the function we will be using to create the grid:
 
 ```
 PolyMesh* createPolyMeshPlane( 
@@ -16,7 +16,7 @@ PolyMesh* createPolyMeshPlane(
     uint32_t subdivisionHeight = 40) 
 { 
     PolyMesh *poly = new PolyMesh; 
-    poly->numVertices = (subdivisionWidth + 1) * (subdivisionHeight + 1); 
+    poly->numVertices = (subdivision with + 1) * (subdivisionHeight + 1); 
     poly->vertices = new Vec3f[poly->numVertices]; 
     poly->st = new Vec2f[poly->numVertices]; 
     float invSubdivisionWidth = 1.f / subdivisionWidth; 

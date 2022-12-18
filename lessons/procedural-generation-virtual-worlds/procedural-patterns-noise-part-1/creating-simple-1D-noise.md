@@ -17,7 +17,7 @@ int xMin = (int)x;
 float t = x - xMin; 
 ```
 
-And here is the code to compute a value using linear interpolation. In most shading language, this function is called **left** (for linear interpolation, of course):
+And here is the code to compute a value using linear interpolation. In most shading language, this function is called **lerp** (for linear interpolation, of course):
 
 ```
 template<typename T = float> 
@@ -29,7 +29,7 @@ inline T lerp(const T &lo, const T &hi, const T &t)
 The mix function is usually known as the **Lerp** (for linear interpolation) function by CG programmers. If you find a Lerp function in the source code of a renderer or mentioned in a book, you should know that it is the same thing as the mix function used here.
 </details>
 
-Computing a value for any x in the range [0:1] using linear interpolation is similar to drawing a line from point 1 to point 2\. If we repeat this process for all the points in the range [1:2], [2:3], and so on, we get the curve from Figure 4. You may now understand why we call this type of noise **value noise** (noise can be created in a few different ways). The idea is to generate some values at regular intervals on a ruler (1D) or a grid (2D) and then use linear interpolation.
+Computing a value for any x in the range [0:1] using linear interpolation is similar to drawing a line from point 1 to point 2. If we repeat this process for all the points in the range [1:2], [2:3], and so on, we get the curve from Figure 4. You may now understand why we call this type of noise **value noise** (noise can be created in a few different ways). The idea is to generate some values at regular intervals on a ruler (1D) or a grid (2D) and then use linear interpolation.
 
 ![Figure 4: result of the noise function when we use the linear interpolation technique described above. We have 10 random values, one for each integer position on the x-axis of the ruler (from 0 to 9). For any value of x lower or equal to 9, we can compute a noise value by linearly interpolating the random values stored at these positions.](/images/noise-part-1/noise-curve-linear9.png?)
 
