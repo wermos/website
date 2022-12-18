@@ -1,4 +1,4 @@
-This lesson is the second part of a series of lessons devoted to the topic of generating procedural noise patterns. If you are not familiar with the subject yet, we strongly recommend you go through the first lesson [Value Noise and Procedural Pattern: Part1](/lessons/procedural-generation-virtual-worlds/procedural-patterns-noise-part-1/) before reading this one.
+This lesson is the second part of a series of lessons devoted to the topic of generating procedural noise patterns. If you are not familiar with the subject yet, we  recommend you to read the lesson [Value Noise and Procedural Pattern: Part1](/lessons/procedural-generation-virtual-worlds/procedural-patterns-noise-part-1/) first.
 
 ## Perlin Noise
 
