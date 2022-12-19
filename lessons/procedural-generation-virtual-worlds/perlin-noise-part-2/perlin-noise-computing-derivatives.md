@@ -4,7 +4,7 @@ Very few documents on the Web and books explain the Perlin noise method intuitiv
 
 ![Figure 1: computing the noise function variation along the horizontal and vertical axis using a discrete approach.](/images/noise-part-2/noise-derivative1.png?)
 
-Derivatives of any function (whether a one-, two- or three-dimensional function) are beneficial. But before we give an example, let's first review what they are. If you create an image of a 2D noise and apply some regular grid on top of that image, then we may want to know how much the noise function varies along the x and y direction at each grid point (figure 1). Does this idea sound familiar already? Remember that in the previous chapter, we used the result of a 2D noise function to displace a mesh. But let's get back to what we are trying to achieve here: how do we know the **rate of change** of our 2D noise function along the x- or y-axis? A straightforward solution to this problem consists of taking the value of the noise at the point where you want to compute this variation (let's call this point \(Gn_x\)), the value of the noise at the point a step further to the right from \(Gn_x\) (let's call this second point \(Gn_{x+1}\)), and then subtract the second value from the first. Example: if at the grid position \(Gn_{11}\) the noise is equal to 0.1 and at that the grid position \(Gn_{12}\) the noise value is equal to 0.7, then we can assume that the noise has varied from \(Gn_{11}\) to \(Gn_{12}\) (along the x-axis) by 0.6 (figure 1). In equation form, we would write:
+Functions' derivative are often used in computer graphics. But before we give an example, let's first review what they are. If you create an image of a 2D noise and apply some regular grid on top of that image, then we may want to know how much the noise function varies along the x and y direction at each grid point (figure 1). Does this idea sound familiar already? Remember that in the previous chapter, we used the result of a 2D noise function to displace a mesh. But let's get back to what we are trying to achieve here: how do we know the **rate of change** of our 2D noise function along the x- or y-axis? A straightforward solution to this problem consists of taking the value of the noise at the point where you want to compute this variation (let's call this point \(Gn_x\)), the value of the noise at the point a step further to the right from \(Gn_x\) (let's call this second point \(Gn_{x+1}\)), and then subtract the second value from the first. Example: if at the grid position \(Gn_{11}\) the noise is equal to 0.1 and at that the grid position \(Gn_{12}\) the noise value is equal to 0.7, then we can assume that the noise has varied from \(Gn_{11}\) to \(Gn_{12}\) (along the x-axis) by 0.6 (figure 1). In equation form, we would write:
 
 $$\Delta_x Gn_{11} = Gn_{12} - Gn_{11}.$$
 
@@ -16,10 +16,10 @@ Technically it is best to normalize this difference so that we get consistent re
 
 $$\Delta_x Gn_{11} = {\dfrac{Gn_{12} - Gn_{11}}{2}}.$$
 
-In mathematics, this technique is called a **forward difference**. Forward because we take the next computed point and subtract the value at the current point from the value at the next point.
+In mathematics, this technique is called a **forward difference**. Forward because we take the next computed point and subtract from it the value at the current point.
 
 <details>
-Backward differencing is possible: you use the previous point instead of the next one. You can also use a [central difference](https://en.wikipedia.org/wiki/Finite_difference).
+In backward differencing you use the previous point instead of the next one. You can also use a [central difference](https://en.wikipedia.org/wiki/Finite_difference) in which you take both the the previous and the next point.
 </details>
 
 Mathematically we can formalize this concept with the following equation:

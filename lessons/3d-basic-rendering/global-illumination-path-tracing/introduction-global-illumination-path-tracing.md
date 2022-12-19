@@ -68,11 +68,11 @@ You should start to see how we will solve the "which point on the surface of an 
 !!!
 Monte Carlo is another way of solving the problem. It is essentially a **statistical method** that is based on the idea that you can **approximate** or **estimate** how much light is redirected towards \(P\) by other objects in the scene, by casting rays from \(P\) in random directions above the surface and evaluating the color of the objects these rays intersect (if they do intersect geometry). The contribution of each one of these rays is then summed up and the resulting sum is divided by the total number of rays. In pseudo-mathematical terms, you can write:
 
-$\text{Gather Light} \approx \dfrac{1}{N} \sum_{n=0}^N \text{ castRay(P, randomDirectionAboveP) }.$
+$$\text{Gather Light} \approx \dfrac{1}{N} \sum_{n=0}^N \text{ castRay(P, randomDirectionAboveP) }.$$
 
 This is a quick note for readers who are already familiar with the concept of Monte Carlo integration. You probably already know that the complete equation to compute an approximation of an integral using Monte Carlo integration is:
 
-$\langle F^N \rangle = \dfrac{1}{N} \sum_{i=0}^{N-1} \dfrac{f(X_i)}{pdf(X_i)}.$
+$$\langle F^N \rangle = \dfrac{1}{N} \sum_{i=0}^{N-1} \dfrac{f(X_i)}{pdf(X_i)}.$$
 
 If you are not familiar with Monte Carlo methods, you can find them explained in two lessons from the section [Mathematics of Computer Graphics](lessons/mathematics-physics-for-computer-graphics/monte-carlo-methods-in-practice/monte-carlo-integration). If you look at the equation above, you will notice a PDF term that we will ignore for now, just for the sake of simplicity. We just want you to understand the principle of Monte Carlo integration at this point, so don't worry too much about the technical details which we will study in the next chapter.
 
@@ -114,7 +114,9 @@ indirectLight /= someNumberOfRays;
 
 Remember that what we want, is to collect all light reflected towards \(P\) by objects in the scene, which we can write with the integral formulation: \(\int_\Omega L_i\). The variable \(\Omega\) here, represents the hemisphere of directions oriented around the normal at \(P\). This is the equation we are trying to solve and to get an approximation of this integral using Monte Carlo integration, we need to "sample" the function on the right side of the integral sign (the \(\int\) symbol), the \(L_i\) term.
 
-<div class="important">Sampling means taking random directions from the domain of the integral we are trying to solve and evaluating the function on the right side of the integral sign at these random directions. In the case of indirect lighting, the domain of integral or the region of space over which the integral is performed is the hemisphere of directions \(\Omega\).</div>
+!!!
+Sampling means taking random directions from the domain of the integral we are trying to solve and evaluating the function on the right side of the integral sign at these random directions. In the case of indirect lighting, the domain of integral or the region of space over which the integral is performed is the hemisphere of directions \(\Omega\).
+!!!
 
 Let's now see how this work with an example. For now, we will work in 2D but later in the lesson, we will provide the code to apply this technique to 3D.
 
