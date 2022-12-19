@@ -179,7 +179,7 @@ Getting the code right is not easy. There are a couple of traps we need to be ca
 
 ## Uniform Distribution of Gradients
 
-Now, generating random directions uniformly distributed (they all have an equal probability of being generated) seems simple, but getting it right is trickier than it seems. The "naive" technique we just used generates random directions, but these directions are not uniformly distributed. They generate random directions within a cube's volume, not within a sphere's volume. For this reason, they are not uniformly distributed concerning the shape of interest (the sphere). Another naive technique consists of randomly generating spherical coordinates \(\phi\) and \(\theta\) and convert these spherical coordinates to Cartesian coordinates:
+Now, generating random directions uniformly distributed (they all have an equal probability of being generated) seems simple, but getting it right is trickier than it seems. The "naive" technique we just used generates random directions, but these directions are not uniformly distributed. They generate random directions within a cube's volume, not within a sphere's volume. For this reason, they are not uniformly distributed on the sphere. Another naive technique consists of randomly generating spherical coordinates \(\phi\) and \(\theta\) and convert these spherical coordinates to Cartesian coordinates:
 
 ```
 float phi = 2 * drand48() * M_PI; 
@@ -193,7 +193,7 @@ Though as elegant as this might sound, this doesn't work either. When you genera
 
 ![](/images/noise-part-2/noise-point-distr.png?)
 
-Remember that what we are trying to solve here is the creation of random unit directions uniformly distributed, which to some extent is the same problem that the one we already studied in the lesson on Path Tracing in which we learned how to create random samples over the hemisphere. We went through many details in this lesson, so that we won't explain the process again. Remember that to sample a function; we first need to compute the PDF of that function, then its CDF, and finally, the invert of the CDF. In our particular case, we want to create samples over a sphere, but like the hemisphere example, we will start with a solid angle to express our probability function or PDF. As you (hopefully) know, there are \(4\pi\) steradians (the unit for solid angle) in a sphere (if you are unfamiliar with the concept of solid angle, please check the lesson on radiometry in Mathematics and Physics for Computer Graphics section). We also know that a PDF integrates to 1. So in the case of the sphere, we can write:
+Remember that what we are trying to solve here is the creation of random unit directions uniformly distributed, which to some extent is the same problem that the one we already studied in the lesson on Path Tracing in which we learned how to create random samples over the hemisphere. We went through many details in this lesson, so that we won't explain the process again. Remember that to sample a function, we first need to compute the PDF of that function, then its CDF, and finally, the invert of the CDF. In our particular case, we want to create samples over a sphere, but like the hemisphere example, we will start with a solid angle to express our probability function or PDF. As you (hopefully) know, there are \(4\pi\) steradians (the unit for solid angle) in a sphere (if you are unfamiliar with the concept of solid angle, please check the lesson on radiometry in Mathematics and Physics for Computer Graphics section). We also know that a PDF integrates to 1. So in the case of the sphere, we can write:
 
 $$\int_0^{4\pi} p(\omega)dw = 1.$$
 
@@ -321,7 +321,7 @@ The Perlin noise (right) in the following image generally feels better looking t
 
 ![](/images/noise-part-2/perlin-noise-vs-value-noise.png?)
 
-## Why is Perlin/Gradient Noise better than Value Noise?
+## Why Is Perlin/Gradient Noise Better Than Value Noise?
 
 ![Figure 5: ideal case. The random values are nicely distributed about the x-axis, and thus the oscillation of the noise function is regular in frequency.](/images/noise-part-2/noise-value-vs-perlin1.png?)
 
