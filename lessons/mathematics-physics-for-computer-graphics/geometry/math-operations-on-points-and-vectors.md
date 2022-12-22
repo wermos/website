@@ -57,7 +57,7 @@ A normalised vector (we will use normalise with a z here which is the standard i
 
 $$ \hat{V} = {V \over { || V || }}$$
 
-![Figure 1: the magnitude or length of vector A and B is denoted by the double bar notation. A normalized vector is a vector whose length is 1 (in this example vector B).](/images/geometry/normalize.png?)
+![Figure 1: the magnitude or length of vector A and B is denoted by the double bar notation. A normalized vector is a vector whose length is 1 (in this example vector B).](/images/geometry/normalize.png)
 
 Note that the C++ implementation can be optimised. First we only normalize the vector if its length is greater than 0 (as dividing by 0 is forbidden). We then compute a temporary variable which is the invert of the vector length, and multiply each coordinate of the vector with this value rather than dividing them with the vector's length. As you may know, multiplications in a program are less costly than divisions. This optimisation can be important, as normalizing of vector is an extremely common operations in a renderer which can be applied to thousands, hundreds of thousands, millions of vectors (when not more). At this level, any possible optimisation will have an impact on the final render time. Note though that some compilers will manage that for you under the hood. But you can always make that optimisation explicit in your code.
 
@@ -98,7 +98,7 @@ In mathematics, you will also find the term **norm** to define a function that a
 
 ## Dot Product
 
-![Figure 2: the dot product of two vectors can be seen as the projection of A over B. if the two vectors A and B have unit length then the result of the dot product is the cosine of the angle subtended by the two vectors.](/images/geometry/dotproduct.png?)
+![Figure 2: the dot product of two vectors can be seen as the projection of A over B. if the two vectors A and B have unit length then the result of the dot product is the cosine of the angle subtended by the two vectors.](/images/geometry/dotproduct.png)
 
 The dot product or scalar product requires two vectors A and B and can be seen as the projection of one vector onto the other. The result of the dot product is a real number (a float or double in programming). A dot product between two vectors is denoted with the dot sign: \(A \cdot B\) (it can also be sometimes written as \(<A, B>\)). The dot product consists of multiplying each element of the A vector with its counterpart from vector B and taking the sum of each product. In the case of 3D vectors (length of the vector is three, they have three coefficients or elements which are x, y and z), it consists of the following operation:
 
@@ -145,12 +145,12 @@ The dot product between two vectors is an extremely important and common operati
 
 - When neither A nor B is a unit vector, we can write that \(A \cdot { B / ||B|| } \) since B as a unit vector is \(B / ||B||\).
 
-- When the two vectors are normalised then taking the arc cosine of the dot product gives you the angle \(\theta\) between the two vectors: \(\theta = \cos^{-1}({{A \cdot B} / {||A||\:||B||}})\) or \(\theta=\cos^{-1}(\hat A \cdot \hat B)\) (in mathematics, \(\cos^{-1}\) is the inverse of the \(\cos\) function. In computer programming languages, this function is generally denoted <span class="code-inline">acos()</span>).
+- When the two vectors are normalised then taking the arc cosine of the dot product gives you the angle \(\theta\) between the two vectors: \(\theta = \cos^{-1}({{A \cdot B} / {||A||\:||B||}})\) or \(\theta=\cos^{-1}(\hat A \cdot \hat B)\) (in mathematics, \(\cos^{-1}\) is the inverse of the \(\cos\) function. In computer programming languages, this function is generally denoted `acos()`).
 
 <details>
-![](/images/geometry/dotproduct1.png?)
+![](/images/geometry/dotproduct1.png)
 
-The dot product is a very important operation in 3D. It can be used for many things. As a test of orthogonality. When two vectors are perpendicular to each other (A.B), the result of the dot product between these two vectors is 0. When the two vectors are pointing in opposite directions (A.C), the dot product returns -1. When they are pointing in the exact same direction (A.D), it returns 1. It is also used intensively to find out the angle between two vectors or compute the angle between a vector and the axis of a coordinate system (which is useful when the coordinates of a vector are converted to spherical coordinates. This explained in the chapter on [trigonometric functions](lessons/mathematics-physics-for-computer-graphics/geometry/spherical-coordinates-and-trigonometric-functions)).
+The dot product is a very important operation in 3D. It can be used for many things. As a test of orthogonality. When two vectors are perpendicular to each other (A.B), the result of the dot product between these two vectors is 0. When the two vectors are pointing in opposite directions (A.C), the dot product returns -1. When they are pointing in the exact same direction (A.D), it returns 1. It is also used intensively to find out the angle between two vectors or compute the angle between a vector and the axis of a coordinate system (which is useful when the coordinates of a vector are converted to spherical coordinates. This explained in the chapter on [trigonometric functions](/lessons/mathematics-physics-for-computer-graphics/geometry/spherical-coordinates-and-trigonometric-functions)).
 </details>
 
 ## Cross Product
@@ -159,7 +159,7 @@ The **cross product** is also an operation on two vectors, but to the difference
 
 $$C = A \times B$$
 
-![Figure 3: the cross product of two vectors A and B gives a vector C perpendicular to the plane defined by A and B. When A and B are orhotogonal to each other (and have unit length), A, B, C form a Cartesian coordinate system.](/images/geometry/crossproduct.png?)
+![Figure 3: the cross product of two vectors A and B gives a vector C perpendicular to the plane defined by A and B. When A and B are orhotogonal to each other (and have unit length), A, B, C form a Cartesian coordinate system.](/images/geometry/crossproduct.png)
 
 To compute the cross product we will need to implement the following formula:
 
@@ -171,7 +171,7 @@ C_Z = A_X * B_Y - A_Y * B_X
 \end{array}
 $$
 
-The result of the cross product is another vector which is orthogonal to the other two. A cross product between two vectors is denoted with the cross sign: \(A \times B\). The two vectors A and B define a plane and the resulting vector C is perpendicular to that plane. Vectors A and B don't have to be perpendicular to each other but when they are the resulting A B and C vectors form a cartesian coordinate system (assuming the vectors have unit length). This is particularly useful to create coordinate systems which we will explain in the chapter [Creating a Local Coordinate System](lessons/mathematics-physics-for-computer-graphics/geometry/creating-an-orientation-matrix-or-local-coordinate-system).
+The result of the cross product is another vector which is orthogonal to the other two. A cross product between two vectors is denoted with the cross sign: \(A \times B\). The two vectors A and B define a plane and the resulting vector C is perpendicular to that plane. Vectors A and B don't have to be perpendicular to each other but when they are the resulting A B and C vectors form a cartesian coordinate system (assuming the vectors have unit length). This is particularly useful to create coordinate systems which we will explain in the chapter [Creating a Local Coordinate System](/lessons/mathematics-physics-for-computer-graphics/geometry/creating-an-orientation-matrix-or-local-coordinate-system).
 
 ```
 template<typename T> 
@@ -228,9 +228,9 @@ whereas
 
 $$B \times  A=(0,1,0) \times (1,0,0)=(0,0,-1).$$
 
-![<p>$$\begin{pmatrix}a_x \\ a_y \\ a_z\end{pmatrix} \times\begin{pmatrix}b_x \\ b_y \\ b_z\end{pmatrix} = \begin{pmatrix}a_yb_z - a_zb_y \\ a_zb_x - a_xb_z \\a_xb_y - a_yb_x\end{pmatrix}$$</p>](/images/geometry/normalleftrighthand.png?)
+![Figure 4: using your left or right hand to determine the orientation of vector C (the normal for instance) when the index fingers points along A and the middle finger points along B.](/images/geometry/normalleftrighthand.png)
 
-![Figure 5: using you right hand, you can align your index finger along either A or B and the middle finger against the other vector (B or A) to find out if C (the normal for instance) point upwards or inwards in the right-hand coordinate system.](/images/geometry/normalleftrighthand2.png?)
+![Figure 5: using you right hand, you can align your index finger along either A or B and the middle finger against the other vector (B or A) to find out if C (the normal for instance) point upwards or inwards in the right-hand coordinate system.](/images/geometry/normalleftrighthand2.png)
 
 We say that the cross product is **anticommutative** (swapping the position of any two arguments negates the result): If AxB=C then BxA=-C. Remember from the previous chapter that when two vectors are used to define the first two basis of a coordinate system, the third vector can point on either side of the plane. We also described a technique in which you use your hands to differentiate the two systems. When you compute a cross product between vectors you will always get the same unique solution. For instance if A = (1, 0, 0) and B = (0, 1, 0), C can only be (0, 0, 1). So you might ask why should I care about the handedness of my coordinate system then? Because if the result of the computation is always the same, the way you will draw the resulting vector however, depends on the handedness of your coordinate system. You can use the same mnemonic technique to find out in which direction the vector should point to depending on the convention you are using. In the case of a right-hand coordinate system, if you align the index finger along the A vector (for example the tangent at a point on the surface) and the middle finger along the B vector (the bitangent if you try to figure out the orientation of a normal), the thumb will point in the direction of the C vector (the normal). Note that if you use the same technique but with the left hand on the same vectors A and B, your the thumb will point in the opposite direction. Remember though, that this only a **representation** issue.
 

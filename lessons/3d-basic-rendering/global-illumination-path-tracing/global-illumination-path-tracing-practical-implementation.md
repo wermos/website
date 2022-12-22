@@ -2,7 +2,7 @@
 
 In the previous chapter, we introduced the principle of Monte Carlo integration to simulate global illumination. We also explained that uniformly sampling the hemisphere works well for simulating indirect diffuse but not for simulating indirect specular or caustics. For this reason, we will limit ourselves to simulating indirect diffuse in this lesson. Diffuse objects illuminate each other as the "indirect" effect of these objects reflecting light themselves and acting somehow as a source of light.
 
-In the first chapter, we showed how the Monte Carlo integration method worked in 2D. Extending the technique to 3D is not "simple" and works on the same principle. Here are the steps (which, as you can see, are very similar to the steps we followed in the 2D case).
+In the first chapter, we showed how the Monte Carlo integration method worked in 2D. Extending the technique to 3D is relatively "simple" and works on the same principle. Here are the steps (which, as you can see, are very similar to the steps we followed in the 2D case).
 
 ![Figure 1: transforming sampling from the coordinate system in which they were created to world space (in the shaded point local coordinate system whose up vector is aligned with \(N\)).](/images/shading-intro2/shad2-hemispheresampling2.png?)
 

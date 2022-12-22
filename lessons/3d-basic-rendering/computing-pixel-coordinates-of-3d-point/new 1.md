@@ -271,7 +271,7 @@ no & \text{otherwise}
 \end{cases}
 $$
 
-|a| in mathematics means the [absolute value](https://www.khanacademy.org/math/cc-sixth-grade-math/cc-6th-negative-number-topic/cc-6th-absolute-value/a/intro-to-absolute-value) of a. The variables W and H are the width and height of the canvas.
+|a| in mathematics means the [absolute value](https://en.wikipedia.org/wiki/Absolute_value) of a. The variables W and H are the width and height of the canvas.
 
 ![Figure 14: to convert P' from screen space to raster space, we first need to go from screen space (top) to NDC space (middle), then NDC space to raster space (bottom). Note that the y-axis of the NDC coordinate system goes up, but that the y-axis of the raster coordinate system goes down. This implies that we invert P' y-coordinate when we go from NDC to raster space.](/images/perspective-matrix/canvascoordsys.png?)
 
@@ -324,8 +324,8 @@ Because this process is so fundamental, we will summarize everything that we've 
 - We learned how to convert points from the world coordinate system to any local coordinate system.
   - If we know the local-to-world matrix, we can multiply the world coordinate of the point by the inverse of the local-to-world matrix (the world-to-local matrix).
 - We also use 4x4 matrices to transform cameras. Therefore, we can also convert points from world space to camera space.
-- Computing the coordinates of a point from camera space onto the canvas can be done using perspective projection (camera space to image space). This process requires a simple division of the point's x- and y-coordinate by the point's z-coordinate. Before projecting the point onto the canvas, we need to convert the point from world space to camera space. The resulting projected point is a 2D point defined in image space (the z-coordinate can be discarded).
-- We then convert the 2D point in image space to Normalized Device Coordinate (NDC) space. In NDC space (image space to NDC space), the coordinates of the point are remapped to the range [0,1].
+- Computing the coordinates of a point from camera space onto the canvas can be done using perspective projection. This process requires a simple division of the point's x- and y-coordinate by the point's z-coordinate. Before projecting the point onto the canvas, we need to convert the point from world space to camera space. The resulting projected point is a 2D point defined in image space (the z-coordinate can be discarded).
+- We then convert the 2D point in image space to Normalized Device Coordinate (NDC) space. In NDC space, the coordinates of the point are remapped to the range [0,1].
 - Finally, we convert the 2D point in NDC space to raster space. To do this, we just need to multiply the NDC point's x and y coordinates with the image width and height (in pixels). Pixel coordinates are integers rather than real numbers, thus they need to be rounded off to the smallest following integer when converting from NDC space to raster space. In the NDC coordinate system, the y-axis is located in the lower-left corner of the image and is pointing up. In raster space, the y-axis is located in the upper-left corner of the image and is pointing down. Therefore, when converting from NDC space to raster space, the y-coordinates needs to be inverted.
 
 |-table{Space,Description}
@@ -378,23 +378,23 @@ bool computePixelCoordinates(
     Vec3f pCamera;
     Matrix44f worldToCamera = cameraToWorld.inverse();
     worldToCamera.multVecMatrix(pWorld, pCamera);
-
-    // Coordinates of the point on the canvas. Use perspective projection.
+    
+	// Coordinates of the point on the canvas. Use perspective projection.
     Vec2f pScreen;
     pScreen.x = pCamera.x / -pCamera.z;
     pScreen.y = pCamera.y / -pCamera.z;
-
-    // If the x- or y-coordinate absolute value is greater than the canvas width 
+    
+	// If the x- or y-coordinate absolute value is greater than the canvas width 
     // or height respectively, the point is not visible
     if (std::abs(pScreen.x) > canvasWidth || std::abs(pScreen.y) > canvasHeight)
         return false;
-
-    // Normalize. Coordinates will be in the range [0,1]
+    
+	// Normalize. Coordinates will be in the range [0,1]
     Vec2f pNDC;
     pNDC.x = (pScreen.x + canvasWidth / 2) / canvasWidth;
     pNDC.y = (pScreen.y + canvasHeight / 2) / canvasHeight;
-
-    // Finally convert to pixel coordinates. Don't forget to invert the y coordinate
+    
+	// Finally convert to pixel coordinates. Don't forget to invert the y coordinate
     pRaster.x = std::floor(pNDC.x * imageWidth);
     pRaster.y = std::floor((1 - pNDC.y) * imageHeight);
 
@@ -408,8 +408,8 @@ int main(...)
     Vec3f pWorld(...);
     float canvasWidth = 2, canvasHeight = 2;
     uint32_t imageWidth = 512, imageHeight = 512;
-
-    // The 2D pixel coordinates of pWorld in the image if the point is visible
+    
+	// The 2D pixel coordinates of pWorld in the image if the point is visible
     Vec2i pRaster;
     if (computePixelCoordinates(pWorld, cameraToWorld, canvasWidth, canvasHeight, imageWidth, imageHeight, pRaster)) {
         std::cerr << "Pixel coordinates " << pRaster << std::endl;
