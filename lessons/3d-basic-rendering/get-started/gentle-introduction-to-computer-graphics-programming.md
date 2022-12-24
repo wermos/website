@@ -246,4 +246,4 @@ Many (most?) CG books do not provide a very good introduction to geometry may be
 
 ## What Should I Read Next?
 
-It's generally easier and more fun to start learning computer graphics programming with rendering. That beginners section was written for people that entirely new to the field of computer graphics programming. So keep reading the lesson from this section in chronological order if your goal is to proceed further.
+It's generally easier and more fun to start learning computer graphics programming with rendering. That beginners section was written for people that are entirely new to the field of computer graphics programming. So keep reading the lesson from this section in chronological order if your goal is to proceed further.
