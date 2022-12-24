@@ -242,7 +242,7 @@ A procedural noise function, in general, can be used for many things:
 
 - Terrain: in this lesson, we just studied the implementation of the function itself, though [we also showed how to use it to create something like a terrain](/lessons/procedural-generation-vritual-worlds%20/perlin-noise-part-2/perlin-noise-terrain-mesh). We haven't shown yet how to create terrains with really intricate and realistic surface details using the noise function. We will show this technique in a separate lesson yet to be published.
 - Water surfaces can also be used to simulate a water surface. By offsetting the y coordinative of the input point, it is possible to animate the displaced surface like waves. This simple technique works well though there are better methods to simulate water surfaces.
-- Cloud can also be used to add surface details to volumes such as cloud. We use the noise function in the lesson on volume rendering to simulate the appearance of various cloudy shapes.
+- Procedural noise can also be used to add surface details to volumes such as cloud. We use the noise function in the lesson on volume rendering to simulate the appearance of various cloudy shapes.
 - Texturing: finally, it can be used, of course, to add texture details to surfaces. It can be used to modulate any input of the shader, such as the color, the specular, or add some bump to the surface of an object.
 - Animation: the noise function can also add some noise to animations. A typical use case, for example, is to add some noise to a camera animation to simulate some camera shakes.
 
