@@ -30,7 +30,7 @@ If you want to help, first thank you). We want to avoid conflicts in the process
 [https://docs.google.com/spreadsheets/d/19ljS9fyrRFchaIn_TF8L2YaZw5p89kFqo6QfTad9Av0/edit?usp=sharing](https://docs.google.com/spreadsheets/d/19ljS9fyrRFchaIn_TF8L2YaZw5p89kFqo6QfTad9Av0/edit?usp=sharing)
 
 - You need a GitHub account. Once logged in into your account, go to [Scratchapixel's website repository]().
-- Fork the repository. This will create a copy of the repository in your own account.\
+- Fork the repository. This will create a copy of the repository in your own account (**ps: you can also edit a file directly from within GitHub, but you will still need a GitHub account**. This will clone the file into your repos, and from you will need to a make a pull request from there).
 
 **Please be sure you regularly pull & merge changes from the Scratchapixel repository into your cloned repo before making edits. Other people are making changes to the project and you need your repo to be up to date when you start your edits.**. Here is a link that will tell you how to do that: [Pull new updates from original GitHub repository into forked GitHub repository](https://stackoverflow.com/questions/3903817/pull-new-updates-from-original-github-repository-into-forked-github-repository).
 
