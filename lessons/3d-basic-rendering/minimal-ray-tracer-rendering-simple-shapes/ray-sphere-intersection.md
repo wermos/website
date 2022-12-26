@@ -25,7 +25,7 @@ We will start by noting that the triangle formed by the edges \(L\), \(t_{ca}\),
 
 ![Figure 2: \(\vec{a} \cdot \vec{b} = |a||b|\cos\theta\).](/images/ray-simple-shapes/impsurf-proj-vectors.png?)
 
-We know \(L\) and we know \(D\), the ray's direction. We also know that the **dot (or scalar) product** of a vector \(\vec{b}\) and \(\vec{a}\), corresponds to projecting \(\vec{b}\) onto the line defined by the vector \(\vec{a}\), and the result of this projection is the length of the segment AB as shown in figure 2 (for more information on the properties of the dot product, check the [Geometry](lessons/mathematics-physics-for-computer-graphics/geometry/math-operations-on-points-and-vectors) lesson):
+We know \(L\) and we know \(D\), the ray's direction. We also know that the **dot (or scalar) product** of a vector \(\vec{b}\) and \(\vec{a}\), corresponds to projecting \(\vec{b}\) onto the line defined by the vector \(\vec{a}\), and the result of this projection is the length of the segment AB as shown in figure 2 (for more information on the properties of the dot product, check the [Geometry](/lessons/mathematics-physics-for-computer-graphics/geometry/math-operations-on-points-and-vectors) lesson):
 
 $$\vec{a} \cdot \vec{b} = |a||b|\cos\theta.$$
 
@@ -197,7 +197,7 @@ $$
 \end{array}
 $$
 
-Where \(R\) is the radius of the sphere. These equations are explained in the lesson on [Geometry](lessons/mathematics-physics-for-computer-graphics/geometry/spherical-coordinates-and-trigonometric-functions). Sphere coordinates are useful for texture mapping or procedural texturing. The program of this lesson will show how they can be used to draw a pattern on the surface of the spheres.
+Where \(R\) is the radius of the sphere. These equations are explained in the lesson on [Geometry](/lessons/mathematics-physics-for-computer-graphics/geometry/spherical-coordinates-and-trigonometric-functions). Sphere coordinates are useful for texture mapping or procedural texturing. The program of this lesson will show how they can be used to draw a pattern on the surface of the spheres.
 
 ## Implementing the Ray-Sphere Intersection Test in C++
 

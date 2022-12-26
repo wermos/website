@@ -2,7 +2,7 @@
 
 In this chapter, we will detail the source code of the program that is provided with this lesson. The program is a basic but functional program that accurately renders a scene containing spheres only. Here is a list of the program's main features:
 
-- Camera transformations are supported. In other words, we can render the scene from any viewpoint. To do so we will be using what we learned in the [previous lesson on generating camera rays](lessons/3d-basic-rendering/ray-tracing-generating-camera-rays).
+- Camera transformations are supported. In other words, we can render the scene from any viewpoint. To do so we will be using what we learned in the [previous lesson on generating camera rays](/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/).
 - Geometry visibility is correct. If a ray intersects more than one sphere, we display the sphere with the closest intersection distance.
 - When an intersection is found, the normal and the textures coordinates of the intersected point on the sphere are computed. We will use them both to shade the spheres.
 

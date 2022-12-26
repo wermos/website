@@ -31,12 +31,12 @@ $$MM^{-1}=I$$
 Where I is the identity matrix. Multiplying a matrix by its inverse gives the identity matrix.
 
 <details>
-We have mentioned in the chapter [How Does a Matrix Work](lessons/mathematics-physics-for-computer-graphics/geometry/how-does-matrix-work-part-2), the case of the orthogonal matrix which inverse can easily be obtained from computing its transpose. An orthogonal matrix is a square matrix with real entries whose columns and rows are orthogonal unit vectors. This is an important property which we will be using to learn how to [transform normals](lessons/mathematics-physics-for-computer-graphics/geometry/transforming-normals).
+We have mentioned in the chapter [How Does a Matrix Work](/lessons/mathematics-physics-for-computer-graphics/geometry/how-does-matrix-work-part-2), the case of the orthogonal matrix which inverse can easily be obtained from computing its transpose. An orthogonal matrix is a square matrix with real entries whose columns and rows are orthogonal unit vectors. This is an important property which we will be using to learn how to [transform normals](/lessons/mathematics-physics-for-computer-graphics/geometry/transforming-normals).
 </details>
 
 Matrix inversion is an important process in 3D. We know that we can use point- or vector-matrix multiplication to convert points and vectors but it is some times useful to be able to move the transformed points or vectors back into the coordinate system in which they were originally defined into. It is often necessary for instance, to transform the ray direction and origin in object space to test for a primitive-ray intersection. If there is an intersection the resulting hit point is in object space and needs to be converted back into world space to be usable.
 
-The lesson Matrix Inverse in the [Mathematics and Physics of Computer Graphics](lessons/mathematics-physics-for-computer-graphics) section will teach how to compute the inverse of a matrix (only available in the old version of Scratchapixel for now). Developing even a basic renderer without being able to use matrices and their inverse would be quite limited so we will be providing some code in this lesson for doing so. You can use this code without worrying to much about how it works and read this advanced lesson another time if you don't feel ready yet.
+The lesson [Matrix Inverse](/lessons/mathematics-physics-for-computer-graphics/matrix-inverse/) will teach how to compute the inverse of a matrix (only available in the old version of Scratchapixel for now). Developing even a basic renderer without being able to use matrices and their inverse would be quite limited so we will be providing some code in this lesson for doing so. You can use this code without worrying to much about how it works and read this advanced lesson another time if you don't feel ready yet.
 
 ## Determinant of a Matrix
 
