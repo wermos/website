@@ -153,7 +153,7 @@ The phase function for isotropic volumes is quite simple. Let's look at another 
 
 $$f_p(x, g, \cos\theta) = {1 \over {4\pi}}{{1-g^2}\over{(1 + g^2 - 2g\cos\theta)^{3/2}}}$$
 
-![Figure 3: plot of the Henyey-Greenstein ([polar coordinates](https://en.wikipedia.org/wiki/Polar_coordinate_system)) phase function for different values of the asymmetry factor g (g=0.3, 0.5, 0, -03, -0.5). The angle $\theta$ is defined over the range [0, $\pi$].](/images/volume-rendering-developers/voldev-phasefuncplot.png)
+![Figure 3: plot of the Henyey-Greenstein phase function in the polar coordinate system for different values of the asymmetry factor g (g=0.3, 0.5, 0, -03, -0.5). The angle \(\theta\) is defined over the range [0, \(\pi\)].](/images/volume-rendering-developers/voldev-phasefuncplot.png)
 
 It's a little bit more complex indeed. And as you can it has another variable \(g\) called the **asymmetry factor**, where \(-1 \leq g \leq 1\). This parameter lets you control whether light is scattered in the forward or backward direction. When \(g \gt 0\) light is out-scattered mostly forward. When \(g \lt 0\), it is scattered backward. And when \(g = 0\), the function equals \(1/{4\pi}\), the phase function for isotropic volumes. Figure 3 shows what the function looks like for different values of \(g\).
 
@@ -211,7 +211,7 @@ vec3 integrate(...)
             result += density * sigma_s * <span style="color: red; font-weight: bold; background-color: rgba(255,0,0,0.1);">phase(g, cos_theta)</span> * light_attenuation * light_color * step_size;
         }
         ...
-     }
+    }
     ...
 }
 ```
