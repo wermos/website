@@ -6,11 +6,11 @@ You may be surprised to find that the information we give on this page differs f
 
 In this lesson, we will start to put all the things we have learned about points, vectors, matrices, and coordinate systems together. And at last, you will learn how matrices work. We mentioned in the previous chapter that two matrices needed compatible sizes to be multiplied by each other. For instance, the matrices of size **m x p** and **p x n** can be multiplied by each other. We also mentioned in the previous chapter that we would primarily deal with 4x4 matrices in computer graphics.
 
-A point or a vector is a sequence of three numbers, and for this reason, they too can be written as a 1x3 matrix, a matrix that has one row and three columns:
+A point or a vector is a sequence of three numbers, and for this reason, they too can be written as a 1x3 matrix, a matrix that has one row and three columns. Here is an example of a point written in matrix form:
 
-Point written in a matrix form \(P = [x y z]\).
+$$P = [x y z].$$
 
-The trick here is that if we can write points and vectors as [1x3] matrices, we can multiply them by other matrices. Remember that the matrix **m x p** can be multiplied by the matrix **p x n** to give the matrix **m x n**. If the first matrix is a point, we can write m = 1 and p = 3\. This implies that the **p x n** matrix is something of form 3 x n where n can be any number greater than 1\. In theory, a multiplication of a [1x3] matrix by any of the following matrices would work: [3x1], [3x2], [3x3], [3x4], etc. Here is an example of a [1x3]*[3x4] matrix multiplication:
+The trick here is that if we can write points and vectors as [1x3] matrices, we can multiply them by other matrices. Remember that the matrix **m x p** can be multiplied by the matrix **p x n** to give the matrix **m x n**. If the first matrix is a point, we can write m = 1 and p = 3. This implies that the **p x n** matrix is something of form 3 x n where n can be any number greater than 1. In theory, a multiplication of a [1x3] matrix by any of the following matrices would work: [3x1], [3x2], [3x3], [3x4], etc. Here is an example of a [1x3]*[3x4] matrix multiplication:
 
 $$
 \begin{bmatrix}x & y & z\end{bmatrix} *
@@ -32,7 +32,7 @@ c_{20}&c_{21}&{c_{22}}\\
 \end{bmatrix}
 $$
 
-In CG, we usually use 4x4 matrices instead of 3x3 matrices, and we will soon explain why, but for now, let's stick with the 3x3 matrices for a while. To finish this section of the chapter, we will write some pseudocode to show how we can multiply a point \(P\) (or a vector) in its matrix form to a 3x3 matrix to get a newly transformed point \(P_T\). If you need a refresher on matrix multiplication, read the previous chapter. Remember that for each coefficient of the new matrix, you need to multiply each coefficient from the current row for the left-hand side matrix with its "equivalent" coefficient from the current column for the right-hand side matrix and sum up the resulting products. In pseudo-code, it gives something like that (we will provide the version for 4x4 matrices later):
+In CG, we usually use 4x4 matrices instead of 3x3 matrices, and we will soon explain why, but for now, let's stick with the 3x3 matrices for a while. To finish this section of the chapter, we will write some pseudocode to show how we can multiply a point \(P\) (or a vector) in its matrix form to a 3x3 matrix to get a newly transformed point \(P_T\). If you need a refresher on matrix multiplication, read the previous chapter. Remember that for each coefficient of the new matrix, you need to multiply each coefficient of the left-hand side matrix's current row with its "equivalent" coefficient of the right-hand side matrix's current column, and sum the resulting products. In pseudocode, it gives something like that (we will provide the version for 4x4 matrices later):
 
 ```
 // multiply coeffs from row 1 with coeffs from column 1
@@ -271,7 +271,7 @@ You can also use the mnemonic technique described in the chapter on coordinating
 
 ## Combining (Rotation) Matrices
 
-In the previous chapter, we learned that multiplying matrices together combines their transformations. Now that we know how to rotate points around an individual axis, we can multiply Rx, Ry, and Rz together (using every possible combination) to create more complex rotations. If, for instance you want to rotate a point around the x-axis and then the y-axis, we can create two matrices using the matrices Rx and Ry and combine them using matrix multiplication (Rx*Ry) to create a Rxy matrix encoding the two individual rotations:
+In the previous chapter, we learned that multiplying matrices together combines their transformations. Now that we know how to rotate points around an individual axis, we can multiply Rx, Ry, and Rz together (using every possible combination) to create more complex rotations. If, for instance, you want to rotate a point around the x-axis and then the y-axis, we can create two matrices using the matrices Rx and Ry and combine them using matrix multiplication (Rx*Ry) to create a Rxy matrix encoding the two individual rotations:
 
 $$R_{XY}=R_X*R_Y$$
 
@@ -279,7 +279,7 @@ Note that the order of rotation is essential and makes a difference. For example
 
 ## The Translation Matrix
 
-We need to use [4x4] matrices to translate points using point-matrix multiplication. Therefore, this chapter is limited to [3x3] matrices; we will explain how translation works with matrices in Transforming Points and Vectors.
+We need to use [4x4] matrices to translate points using point-matrix multiplication. Therefore, this chapter is limited to [3x3] matrices; we will explain how translation works with matrices in [Transforming Points and Vectors](/lessons/mathematics-physics-for-computer-graphics/geometry/transforming-points-and-vectors).
 
 ## Rotation around an Arbitrary Axis
 
