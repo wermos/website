@@ -16,11 +16,11 @@ One quick note before we begin. If you are a mathematical purist, you might find
 
 ## What is Linear Algebra? Introduction to Vectors
 
-So what exactly is linear algebra, and what will we study in this lesson? As we mentioned in the previous section, linear algebra is a branch of mathematics that has to do with the study of **vectors**. Now you might ask, "What is a vector, and how is it useful in the CG world?" We won't get into much detail, but a vector can be represented as an array of **numbers**. This array of numbers, which can assume any desired length, is also sometimes called a **tuple** in mathematics. If we want to be specific about the size of the vector, we may choose to say **n-tuple** where **n** represents the number of elements vector. Below is an example of the mathematical notation for a vector with 6 elements:
+So what exactly is linear algebra, and what will we study in this lesson? As we mentioned in the previous section, linear algebra is a branch of mathematics that has to do with the study of **vectors**. Now you might ask, "What is a vector, and how is it useful in the CG world?" We won't get into much detail, but a vector can be represented as an array of **numbers**. This array of numbers, which can assume any desired length, is also sometimes called a **tuple** in mathematics. If we want to be specific about the size of the vector, we may choose to say **n-tuple** where **n** represents the number of elements in the vector. Below is an example of the mathematical notation for a vector with 6 elements:
 
 $$V = (a, b, c, d, e, f).$$
 
-Where a, b, c, d, e, f are real numbers.
+Where a, b, c, d, e, f are real numbers (1, 3, 4.56, -11, -13.08, 0, etc.).
 
 The idea behind grouping these numbers is that collectively they represent another value or concept that is meaningful in the context of the problem. For example, in computer graphics, vectors can represent either a position or direction in space. We will also be able to transform (or modify) these vectors through a very powerful and compact series of operations. The process of transforming the content of a vector is achieved through what is called a **linear transformation**. We will spend much more time discussing transformations in a later section; for now, it is only necessary to recognize that they are instrumental.
 
@@ -51,10 +51,10 @@ You might still wonder how a linear transformation affects points and vectors. I
 The translation operator is a linear transformation of the original point (which can be viewed as an input position point). Translation has no meaning when applied to a vector (which, remember, is a direction). This is because where the vector begins (that is, where it is centered) is unimportant; regardless of position, all "arrows" of the same length, pointing in the same direction, are equivalent. Instead, we very commonly use another linear transformation on vectors: rotation. Many more common operators can be used, but let's consider translation for points and rotations for vectors.
 
 $$
-begin{array}{l}
+\begin{array}{l}
 P \rightarrow Translate \rightarrow P_T\\  
 V \rightarrow Rotate \rightarrow V_T
-end{array}
+\end{array}
 $$
 
 The subscripted letter \(\small T\) stands for "transformed".
@@ -75,7 +75,7 @@ Normals can be thought of as vectors with one caveat: they do not transform the 
 
 ## From Theory to C++
 
-In our C++ code, we won't distinguish between points, vectors, and normals; we represent all three with a Vec3 <t>class (a class template so that we can create float, int, or double versions as needed). Some developers prefer to differentiate them. This limits the possibility of making mistakes. From experience, we found it more efficient (less code to write in the first place) to deal with one unique class (as the OpenEXR library does). However, we will still have to call a few specific functions carefully depending on whether or not the Vec3 we are dealing with represents a point, a vector, or a normal. As you may remember, this is particularly critical when we use transformations. The full source code is provided in the download section of this lesson.</t>
+In our C++ code, we won't distinguish between points, vectors, and normals; we represent all three with a Vec3 class (a template class so that we can create float, int, or double versions as needed). Some developers prefer to differentiate them. This limits the possibility of making mistakes. From experience, we found it more efficient (less code to write in the first place) to deal with one unique class (as the OpenEXR library does). However, we will still have to call a few specific functions carefully depending on whether or not the `Vec3` we are dealing with represents a point, a vector, or a normal. As you may remember, this is particularly critical when we use transformations. The full source code is provided in the download section of this lesson.
 
 ```
 template<typename T> 
