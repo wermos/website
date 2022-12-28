@@ -126,7 +126,7 @@ The lessons' content is stored under `website/lessons`. Directories under this p
 
 ## Pushing Changes
 
-At the moment, merges are blocked on the master branch. 
+Merges are blocked on the master branch. To make changes, follow the instructions provided above.
 
 ## Support for More Languages
 
@@ -136,7 +136,7 @@ XX TODO
 
 XX TO DO
 
-We can always do more, but there's a limited number of daily hours. Let's iterate instead. One step at a time. Some first version of a lesson is better than no lesson at all. And then, over time, let's improve things, add more visuals, etc.
+We can always do more, but there's a limited number of daily hours. Let's iterate instead. One step at a time. Some first version of a lesson is better than no lesson at all. And then, over time, let's improve things, add more visuals, etc. **together**).
 
 The written style is "casual". So noting "it's okay" vs. "it is okay" is fine. Both versions are acceptable!
 
