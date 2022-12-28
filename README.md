@@ -1,4 +1,4 @@
-This repository contains the content of scratchapixel.com in Markdown format.
+This repository contains the content of [scratchapixel.com](https://www.scratchapixel.com) in Markdown format.
 
 What is Scratchapixel? It is a website that attempts to be a central repository of various computer graphics techniques. In addition, we offer readers a place where most vital information is stored and organized in a single location.
 
