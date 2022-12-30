@@ -67,13 +67,13 @@ This mnemonic requires a bit of hand contortion, but it is the best way of getti
 XX TODO INTRODUCE NEW FIGURE 6 HERE XX
 
 <details>
-With the up vector pointing upward, and the forward vector (z-axis) pointing toward you, in the left-hand coordinate system, the x-axis points to the right; in the right-hand coordinate system, it points to the left. 
+With the thumb pointing upward (y-axis), and the index finger (z-axis) pointing away from you, in the left-hand coordinate system, the middle finger (x-axis) points to the right; in the right-hand coordinate system, it points to the left. 
 
 ![](/images/geometry/rhlh.png)
 
-Here the left and right hands are just used to figuring out in which direction the x-axis points, assuming the thumb indicates the up vector and the index finger the forward vector, which indeed points forward (with respect to the viewer). With this mnemonic, the x-axis (or third vector) points to the right when the left hand is used (and to the left when the right hand is used). We understand that the left and right terms here refer to the use of your left or right hand, not the direction of the x-axis. Yet this isn't very clear. That's why we prefer the XYZ-thumb-index-middle finger mnemonic.
+Here the left and right hands are just used to figuring out in which direction the x-axis points, assuming the thumb indicates the up vector and the index finger the forward vector, which indeed points forward (with respect to the viewer). With this mnemonic, the x-axis (or third vector) points to the right when the left hand is used (and to the left when the right hand is used). We understand that the left and right terms here refer to the use of your left or right hand, not the direction of the x-axis. Yet this isn't very clear since mentioning that in the left-hand coordinate system, your middle finger points to the right is, well, counter-intuitive. That's why we prefer the XYZ-thumb-index-middle finger mnemonic mentioned above.
 
-We are making a note about it here as you might find it used in other documents (in fact, this is how Scratchapixel used to initially explain the difference between the two systems).
+We are mentioning it nonetheless because you might find it used in other documents (in fact, this is how Scratchapixel initially explained the difference between the two systems).
 </details>
 
 The handedness of the coordinate system also plays a role in the orientation of normals computed from the edges of polygonal faces. For example, if the direction is right-handed, polygons whose vertices were specified in the **counterclockwise** order will be front-facing. This will be explained in the lesson on rendering polygonal objects.
