@@ -40,38 +40,43 @@ Another common operation is to move the point in the coordinate system A to anot
 
 The 3D coordinate system is a simple extension of the 2D case. We will add a third axis orthogonal to both the x- and y-axis called the z-axis (representing depth). The x-axis points to the right, the y-axis points up, and the z-axis points backward (it comes out of the screen in a way when the x-axis points to the right). While other conventions can be used (see the following paragraph), we will only use this throughout Scratchapixel. In Geometry, this 3D coordinate system defines what is more formally known as **Euclidean space**.
 
-![Figure 5: a three-dimensional coordinate system. Three coordinates define a point, one for each axis.](/images/geometry/coordsys3d.png?)
+![Figure 5: a three-dimensional coordinate system. Three coordinates define a point, one for each axis.](/images/geometry/coordsys3d.png)
 
-We conclude this chapter with a paragraph for those interested in a more formal definition of a coordinate system. In linear algebra, the three axes (one or two in the 1D and 2D cases, respectively) form what we call the **basis** of that coordinate system. A basis is a set of linearly independent vectors that, in a linear combination, can represent every vector (or point) in a given vector space (the coordinate system). Vectors from a set are said to be linearly independent if and only if none of the vectors in the set can be written as a linear combination of other vectors in that set. **Change of basis**, or change of coordinate system, is a common operation in mathematics and the graphics pipeline.
+We conclude this chapter with a paragraph for those interested in a more formal coordinate system definition. In linear algebra, the three axes (one or two in the 1D and 2D cases, respectively) form what we call the **basis** of that coordinate system. A basis is a set of linearly independent vectors that, in a linear combination, can represent every vector (or point) in a given vector space (the coordinate system). Vectors from a set are said to be linearly independent if and only if none of the vectors in the set can be written as a linear combination of other vectors in that set. **Change of basis**, or change of coordinate system, is a common operation in mathematics and the graphics pipeline.
 
 ## Left-Handed vs. Right-Handed Coordinate Systems
 
-Unfortunately, due to various conventions concerning handedness, coordinate systems are more complex. The problem can be illustrated in the following figure. When the up and forward vectors are oriented in the same way (the forward vector points away from the plane defined by the screen), an appropriate "right" vector can either point to the left or the right.
+Unfortunately, due to various conventions concerning handedness, coordinate systems are more complex. The problem can be illustrated in the following figure. When the y-axis (also called the "up" vector) points upward, and the x-axis (also called the "right" vector) points to the right (as depicted in the image below), the z-axis (also called the forward or down vector) can point either toward the screen or you. Think of your screen as the XY plane. Then the forward vector (z-axis) would be perpendicular to your screen. Look at the z-axis as indicating the direction of depth.
 
-![](/images/geometry/rhlh.png?)
+![](/images//geometry/geo-lh-vs-rh-coordsys.png)
 
 To differentiate the two conventions, we call the first coordinate system the **left-hand coordinate system**, and the other the **right-hand coordinate system**. The physicist John Ambrose Fleming introduced the left- and right-hand rule to differentiate the two conventions easily.
 
-![Figure 6: Typically, the right-hand coordinate system is represented with the right axis (in red) pointing to the right and the forward vector (blue) pointing away from the screen.](/images/geometry/rhcoordsys.gif?)
-
-Why is it called handedness? If you take your left and right hands and orient your fingers as shown in the figure, you will see that your fingers indicate the orientation of the **right**, **up**, and **forward vector** (also sometimes called the down vector) for both coordinate systems. This is because your left-hand orients the left-hand coordinate system while your right-hand orients the right-hand coordinate system. However, in the case of the right-hand system, we will turn the coordinate system around so that the right vector visually points to the right. When we do that, the "forward" (or down) vector points away (outward) from the screen. This rotation is illustrated in Figure 6. In the left-hand coordinate system, not that the "forward" (or down) vector points toward the screen (inward). In other words, with the up vector pointing upward, the right vector visually pointing to the right, only the direction of the forward vector changes between the left and the right-hand coordinate system:
-
-- It comes out of the screen in the case of a right-hand coordinate system (pointing in your direction).
-
-- It points in the direction of the screen in the case of a left-hand coordinate system (pointing away from you).
-
-Remember that the **middle finger (the middle finger, not the index) always represents the right vector** when using this mnemonic device for checking the coordinate handedness. So, first, orient the middle finger on either of your hands along what you consider the right vector and check if the other two fingers point in the same direction as the other two axes. From there, you shall see immediately if it is a left-hand or right-hand coordinate system.
+We will explain what it has to do with hands in a moment. But first, let's define the difference between the two systems. With the x-axis pointing to the right and the y-axis pointing up, if the z-axis points away from you, it's a left-hand coordinate system. If it points in your direction, it is a right-hand coordinate system.
 
 !!!
-Generally, the best way to remember each coordinate system's orientation is to assign the x, y, and z-axis to your thumb, index, and middle finger, respectively. This is super simple because this is the order by which we naturally unfold our fingers. Do this with your left and right hand. Then orient the thumb to the right, the index upward, and your middle finger will indicate the direction of the z-axis.
-- Away from you: left hand.
-- Toward you: right hand.
-It requires a bit of hand contortion, but it is the best way of getting it right all the time.
+To remember each coordinate system's orientation, assign the x, y, and z-axis to your thumb, index, and middle finger, respectively. This is super simple because this is the order by which we naturally unfold our fingers. Do this with your left and right hand. Then orient the thumb to the right, the index upward, and your middle finger will indicate the direction of the z-axis.
+
+- Left hand: away from you.
+
+- Right hand: toward you.
+
+This mnemonic requires a bit of hand contortion, but it is the best way of getting it "right" all the time. So now you understand why we call these systems the left-hand and right-hand coordinate systems or speak of the coordinate system's handedness.
 !!!
+
+XX TODO INTRODUCE NEW FIGURE 6 HERE XX
 
 <details>
-The handedness of the coordinate system also plays a role in the orientation of normals computed from the edges of polygonal faces. For example, if the direction is right-handed, polygons whose vertices were specified in the **counterclockwise** order will be front-facing. This will be explained in the lesson on rendering polygonal objects.
+With the up vector pointing upward, and the forward vector (z-axis) pointing toward you, in the left-hand coordinate system, the x-axis points to the right; in the right-hand coordinate system, it points to the left. 
+
+![](/images/geometry/rhlh.png)
+
+Here the left and right hands are just used to figuring out in which direction the x-axis points, assuming the thumb indicates the up vector and the index finger the forward vector, which indeed points forward (with respect to the viewer). With this mnemonic, the x-axis (or third vector) points to the right when the left hand is used (and to the left when the right hand is used). We understand that the left and right terms here refer to the use of your left or right hand, not the direction of the x-axis. Yet this isn't very clear. That's why we prefer the XYZ-thumb-index-middle finger mnemonic.
+
+We are making a note about it here as you might find it used in other documents (in fact, this is how Scratchapixel used to initially explain the difference between the two systems).
 </details>
+
+The handedness of the coordinate system also plays a role in the orientation of normals computed from the edges of polygonal faces. For example, if the direction is right-handed, polygons whose vertices were specified in the **counterclockwise** order will be front-facing. This will be explained in the lesson on rendering polygonal objects.
 
 ## The Right, Up, and Forward Vectors
 
@@ -93,4 +98,4 @@ We have learned that points' and vectors' coordinates relate to the origin of a 
 
 ## Things We Need To Remember
 
-We realize that most readers (if not all) do not need to have these concepts explained. However, what is important here is not so much knowledge of basic geometry but being comfortable with the terminology used throughout all CG literature. In this chapter, the terms of importance are **coordinates**, **axes**, and the **Cartesian coordinate system**. We have also introduced the concept of linear operators (scale and translate) to transform points and vectors. The most essential ideas to remember from that chapter are that points' coordinates relate to a coordinate system, a multitude of coordinate systems can be defined and that points have unique coordinates in each of these coordinate systems. Determining whether the coordinate system you will use (either in your program or in the API you will be used to render images) is left- or right-handed is also of great importance. Keeping the handedness of a coordinate system distinct from the convention used for labeling the axes is essential.
+We realize that most readers (if not all) do not need to have these concepts explained. However, what is important here is not so much knowledge of basic geometry but being comfortable with the terminology used throughout all CG literature. In this chapter, the terms of importance are **coordinates**, **axes**, and the **Cartesian coordinate system**. We have also introduced the concept of linear operators (scale and translate) to transform points and vectors. The essential ideas to remember from that chapter are that points' coordinates relate to a coordinate system, a multitude of coordinate systems can be defined and that points have unique coordinates in each of these coordinate systems. Determining whether the coordinate system you will use (either in your program or in the API you will be used to render images) is left- or right-handed is also of great importance. Keeping the handedness of a coordinate system distinct from the convention used for labeling the axes is essential.
