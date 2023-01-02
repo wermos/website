@@ -35,18 +35,18 @@ $$O_x + tD_x = B0_x \text{ (eq1)}.$$
 
 Which can be solved by reordering the terms: 
 
-$$t0x = (B0_x - O_x) / D_x \text{ (eq2)}.$$ 
+$$t0_x = (B0_x - O_x) / D_x \text{ (eq2)}.$$ 
 
 The x component of the bounding volume's maximum extent can be used in a similar way to compute the variable \(t1x\). Note that when the values for \(t\) are negative, intersections are "behind" the ray (behind with respect to the ray's origin \(0\) and its direction \(D\)). Finally, if we apply the same technique to the y and z components, at the end of this process, we will have a set of six values indicating where the ray intersects the planes defined by the six faces of the box. 
 
 $$
 \begin{array}{l}
-t0x = \frac{(B0_x - O_x)}{D_x}\\
-t1x = \frac{(B1_x - O_x)}{D_x}\\
-t0y = \frac{(B0_y - O_y)}{D_y}\\
-t1y = \frac{(B1_y - O_y)}{D_y}\\
-t0z = \frac{(B0_z - O_z)}{D_z}\\
-t1z = \frac{(B1_z - O_z)}{D_z}\\ 
+t0_x = \frac{(B0_x - O_x)}{D_x}\\
+t1_x = \frac{(B1_x - O_x)}{D_x}\\
+t0_y = \frac{(B0_y - O_y)}{D_y}\\
+t1_y = \frac{(B1_y - O_y)}{D_y}\\
+t0_z = \frac{(B0_z - O_z)}{D_z}\\
+t1_z = \frac{(B1_z - O_z)}{D_z}\\ 
 \end{array}
 $$
 
