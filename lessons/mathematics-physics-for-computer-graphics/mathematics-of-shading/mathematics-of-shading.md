@@ -229,7 +229,7 @@ The antiderivative of the cosine function is the sine function, thus using the s
 
 $$\int_0^{\pi} = \left[ sin(x) \right]_0^{\pi} = sin(\pi) - sin(0) = 0 - 0 = 0$$
 
-![Figure 12: the integral of cos(x) in the interval \([0,\pi] is the sum of the signed area under the curve which in this interval is zero.](/images/mathematics-of-shading/integralcosine.png?)
+![Figure 12: the integral of cos(x) in the interval \([0,\pi]\) is the sum of the signed area under the curve which in this interval is zero.](/images/mathematics-of-shading/integralcosine.png)
 
 This result is expected because if you graph the cosine function in the range \([0,\pi]\) and look at the integral as the **signed area** below the curve in this given interval, then as you can in Figure 12, this area is zero (the "positive" area in the interval \([0,\pi/2]\) is cancelled out by the "negative" area in the interval \([\pi/2:\pi]\)).
 
