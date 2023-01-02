@@ -210,7 +210,7 @@ $$0 \leq x \leq 5 \rightarrow \sum_{n=1}^{N=100} 4 * { (n * (5 - 0)) \over 100 }
 This is what the program above calculates. One of the most important things to remember with integrals is that we have been able to compute the result of the integral with the integral's function antiderivative. Remember than we computed the change of a certain antiderivative \(F(x)\) in the interval \([a,b]\) using the following equation: \(X = F(b) - F(a)\). We compute the same value using the function derivative using the integral formulation: \(\int_a^b f(x)dx\) thus we can write the following equality:
 
 !!!
-$\int_a^b f(x) dx = F(b) - F(a)$
+$$\int_a^b f(x) dx = F(b) - F(a)$$
 !!!
 
 Where f(x) is the derivative of F(x) and F(x) is the antiderivative of f(x). This is an extremely important relation which is known in calculus as the **second fundamental theorem of calculus**. Where, in mathematics, the expression \(F(b) - F(a)\) is usually defined using the following notation:

@@ -1,6 +1,4 @@
-In this lesson, we will show how the inverse of a matrix can be computed using a technique known as the Gauss-Jordan (or reduced row) elimination. Computing the inverse of a matrix implies a couple of things, starting with the fact that the matrix is invertible in the first place (a matrix is not necessarily invertible). First, to be invertible, a matrix has to be a **square matrix** (it has as many rows as it has columns, for instance, 2x2, 3x3, 4x4, etc.), and also the determinant of the matrix has to be different than zero (to learn about the determinant of a matrix check the Linear Algebra lesson in the Basic section). Any matrix with a zero determinant is said to be singular (meaning it is not invertible).
-
-![](/images/matrix-inverse/mi-eq1.png)
+In this lesson, we will show how the inverse of a matrix can be derived using a technique known as the Gauss-Jordan (or reduced row) elimination method. Finding the inverse of a matrix implies a couple of things, starting with the fact that the matrix is invertible in the first place (a matrix is not necessarily invertible). First, to be invertible, a matrix has to be a **square matrix** (it has as many rows as it has columns, for instance, 2x2, 3x3, 4x4, etc.), and also the determinant of the matrix has to be different than zero (to learn about the determinant of a matrix refer to [Geometry: Matrix Operations](/lessons/mathematics-physics-for-computer-graphics/geometry/matrix-operations)). Any matrix with a zero determinant is said to be singular (meaning it is not invertible).
 
 Before we get started, remember that a matrix can be seen as a system of linear equations that can be solved using what we call [**row elementary operations**](https://en.wikipedia.org/wiki/Elementary_matrix#Operations). Row elementary operations have the property to preserve the solution set by the matrix. There are three such operations: 
 
@@ -23,15 +21,47 @@ These are illustrated with the following examples (row switching, row multiplica
 
 In the second example, we multiply all the coefficients of row 1 by 1/2 (or divide them by 2) and the coefficients of row 3 by 2. Finally, in the third example, we add the coefficients from row 1 to the coefficients of row 2. 
 
-The idea behind the Gauss-Jordan elimination is to use these elementary row operations to transform the 4x4 matrix on the left inside of the augmented matrix into the identity matrix (we say that M is row-reduced). We obtain the inverse matrix by performing the same row operations to the 4x4 identity matrix on the right inside of the augmented matrix. We say that we [augment M by identity](https://en.wikipedia.org/wiki/Augmented_matrix). 
+The idea behind the Gauss-Jordan elimination is to use these elementary row operations to transform the 4x4 matrix on the left inside of the augmented matrix into the identity matrix (we say that M is row-reduced) as shown below. We say that we [augment M by identity](https://en.wikipedia.org/wiki/Augmented_matrix). We obtain the inverse matrix by performing the same row operations to the 4x4 identity matrix on the right inside of the augmented matrix.
 
 The Gauss-Jordan elimination method works as follows:
 
 - We will start with two matrices. We want to invert the matrix \(M\) alongside another matrix that we will set at the start of the process to the identity matrix. An identity matrix is a square matrix with ones on the diagonal and zeros elsewhere (the Matrix class constructor sets the matrix to the identity matrix by default). Our matrix \(M\) is augmented. 
 
+$$
+[MI]=
+\begin{bmatrix}
+M_{11} & M_{12} & M_{13} & M_{14}\\
+M_{21} & M_{22} & M_{23} & M_{24}\\
+M_{31} & M_{32} & M_{33} & M_{34}\\
+M_{41} & M_{42} & M_{43} & M_{44}
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
 - We then have to use row elementary operations to transform the original \(M\) matrix into the identity matrix. This process is called **row reduction**. While we do so, we apply the same operations to the second matrix in parallel. 
 
 - Once the process is finished (if we have been successful in reducing \(M\) to the identity matrix), the second matrix will end up being \(M^{-1}\) our inverted matrix. At this point, you can decide to either return \(M^{-1}\) (the method named `inverse` below) or copy the inverted matrix into \(M\) (the method called `invertIt` below).
+
+$$
+[IM^{-1}]=
+\begin{bmatrix}
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+M'_{11} & M'_{12} & M'_{13} & M'_{14}\\
+M'_{21} & M'_{22} & M'_{23} & M'_{24}\\
+M'_{31} & M'_{32} & M'_{33} & M'_{34}\\
+M'_{41} & M'_{42} & M'_{43} & M'_{44}
+\end{bmatrix}
+$$
 
 ```
 Matrix44& Matrix44::invertIt()
