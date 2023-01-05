@@ -141,9 +141,11 @@ $$
 R(\hat r, \theta, p) = p \cos \theta + (\hat r \times p) \sin \theta + \hat r( \hat r \cdot p)(1 - \cos \theta)
 $$
 
-While uncommon, both techniques are used to solve problems in computer graphics from time to time. Rotations in computer graphics are also commonly done using **quaternions**. Matrices have certain limitations. For example, a problem called [gimbal lock](https://en.wikipedia.org/wiki/Gimbal_lock) occasionally occurs with matrices. A gimbal lock induces a discontinuous jump in one or more axes' orientations.
+While uncommon, both techniques are used to solve problems in computer graphics from time to time. Rotations in computer graphics are also commonly done using **quaternions**. 
 
-Matrices are also hard to interpolate, often needed in rendering to compute the motion blur of objects.
+Matrices have certain limitations. For example, a problem called [gimbal lock](https://en.wikipedia.org/wiki/Gimbal_lock) occasionally occurs with matrices. A gimbal lock induces a discontinuous jump in one or more axes' orientations.
+
+Using matrices for interpolating objects' rotations can also be a problem when simulating objects' motion blur, for which interpolating objects' transformations is required.
 
 For these reasons, quaternions are generally preferred though they are harder to understand.
 </details>
