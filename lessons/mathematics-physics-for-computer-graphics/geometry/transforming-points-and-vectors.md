@@ -83,7 +83,7 @@ As you can see, we don't need to declare a w coordinate in the Point's type. We 
 All you need to remember is that you will generally never have to care about homogeneous coordinates except when points are multiplied by a perspective projection matrix. However, you will probably not encounter this issue if you work on a ray tracer, as this particular type of matrix is not used in ray tracing. If you still need help understanding what this w coordinate is and what it is used for, check the [Perspective and Orthographic Projection Matrix](/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/) lesson in the 3D Basic Rendering section. You will learn how to project 3D points onto the image plane using perspective projection. The concept of a homogeneous point will then make more sense.
 
 When it comes to implementing this function in C++, it can be dealt with in two ways:
- 
+
 - Some developers like the code for point-matrix multiplication to always compute a value for w' and divide the coordinates of the transformed points by the value of w' if it is different than 1. However, this is only useful when we multiply points by projection matrices which is rare (particularly in raytracers). In 99% of cases, computing w' and checking if it is different than 1 wastes CPU time. 
 
 - One might ignore w and w' and assume the point-matrix multiplication code will be used with matrices whose fourth column is always set to (0, 0, 0, 1). When dealing with the particular case of projection matrices, you can always create a second function that will compute w' and divide x' y' and z' by w's value. 
@@ -141,7 +141,9 @@ $$
 R(\hat r, \theta, p) = p \cos \theta + (\hat r \times p) \sin \theta + \hat r( \hat r \cdot p)(1 - \cos \theta)
 $$
 
-While uncommon, both techniques are used to solve problems in computer graphics from time to time. Rotations in computer graphics are also commonly done using **quaternions**. Matrices have certain limitations, most notably with rotations greater than 360 degrees. This can lead to a problem known as the [gimbal lock](https://en.wikipedia.org/wiki/Gimbal_lock).
+While uncommon, both techniques are used to solve problems in computer graphics from time to time. Rotations in computer graphics are also commonly done using **quaternions**. Matrices have certain limitations. For example, a problem called [gimbal lock](https://en.wikipedia.org/wiki/Gimbal_lock) occasionally occurs with matrices. A gimbal lock induces a discontinuous jump in one or more axes' orientations.
 
-Matrices are also hard to interpolate, often needed in rendering to compute the motion blur of objects. For this reason, quaternions are generally preferred though they are harder to understand. A lesson is devoted to the topic of quaternions alone.
+Matrices are also hard to interpolate, often needed in rendering to compute the motion blur of objects.
+
+For these reasons, quaternions are generally preferred though they are harder to understand.
 </details>
