@@ -21,7 +21,7 @@ These are illustrated with the following examples (row switching, row multiplica
 
 In the second example, we multiply all the coefficients of row 1 by 1/2 (or divide them by 2) and the coefficients of row 3 by 2. Finally, in the third example, we add the coefficients from row 1 to the coefficients of row 2. 
 
-The idea behind the Gauss-Jordan elimination is to use these elementary row operations to transform the 4x4 matrix on the left inside of the augmented matrix into the identity matrix (we say that M is row-reduced) as shown below. We say that we [augment M by identity](https://en.wikipedia.org/wiki/Augmented_matrix). We obtain the inverse matrix by performing the same row operations to the 4x4 identity matrix on the right inside of the augmented matrix.
+The idea behind the Gauss-Jordan elimination is to use these elementary row operations to transform the 4x4 matrix on the left inside of the augmented matrix into the identity matrix (we say that M is row-reduced), as shown below. We say that we [augment M by identity](https://en.wikipedia.org/wiki/Augmented_matrix). We obtain the inverse matrix by performing the same row operations to the 4x4 identity matrix on the right inside of the augmented matrix.
 
 The Gauss-Jordan elimination method works as follows:
 
@@ -100,19 +100,19 @@ If we can't find another value for the pivot coefficient (that is, if all the ot
 If the current column we are processing has a valid pivot coefficient, we can proceed to the next step.
 
 ```
-Matrix<T, N>& invertIt() 
+Matrix4<T>& invertIt() 
 { 
-    Matrix<T, N> inv; 
-    for (unsigned column = 0; column < N; ++column) { 
+    Matrix4<T> inv; 
+    for (uint32_t column = 0; column < 4; ++column) { 
         // Swap row in case our pivot point is not working
         if (m[column][column] == 0) { 
-            size_t big = column; 
-            for (unsigned row = 0; row < N; ++row) 
+            uint32_t big = column; 
+            for (uint32_t row = 0; row < 4; ++row) 
                 if (fabs(m[row][column]) > fabs(m[big][column])) big = row; 
             // Print this as a singular matrix, return identity?
             if (big == column) fprintf(stderr, "Singular matrix\n"); 
             // Swap rows                               
-            else for (unsigned j = 0; j < N; ++j) { 
+            else for (uint32_t j = 0; j < 4; ++j) { 
                 std::swap(m[column][j], m[big][j]); 
                 std::swap(inv[column][j], inv[big][j]); 
             } 
@@ -122,51 +122,53 @@ Matrix<T, N>& invertIt()
 } 
 ```
 
-## Step 2: Set Each Coefficient In The Column To 0
+## Step 2: Eliminate All Numbers Under the Diagonal Element
 
-The Gauss-Jordan elimination method at this step processes the column one by one from left to right. We will row-reduce each coefficient of each column apart from the pivot coefficients, which we won't touch for now. In order, \(M_{21}\) (we skip \(M_{11}\) since it's a pivot coefficient), \(M_{31}\), \(M_{41}\), then \(M_{12}\) (we skip \(M_{22}\) since it's a pivot coefficient), \(M_{32}\), \(M_{42}\), etc. until \(M_{34}\) (we skip \(M_{44}\) since it's a pivot coefficient).
+The Gauss-Jordan elimination method at this step processes the column one by one from left to right.
+
+In this step, we will first row-reduce the coefficients (in other words, eliminate the numbers) of each column apart under the column pivot coefficient, which we won't touch for now. In order, \(M_{21}\) (we skip \(M_{11}\) since it's a pivot coefficient), \(M_{31}\), \(M_{41}\), then \(M_{32}\) (we skip \(M_{22}\) since it's a pivot coefficient), \(M_{42}\), and finally  \(M_{32}\. There is no coefficient under \(M_{44}\) so note that we can skip the last column. We are about to eliminate the numbers in green in the below matrix.
 
 $$
 \begin{bmatrix}
 pivot  & M_{12} & M_{13} & M_{14}\\
-M_{21} & pivot  & M_{23} & M_{24}\\
-M_{31} & M_{32} & pivot  & M_{34}\\
-M_{41} & M_{42} & M_{34} & pivot
+\color{green}{M_{21}} & pivot  & M_{23} & M_{24}\\
+\color{green}{M_{31}} & \color{green}{M_{32}} & pivot  & M_{34}\\
+\color{green}{M_{41}} & \color{green}{M_{42}} & \color{green}{M_{34}} & pivot
 \end{bmatrix}
 $$
 
 Now, remember that we can only use **row elementary operations**. That means you can only modify one single coefficient through a series of operations on that coefficient by changing all the other coefficients from the same row with the same set of operations. If you don't do so, you do not preserve the solution set by the matrix. That's the condition by which **row-reduction** works. Do whatever you want to your coefficient, as long you process all the coefficients in the row that this coefficient is on with the same set of row elementary operations. You can multiply all the coefficients in a row by the same constant and swap rows, and add the coefficients of a given row to those of another row.
 
-Let's see how this works in practice. Let's imagine we are about to process the second column. Let's begin with the first coefficient \(\textcolor{red}{M_{12}}\). Let's call it @@\rJoe@@. Let's imagine that @@\rJoe@@'s value is 2. Now, remember that the goal is to somehow make @@\rJoe@@ 0 using one or a combination of the three possible row elementary operations. To make @@\rJoe@@ 0, we should subtract the value 2. That's pretty elementary, but how? Imagine that the coefficient \(\textcolor{blue}{M_{22}}\), the coefficient right below @@\rJoe@@, is equal to 4. Note that coincidentally, \(\textcolor{blue}{M_{22}}\) is also @@\rJoe@@'s column pivote coefficient. @@\rJoe@@ is in column 2, and the pivot coefficient of column 2 is \(\textcolor{blue}{M_{22}}\). 
+Let's see how this works in practice. Let's imagine we are about to process the first column. Let's begin with the first coefficient \(\textcolor{red}{M_{21}}\) (remember we skip the pivot coefficient, so we ignore \(M_{11}}\) for now). Let's call it @@\rJoe@@. Let's imagine that @@\rJoe@@'s value is 2. Now, remember that the goal is to somehow make @@\rJoe@@ 0 using one or a combination of the three possible row elementary operations. To make @@\rJoe@@ 0 (in other words, "eliminate" @@\rJoe@@), we should subtract the value 2. That's pretty elementary, but how? Imagine that the coefficient \(\textcolor{blue}{M_{11}}\), the coefficient above @@\rJoe@@, is equal to 4. Note that coincidentally, \(\textcolor{blue}{M_{11}}\) is also @@\rJoe@@'s column pivot coefficient. @@\rJoe@@ is in column 1, and the pivot coefficient of column 1 is \(\textcolor{blue}{M_{11}}\). 
 
 $$
 \begin{bmatrix}
-M_{11} & \textcolor{red}{M_{12}} & M_{13} & M_{14}\\
-M_{21} & \textcolor{blue}{M_{22}} & M_{23} & M_{24}\\
+\textcolor{blue}{M_{11} & M_{12} & M_{13} & M_{14}\\
+\textcolor{red}{M_{21} & M_{22} & M_{23} & M_{24}\\
 M_{31} & M_{32} & M_{33} & M_{34}\\
 M_{41} & M_{42} & M_{34} & M_{44}
 \end{bmatrix}
 \;=\;
 \begin{bmatrix}
-x & \textcolor{red}{2} & x & x\\
-x & \textcolor{blue}{4} & x & x\\
+\textcolor{blue}{4} & x & x & x\\
+\textcolor{red}{2} & x & x & x\\
 x & x & x & x\\
 x & x & x & x
 \end{bmatrix}
 \;=\;
 \begin{bmatrix}
-x & \textcolor{red}{Joe} & x & x\\
-x & \textcolor{blue}{pivot} & x & x\\
+\textcolor{blue}{pivot}  & x & x & x\\
+\textcolor{red}{Joe} & x & x & x\\
 x & x & x & x\\
 x & x & x & x
 \end{bmatrix}
 $$
 
-Operation 3 says that we can add coefficients of any of the matrix rows to our current row coefficients. If we use the coefficient of the row that is just below @@\rJoe@@, \(\textcolor{blue}{M_{22}}\) (which we know is equal to 4), we get 6:
+Operation 3 says that we can add coefficients of any of the matrix rows to our current row coefficients. If we use the coefficient of the row that is above @@\rJoe@@, \(\textcolor{blue}{M_{11}}\) (which we know is equal to 4), we get 6:
 
 $$2 + 4 = 6$$
 
-That's different from what we are looking for. However, remember that operation 2 says that you can also multiply the coefficients of a row by a constant. Let's imagine that this constant for now is -1. If we multiply \(\textcolor{blue}{M_{22}}\) by this constant, we get:
+That's different from what we are looking for. However, remember that operation 2 says that you can also multiply the coefficients of a row by a constant. Let's imagine that this constant, for now, is -1. If we multiply \(\textcolor{blue}{M_{11}}\) by this constant, we get:
 
 $$2 + -1 * 4 = -2$$
 
@@ -174,126 +176,210 @@ Not yet 0, but we are getting a step closer. What if our constant was equal to \
 
 $$2 - \frac{2}{4}4 = 0$$
 
-Now we canceled out the value of coefficient \(\textcolor{red}{M_{12}}\) and made it 0. Maybe you have noticed that 2 is the value of the coefficient \(\textcolor{red}{M_{12}}\) itself (Joe) and 4 is the value of the coefficient \(\textcolor{blue}{M_{22}}\), which happens to be the pivot coefficient of the second column, the column than Joe belongs to.
+Now we canceled out the value of coefficient \(\textcolor{red}{M_{21}}\) and made it 0. Maybe you have noticed that 2 is the value of the coefficient \(\textcolor{red}{M_{21}}\), Joe itself, and 4 is the value of the coefficient \(\textcolor{blue}{M_{11}}\), which happens to be the pivot coefficient of the first column, the column than Joe belongs to.
 
-Keep in mind that the operations we applied to Joe also need to be applied to all the coefficients of the row Joe belongs to. That's the rule if you are to use row-elementary operations. So every coefficient on the row that the coefficient being canceled out belongs to needs to receive the same treatment as the one given to that coefficient (Joe). Like so for our Joe example:
+Remember that the operations we applied to Joe also need to be applied to all the coefficients of the row Joe belongs to. That's the rule if you are to use row-elementary operations. So every coefficient on the row that the coefficient being canceled out belongs to needs to receive the same treatment as the one given to that coefficient (Joe). Like so for our Joe example:
 
 $$
 \begin{array}{l}
-M_{11} &-=& k * M_{21},\\
-\textcolor{red}{M_{12}} &-=& k * M_{22},\\
-M_{13} &-=& k * M_{23},\\
-M_{14} &-=& k * M_{24}.
+\textcolor{red}{M_{21}} &-=& k * M_{11},\\
+M_{22} &-=& k * M_{12},\\
+M_{23} &-=& k * M_{13},\\
+M_{24} &-=& k * M_{14}.
 \end{array}
 $$
 
 With:
 
-$$k = -\frac{\textcolor{red}{M_{12}}}{\textcolor{blue}{M_{22}}}$$
+$$k = -\frac{\textcolor{red}{M_{21}}}{\textcolor{blue}{M_{11}}}$$
 
 Let's now generalize:
 
 !!!
-- For every coefficient in \(M_{ij}\) in the matrix where \(i\) is the coefficient's row and \(j\) its column that is not a pivot coefficient (proceeding in order through the columns first, and then for each column from top to bottom).
-- Create a constant \(k\) that's made up of \(M_{ij}\) divided by the pivot coefficient of the column \(i\): \(M_{ii}\). If you process \(M_{12}\) (row 1, column 2), then use the pivot coefficient \(M_{22}\) (column 2). If you process \(M_{14}\) (row 1, column 4), then use the pivot coefficient \(M_{44}\) (column 4). Etc.
-- Negate that number. 
-- Multiply the coefficients of row **\(j\)** (note that \(j\) is the coefficient \(M_{ij}\)'s column) by the constant \(k\). That's allowed by operation 2. We always pick row \(j\) for this operation where again \(j\) is \(M_{ij}\)'s column. If you process \(M_{12}\) (row 1, column 2), then use the coefficients from row 2. If you process \(M_{14}\) (row 1, column 4), then use the coefficients from row 4. Etc.
-- And finally, add the weighted coefficients from row \(j\) to the coefficients of row \(i\) (\(M_{ij}\)'s row). That's allowed by operation 3.
+- For every coefficient \(M_{ij}\) in the matrix under the pivot \(M_{ii}\), where \(i\) is the coefficient's row and \(j\) its column, proceeding in order through the columns first, and then for each column from top to bottom.
+- Create a constant \(k\) that's made up of \(M_{ij}\) divided by the pivot coefficient of the row above \(M_{ij}\), \(i-1\): \(M_{(i-1)(i-1)}\). If you process \(M_{21}\) (row 2, column 1), then use the pivot coefficient of the first row \(M_{11}\). If you process \(M_{32}\) (row 3, column 2), then use the pivot coefficient \(M_{22}\) (row 2). Etc.
+- Negate that number. Let's call this number \(k\).
+- Add the coefficients from row \(j\) multiplied by \(k\) to the coefficients of row \(i\) (\(M_{ij}\)'s row). That's allowed by operation 3.
 - \(M_{ij}\) is now equal to 0.
 !!!
 
-Keep in mind that we loop through the columns first (we loop through \(j\)) and that for each column, we process the coefficients from top to bottom (for each given \(j\), we loop through \(i\)), and skip the column's pivot coefficient (when \(i == j\)).
+Keep in mind that we loop through the columns first (we loop through \(j\)) and that for each column, we process the coefficients under the pivot for that column from top to bottom (for each given \(j\), we loop through \(i\)), and skip the column's pivot coefficient (when \(i == j\)).
 
-And the end of this process, all of these coefficients should be equal to 0 (except the pivot coefficients, of course).
+And the end of this process, all of these coefficients **under the diagonal** should be equal to 0 (except the pivot coefficients, of course).
 
 In C++ code, we get the following:
 
 ```
-// go left to right
-for (unsigned column = 0; column < N; ++column) {
+// Go left to right. No need to process the last column since
+// there's no coefficient under pivot m[3][3].
+for (uint32_t column = 0; column < 3; ++column) {
 ...
     // Make each row in column = 0. Proceed top to bottom
-    for (unsigned row = 0; row < N; ++row) { 
-         // skip pivot coefficients
-		if (row != column) {
-            // that's our constant k
-            T coeff = m[row][column] / m[column][column]; 
-            if (coeff != 0) { 
-                for (unsigned j = 0; j < N; ++j) {
-                    m[row][j] -= coeff * m[column][j]; 
-                    inv[row][j] -=  coeff * inv[column][j]; 
-                } 
-                // Set the element to 0 for safety
-                m[row][column] = 0; 
+    for (uint32_t row = column + 1; row < 4; ++row) {
+			// that's our constant k
+            T constant = m[row][column] / m[column][column]; 
+			// process each coefficient on the current row
+            for (uint32_t j = 0; j < 4; ++j) {
+				m[row][j] -= constant * m[column][j]; 
+                inv[row][j] -= constant * inv[column][j]; 
             } 
+            // Set the element to 0 for safety
+            m[row][column] = 0; 
         } 
     }
 }
 ```
 
-Note how we apply the same operations to the right-hand side of the augmented matrix.
+Note how we apply the same operations to the right-hand side of the augmented matrix. This step is called the **forward substitution** step. Our matrix should now look like this:
+
+$$
+\begin{bmatrix}
+pivot & x & x & x\\
+0 & pivot & x & x\\
+0 & 0 pivot x & x\\
+0 & 0 & 0 & pivot
+\end{bmatrix}
+$$
 
 ## Step 3: Scale All The Pivots Coefficients To 1
 
-At the end of step 2, all the matrix coefficients should be 0 except the pivots coefficients which we need to set to 1. To do so, we need to scale the coefficients by their value. Similarly to what we have done in step 2, we will loop over each row, then each column, and divide the current coefficient by the pivot coefficient value of the current row:
+We can now set the pivot coefficients to 1. To do so, we need to scale the coefficients by their value. Similarly to what we have done in step 2, we will loop over each row, then each column, and divide the current coefficient by the pivot coefficient value for the current row. Let's remember to apply the same operation to the inverted matrix.
 
 ```
-for (unsigned row = 0; row < N; ++row) { 
-    for (unsigned column = 0; column < N; ++column) { 
-        mat.m[row][column] /= m[row][row]; 
+for (uint32_t row = 0; row < 4; ++row) {
+	float divisor = m[row][row];
+    for (uint32_t column = 0; column < 4; ++column) { 
+        m[row][column] = m[row][column] / divisor;
+		inv[row][column] = inv[row][column]  / divisor;
     } 
 } 
 ```
+
+Our matrix should now look like this:
+
+$$
+\begin{bmatrix}
+1 & x & x & x\\
+0 & 1 & x & x\\
+0 & 0 1 x & x\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+## Step 4 (and Final): Eliminate All Numbers Above the Diagonal
+
+We are left with eliminating the numbers above the diagonal. The process here is simpler than in step 2. We will subtract the coefficient itself from the coefficient we wish to eliminate (reduce to 0). As with step 2, we can only do so by using one of the three possible row operations. We will use operation 3: replacing the row with the sum of its elements and another row's elements (multiplied by some constant). For the constant part, we will choose the coefficient we are eliminating (the one we called @@\rJoe@@ before). If this coefficient (@@\rJoe@@) is \(M_{ij}\) where as usual \(i\) is the row index and \(j\) the column index, we will add the coefficients of row \(j\) multiplied by \(-M_{ij}\) to the coefficients of row \(i\). In code, this gives the following:
+
+```
+// for each row
+for (uint32_t row = 0; row < 4; ++row) {
+	// for each coefficient above the diagonal for this row
+	for (uint32_t column = row + 1; column < 4; ++column) {
+		T constant = m[row][column];
+		for (uint32_t k = 0; k < 4; ++k) {
+			m[row][k] -= m[column][k] * constant;
+			inv[row][k] -= inv[column][k] * constant;
+		}
+		// in case of a round-off error
+		m[row][column] = 0.f;
+	}
+}
+
+``` 
+
+This step is sometimes called **backward substitution**. Note that we step through the rows and then through the columns this time. This is because we only process the elements of the matrix that are above the diagonal. Either way, you can process the column from left to right (our example) or right to left. The maths work here because we have already set the matrix elements above the diagonal to 0 (which is why we can't apply this method in step 2).
 
 Finally, we set the result of the current matrix with the result of our right inside matrix (`inv` in the code). We have inverted the matrix using the Gauss-Jordan elimination technique.
 
 Here is the complete code of the method:
 
 ```
-Matrix<T, N>& invertIt() 
-{ 
-    Matrix<T, N> inv; 
-    for (unsigned column = 0; column < N; ++column) { 
-        // Swap row in case our pivot point is not working
-        if (m[column][column] == 0) { 
-            unsigned big = column; 
-            for (unsigned row = 0; row < N; ++row) 
-                if (fabs(m[row][column]) > fabs(m[big][column])) big = row; 
-            // Print this as a singular matrix, return identity?
-            if (big == column) fprintf(stderr, "Singular matrix\n"); 
-            // Swap rows                               
-            else for (unsigned j = 0; j < N; ++j) { 
-                std::swap(m[column][j], m[big][j]); 
-                std::swap(inv[column][j], inv[big][j]); 
-            } 
-        } 
-        // Make each row in the column equal to 0  
-        for (unsigned row = 0; row < N; ++row) { 
-            if (row != column) { 
-                T coeff = m[row][column] / m[column][column]; 
-                if (coeff != 0) { 
-                    for (unsigned j = 0; j < N; ++j) { 
-                        m[row][j] -= coeff * m[column][j]; 
-                        inv[row][j] -= coeff * inv[column][j]; 
-                    } 
-                    // Set the element to 0 for safety
-                    m[row][column] = 0; 
-                } 
-            } 
-        } 
-    } 
-    // Set each element of the diagonal to 1
-    for (unsigned row = 0; row < N; ++row) { 
-        for (unsigned column = 0; column < N; ++column) { 
-            inv[row][column] /= m[row][row]; 
-        } 
-    } 
-    *this = inv;
+Matrix4 Matrix4::Inverse() const
+{
+    Matrix4 s;
+    Matrix4 t(*this);
 
-    return *this; 
-} 
+    // Forward elimination
+    for (uint32_t i = 0; i < 3; i++) {
+		
+		// Step 1: Choose a pivot
+        uint32_t pivot = i;
+
+        float pivotsize = t[i][i];
+
+        if (pivotsize < 0) pivotsize = -pivotsize;
+
+        for (uint32_t j = i + 1; j < 4; j++) {
+            float tmp = t[j][i];
+
+            if (tmp < 0) tmp = -tmp;
+
+            if (tmp > pivotsize) {
+                pivot = j;
+                pivotsize = tmp;
+            }
+        }
+
+        if (pivotsize == 0) { return Matrix4(); }
+
+        if (pivot != i) {
+            for (uint32_t j = 0; j < 4; j++) {
+                float tmp;
+
+                tmp = t[i][j];
+                t[i][j] = t[pivot][j];
+                t[pivot][j] = tmp;
+
+                tmp = s[i][j];
+                s[i][j] = s[pivot][j];
+                s[pivot][j] = tmp;
+            }
+        }
+
+		// Step 2: eliminate all the numbers below the diagonal
+        for (uint32_t j = i + 1; j < 4; j++) {
+            float f = t[j][i] / t[i][i];
+
+            for (uint32_t k = 0; k < 4; k++) {
+                t[j][k] -= f * t[i][k];
+                s[j][k] -= f * s[i][k];
+            }
+			// Set the column value to exactly 0 in case
+			// numeric roundoff left it a very tiny number
+			t[j][i] = 0.f;
+        }
+    }
+	
+	// Step 3: set elements along the diagonal to 1.0
+	for (uint32_t i = 0; i < 4; i++) {
+		float divisor = t[i][i];
+		for (uint32_t j = 0; j < 4; j++) {
+			t[i][j] = t[i][j] / divisor;
+			s[i][j] = s[i][j] / divisor;
+		}
+		// set the diagonal to 1.0 exactly to avoid
+		// possible round-off error
+		t[i][i] = 1.f;
+	}
+
+	// Step 4: eliminate all the numbers above the diagonal
+	for (uint32_t i = 0; i < 3; i++) {
+		for (uint32_t j = i + 1; j < 4; j++) {
+			float constant = t[i][j];
+			for (uint32_t k = 0; k < 4; k++) {
+				t[i][k] -= t[j][k] * constant;
+				s[i][k] -= s[j][k] * constant;
+			}
+			t[i][j] = 0.f;	// in case of round-off error
+		}
+	}
+
+    return s;
+}
 ```
 
 ## What's Next?
 
 There are two other popular methods to compute the inverse of a matrix. One is similar to the described technique and combines forward elimination and backward substitution. The second technique is based on computing determinants and will be explained in a future revision of this lesson.
+
+Check the lesson in the Intermediate Rendering Section called "Warm Up Lap: Reviewing Projections" in which we look into how various libraries, such as Imath, implement matrix inversion.

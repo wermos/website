@@ -4,7 +4,7 @@ First, the details:
 
 - CG cameras have a near and far clipping plane. Objects closer than the near-clipping plane or farther than the far-clipping plane are invisible to the camera. They can exclude some of a scene's geometry and render only certain portions of the scene. They are necessary for rasterization to work.
 - In this chapter, we will also see why in CG, the image plane is positioned in front of the camera's aperture rather than behind, as with real pinhole cameras. This plays an important role in how cameras are conventionally defined in CG.
-- Finally, we must look into how we can render a scene from any given viewpoint. We discussed this in the previous lesson, but this point will be briefly covered in this chapter.
+- Finally, we must look into how we can render a scene from any given viewpoint. We discussed this in the previous lesson, but this chapter will briefly cover this point.
 
 The important question we haven't looked into yet (asked and answered) is, "studying real cameras to understand how they work is great, but how is the camera model being used to produce images?". We will show in this chapter that the answer to this question depends on whether we use the rasterization or ray-tracing rendering technique.
 
@@ -20,7 +20,7 @@ Defining our virtual camera that way shows us more clearly how constructing an i
 
 ## Near and Far Clipping Planes and the Viewing Frustum
 
-The **near** and **far clipping** planes are virtual planes located in front of the camera and parallel to the image plane (the plane in which the image is contained). The location of each clipping plane is measured along the camera's line of sight (the camera's local z-axis). They are used in most virtual camera models and have no equivalent in the real world. Objects closer than the near-clipping plane or farther than the far-clipping plane are invisible to the camera. Scanline renderers using the z-buffer algorithm, such as OpenGL, need these clipping planes to control the range of depth values over which the objects' depth coordinates are remapped when points from the scene are projected onto the image plane (and this is their primary if only function). Without getting into too many details, adjusting the near and far clipping planes can also help resolve precision issues with this type of renderer. The next lesson will find more information on this problem known as z-fighting. In ray tracing, clipping planes are not required by the algorithm to work and are generally not used.
+The **near** and **far clipping** planes are virtual planes located in front of the camera and parallel to the image plane (the plane in which the image is contained). The location of each clipping plane is measured along the camera's line of sight (the camera's local z-axis). They are used in most virtual camera models and have no equivalent in the real world. Objects closer than the near-clipping plane or farther than the far-clipping plane are invisible to the camera. Scanline renderers using the z-buffer algorithm, such as OpenGL, need these clipping planes to control the range of depth values over which the objects' depth coordinates are remapped when points from the scene are projected onto the image plane (and this is their primary if only function). Adjusting the near and far clipping planes without getting into too many details can also help resolve precision issues with this type of renderer. The next lesson will find more information on this problem known as z-fighting. In ray tracing, clipping planes are not required by the algorithm to work and are generally not used.
 
 ![Figure 2: any object contained within the viewing frustum is visible.](/images/cameras/frustum.png?)
 
@@ -110,7 +110,7 @@ Before we do so, let's briefly recall the principle of a pinhole camera again. W
 
 This is how things work with a real pinhole camera. But how does it work in CG? In CG, cameras are built on the principle of a pinhole camera, but the image plane is in front of the center of projection (the aperture, which in our virtual camera model we prefer to call the eye), as shown in Figure 11. How the image is produced with this virtual pinhole camera model depends on the rendering technique. First, let's consider the two main visibility algorithms: rasterization and ray tracing.
 
-### Rasterisation
+### Rasterization
 
 ![Figure 11: perspective projection of 3D points onto the image plane.](/images/cameras/pinholecam4.png?)
 
