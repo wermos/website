@@ -287,7 +287,7 @@ for (uint32_t row = 0; row < 4; ++row) {
 
 ``` 
 
-This step is sometimes called **backward substitution**. Note that we step through the rows and then through the columns this time. This is because we only process the elements of the matrix that are above the diagonal. Either way, you can process the column from left to right (our example) or right to left. The maths work here because we have already set the matrix elements above the diagonal to 0 (which is why we can't apply this method in step 2).
+This step is sometimes called **backward substitution**. Note that we step through the rows and then through the columns this time. This is because we only process the elements of the matrix that are above the diagonal. Either way, you can process the column from left to right (our example) or right to left. The maths work here because we have already set the matrix elements below the diagonal to 0 (which is why we can't apply this method in step 2).
 
 Finally, we set the result of the current matrix with the result of our right inside matrix (`inv` in the code). We have inverted the matrix using the Gauss-Jordan elimination technique.
 
