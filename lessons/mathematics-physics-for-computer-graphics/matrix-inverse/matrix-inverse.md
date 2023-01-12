@@ -126,25 +126,25 @@ Matrix4<T>& invertIt()
 
 The Gauss-Jordan elimination method at this step processes the column one by one from left to right.
 
-In this step, we will first row-reduce the coefficients (in other words, eliminate the numbers) of each column apart under the column pivot coefficient, which we won't touch for now. In order, \(M_{21}\) (we skip \(M_{11}\) since it's a pivot coefficient), \(M_{31}\), \(M_{41}\), then \(M_{32}\) (we skip \(M_{22}\) since it's a pivot coefficient), \(M_{42}\), and finally  \(M_{32}\. There is no coefficient under \(M_{44}\) so note that we can skip the last column. We are about to eliminate the numbers in green in the below matrix.
+In this step, we will first row-reduce the coefficients (in other words, eliminate the numbers) of each column apart under the column pivot coefficient, which we won't touch for now. In order, \(M_{21}\) (we skip \(M_{11}\) since it's a pivot coefficient), \(M_{31}\), \(M_{41}\), then \(M_{32}\) (we skip \(M_{22}\) since it's a pivot coefficient), \(M_{42}\), and finally  \(M_{32}\). There is no coefficient under \(M_{44}\) so note that we can skip the last column. We are about to eliminate the numbers in green in the below matrix.
 
 $$
 \begin{bmatrix}
 pivot  & M_{12} & M_{13} & M_{14}\\
 \color{green}{M_{21}} & pivot  & M_{23} & M_{24}\\
 \color{green}{M_{31}} & \color{green}{M_{32}} & pivot  & M_{34}\\
-\color{green}{M_{41}} & \color{green}{M_{42}} & \color{green}{M_{34}} & pivot
+\color{green}{M_{41}} & \color{green}{M_{42}} & \color{green}{M_{43}} & pivot
 \end{bmatrix}
 $$
 
 Now, remember that we can only use **row elementary operations**. That means you can only modify one single coefficient through a series of operations on that coefficient by changing all the other coefficients from the same row with the same set of operations. If you don't do so, you do not preserve the solution set by the matrix. That's the condition by which **row-reduction** works. Do whatever you want to your coefficient, as long you process all the coefficients in the row that this coefficient is on with the same set of row elementary operations. You can multiply all the coefficients in a row by the same constant and swap rows, and add the coefficients of a given row to those of another row.
 
-Let's see how this works in practice. Let's imagine we are about to process the first column. Let's begin with the first coefficient \(\textcolor{red}{M_{21}}\) (remember we skip the pivot coefficient, so we ignore \(M_{11}}\) for now). Let's call it @@\rJoe@@. Let's imagine that @@\rJoe@@'s value is 2. Now, remember that the goal is to somehow make @@\rJoe@@ 0 using one or a combination of the three possible row elementary operations. To make @@\rJoe@@ 0 (in other words, "eliminate" @@\rJoe@@), we should subtract the value 2. That's pretty elementary, but how? Imagine that the coefficient \(\textcolor{blue}{M_{11}}\), the coefficient above @@\rJoe@@, is equal to 4. Note that coincidentally, \(\textcolor{blue}{M_{11}}\) is also @@\rJoe@@'s column pivot coefficient. @@\rJoe@@ is in column 1, and the pivot coefficient of column 1 is \(\textcolor{blue}{M_{11}}\). 
+Let's see how this works in practice. Let's imagine we are about to process the first column. Let's begin with the first coefficient \(\textcolor{red}{M_{21}}\) (remember we skip the pivot coefficient, so we ignore \(M_{11}\) for now). Let's call it @@\rJoe@@. Let's imagine that @@\rJoe@@'s value is 2. Now, remember that the goal is to somehow make @@\rJoe@@ 0 using one or a combination of the three possible row elementary operations. To make @@\rJoe@@ 0 (in other words, "eliminate" @@\rJoe@@), we should subtract the value 2. That's pretty elementary, but how? Imagine that the coefficient \(\textcolor{blue}{M_{11}}\), the coefficient above @@\rJoe@@, is equal to 4. Note that coincidentally, \(\textcolor{blue}{M_{11}}\) is also @@\rJoe@@'s column pivot coefficient. @@\rJoe@@ is in column 1, and the pivot coefficient of column 1 is \(\textcolor{blue}{M_{11}}\). 
 
 $$
 \begin{bmatrix}
-\textcolor{blue}{M_{11} & M_{12} & M_{13} & M_{14}\\
-\textcolor{red}{M_{21} & M_{22} & M_{23} & M_{24}\\
+\textcolor{blue}{M_{11}} & M_{12} & M_{13} & M_{14}\\
+\textcolor{red}{M_{21}} & M_{22} & M_{23} & M_{24}\\
 M_{31} & M_{32} & M_{33} & M_{34}\\
 M_{41} & M_{42} & M_{34} & M_{44}
 \end{bmatrix}
@@ -236,7 +236,7 @@ $$
 \begin{bmatrix}
 pivot & x & x & x\\
 0 & pivot & x & x\\
-0 & 0 pivot x & x\\
+0 & 0 & pivot & x & x\\
 0 & 0 & 0 & pivot
 \end{bmatrix}
 $$
@@ -291,7 +291,7 @@ This step is sometimes called **backward substitution**. Note that we step throu
 
 Finally, we set the result of the current matrix with the result of our right inside matrix (`inv` in the code). We have inverted the matrix using the Gauss-Jordan elimination technique.
 
-Here is the complete code of the method:
+Here is the complete code for the method:
 
 ```
 Matrix4 Matrix4::Inverse() const
