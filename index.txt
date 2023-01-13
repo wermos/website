@@ -30,7 +30,7 @@ mathematics-physics-for-computer-graphics/fourier-transform/*
 3d-basic-rendering/introduction-acceleration-structure/*
 3d-basic-rendering/volume-rendering-for-developers/*
 
-@3D Rendering for Beginning: A Review&Before moving on to the next section (intermediate 3D rendering), let's review the essential concepts that we have learned so far. We will do so through a series of exercises and challenges that we will give you and for which answers/solutions will also be provided. Additionally, we will use these exercises to get acquainted with some popular 3D math libraries such as Imath, glm or glh. Studying libraries is a methodology we use to improve and consolidate our knowledge. The concepts from the basic 3D rendering section are probably worth a year of study. Look at these lessons as either an exam or a way of getting back into work after a summer break.
+@3D Rendering for Beginning: A Review&Before moving on to the next section (intermediate 3D rendering), let's review the essential concepts that we have learned so far. We will do so through a series of exercises and challenges for you to do (answers/solutions provided). Check the first lesson to read more...
 
 3d-basic-rendering-review/your-mission/*
 3d-basic-rendering-review/3d-projections-review/*
