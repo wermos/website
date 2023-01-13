@@ -380,6 +380,6 @@ Matrix4 Matrix4::Inverse() const
 
 ## What's Next?
 
-There are two other popular methods to compute the inverse of a matrix. One is similar to the described technique and combines forward elimination and backward substitution. The second technique is based on computing determinants and will be explained in a future revision of this lesson.
+There is one other popular method to compute the inverse of a matrix. It is based on computing determinants and will be explained in a future revision of this lesson.
 
 Check the lesson in the Intermediate Rendering Section called "Warm Up Lap: Reviewing Projections" in which we look into how various libraries, such as Imath, implement matrix inversion.
