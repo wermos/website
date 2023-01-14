@@ -30,7 +30,7 @@ mathematics-physics-for-computer-graphics/fourier-transform/*
 3d-basic-rendering/introduction-acceleration-structure/*
 3d-basic-rendering/volume-rendering-for-developers/*
 
-@3D Rendering for Beginning: A Review&Before moving on to the next section (intermediate 3D rendering), let's review the essential concepts that we have learned so far. We will do so through a series of exercises and challenges for you to do (answers/solutions provided). Check the first lesson to read more...
+@3D Rendering for Beginners: Review&Before moving on to the next section (intermediate 3D rendering), let's review the essential concepts that we have learned so far. We will do so through a series of exercises and challenges for you to do (answers/solutions provided). Check the first lesson to read more...
 
 3d-basic-rendering-review/your-mission/*
 3d-basic-rendering-review/3d-projections-review/*
