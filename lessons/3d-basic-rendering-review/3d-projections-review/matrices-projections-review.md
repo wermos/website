@@ -43,11 +43,11 @@ This is a good starting point and opportunity to try explaining the process agai
   
 - **Now comes the time to render the 3D scene as viewed through the camera**. To do so, we will apply the `world-to-camera` matrix to the scene's vertices. The `world-to-camera` is the `camera-to-world` inverse matrix. You can look at the process as if we were moving the entire scene, the objects and the camera included, to put the camera back into its default position and orientation. Note that in the process, as the objects' vertices are moving with the camera, what you see through the camera doesn't change. For example, if you hold an object in front of your mobile phone and move around, as the object moves with the camera, it will not move in the frame. This is illustrated in the short video below.
 
-![])(/images/projecting-3Dpoints-review/proj-review-world-to-cam-example.mp4)
-
   Yes, sure, it may seem like a lot of calculations, but there is a reason why we do so. That is because projecting points onto the camera's image plane becomes very simple when we are in that configuration. It is reduced to simply dividing the vertices' x and y coordinates by their respective z coordinates. This is known as the **z or perspective divide** -- a fundamental process in creating CG images. Again projecting a point onto the camera screen is reduced to two simple divisions. And how do we move "the entire world's geometry" into camera space? By transforming the objects' vertices in world space with the `world-to-camera` matrix, of course (the inverse of the `camera-to-world` matrix).
   
   Now, there's a reason why we use a perspective projection matrix rather than simply dividing the points' x and y coordinates by their respective z-coordinate. The perspective projection not only does the z-divide for us but also encodes in the projection process the camera field of view, the image aspect ratio (and additionally remaps the depth of the point with respect to the camera's to the [0,1] or [-1,1] range depending on the preferred convention).
+
+<iframe class="video" src="/images/projecting-3Dpoints-review/proj-review-world-to-cam-example.mp4" frameborder="0" allowfullscreen></iframe>
 
 !!!
 Note that all real-time APIs are working that way. We (developers) make them work that way because modern real-time APIs all have a programmable pipeline. So it's our responsibility to calculate the `world_to_camera` and the perspective projection matrix and pass them on to what's typically called a **vertex shader** whose primary function is precisely to project the vertices making up the models on the camera image plane. These matrices are often combined in a matrix commonly referred to (in code and the literature) as the `model_view` matrix. This matrix generally encodes the object-to-world matrix (this transforms the object's vertices from object space to world space), the world-to-camera matrix, and finally, the perspective (or orthographic) matrix. So three matrices in one. Here is an example of such a vertex shader in the WGLS format (where again `model_view_matrix` is the result of the projection matrix multiplied by the `world_to_camera` matrix multiplied by the `object_to_world` matrix - the model part in the matrix):
@@ -332,7 +332,7 @@ void glhPerspectivef(sreal *matrix, sreal fovyInDegrees, sreal aspectRatio, srea
 }
 ```
 
-In the good old times, you'd construct a perspective projection matrix by calling the `glPerspective` function (here called `glhPerspective`). As you can see, it takes a matrix as an input variable, a field of view (in degrees), an image aspect ratio, and a near and far clipping plane. Here, we are in familiar territory. Because we are given the vertical field of view, we will calculate the top coordinate first (here called `ymax`) using the near and vertical field of view. `ymin` is `-ymax`. Multiplying `ymax` and `ymin` by the image aspect ratio gives us `xmas` and `xmin`, respectively. We then pass left, right, bottom, and top (`-xmas`, `xmas`, `-ymax` and `ymax` respectively) to the `glhFrustumf` that will use the frustum coordinates to set our final perspective matrix. Not that because the absolute value of `xmin = -xmas` and `yin = -ymax`, `matrix2[8]=(right+left)/temp2;` and `matrix2[9]=(top+bottom)/temp3;` are equal to 0 (the numerator equals 0 in both cases). We let you do the rest of the work, but you will see that if you move the code from `glhPerspetivef` into 
+In the good old times, you'd construct a perspective projection matrix by calling the `glPerspective` function (here called `glhPerspective`). As you can see, it takes a matrix as an input variable, a field of view (in degrees), an image aspect ratio, and a near and far clipping plane. Here, we are in familiar territory. Because we are given the vertical field of view, we will calculate the top coordinate first (here called `ymax`) using the near and vertical field of view. `ymin` is `-ymax`. Multiplying `ymax` and `ymin` by the image aspect ratio gives us `xmas` and `xmin`, respectively. We then pass left, right, bottom, and top (`-xmas`, `xmas`, `-ymax` and `ymax` respectively) to `glhFrustumf` that will use the frustum coordinates to set our final perspective matrix. Not that because `xmin = -xmas` and `yin = -ymax`, `matrix2[8]=(right+left)/temp2;` and `matrix2[9]=(top+bottom)/temp3;` are equal to 0 (the numerator equals 0 in both cases). We let you do the rest of the work, but you will see that if you move the code from `glhPerspetivef` into 
 `glhFrustumf` and do the simplifications we spoke about. You will end with `perspectiveRH_ZO`.
 
 ![Figure xx: The bottom/left and top/right camera frustum's coorddinates](/images/perspective-matrix/projectionOpenGL2.png)
@@ -346,9 +346,13 @@ This shows two things:
 - Our code works. All code from other libraries does the same thing. In the end. Hopefully.
 - It's really good to know about existing libraries, as they help us learn and check our code. Therefore the more you will know about libraries, the better.
 
+Great. So we have our `world-to-camera` matrix, our projection matrix. What are we missing to conclude the mission? Some code for point-matrix and matrix-matrix multiplication. Let's go.
+
 ## Points and Matrix Multiplications
 
-We need some code for point-matrix and matrix-matrix multiplication to complete our toolbox. We can also look at the Imath code for this. You can also search in the GLM library where this is done, but it's more easily done in Imath, and the code from Imath is more straightforward.  
+Let's look at the Imath code for this. You can also search in the GLM library where this is done, but it's more easily done in Imath.
+
+xx
 
 ## Processing Vertices and Converting Them to Image Space
 

@@ -48,7 +48,7 @@ The convention for representing vectors in mathematics and physics is to name th
 
 $$\begin{bmatrix}T_x&T_y&T_z&0\\B_x&B_y&B_z&0\\N_x&N_y&N_z&0\\0&0&0&1\end{bmatrix}$$
 
-T, B, and N represent the tangent bi-tangent and normal vectors. Note that we swapped the position of the normal (up vector or y-axis in the conventional coordinate system) and the bitangent (forward vector or z-axis in the traditional coordinate system) in the matrix construction. Let's see how this work. Imagine you have a normal whose coordinates in world space are (0, 1, 0). In other words, it points straight up. Let's construct a matrix using the trick we have just learned where the tangent and bit agent vectors have the coordinates (1, 0, 0) and (0, 0, 1):
+T, B, and N represent the tangent bi-tangent and normal vectors. Note that we swapped the position of the normal (up vector or y-axis in the conventional coordinate system) and the bitangent (forward vector or z-axis in the traditional coordinate system) in the matrix construction. Let's see how this work. Imagine you have a normal whose coordinates in world space are (0, 1, 0). In other words, it points straight up. Let's construct a matrix using the trick we have just learned where the tangent and bitagent vectors have the coordinates (1, 0, 0) and (0, 0, 1):
 
 $$\begin{bmatrix}1&0&0&0\\0&0&1&0\\0&1&0&0\\0&0&0&1\end{bmatrix}$$
 
