@@ -2,7 +2,7 @@
 
 In the last three chapters, we have learned everything there is to know about the pinhole camera model. This type of camera is the simplest to simulate in CG and is the model most commonly used by video games and 3D applications. As briefly mentioned in the first chapter, pinhole cameras, by their design, can only produce sharp images (without any depth of field). While simple and easy to implement, the model is also often criticized for not being able to simulate visual effects such as depth of field or lens flare. While some perceive these effects as visual artifacts, they play an important role in the aesthetic experiences of photographs and films. Simulating these effects is relatively easy (because it essentially relies on well-known and basic optical rules) but very costly, especially compared to the time it takes to render an image with a basic pinhole camera model. We will present a method for simulating depth of field in another lesson (which is still costly but less costly than if we had to simulate depth of field by following the path of light rays through the various optics of a camera lens).
 
-In this chapter, we will use everything we have learned in the previous chapters about the pinhole camera model and write a program to implement this model. To convince you that this model works and that there is nothing mysterious or magic about how images are produced in software such as Maya, we will produce a series of images by changing different camera parameters in Maya and our program and compare the results. If all goes well, when the camera settings match, the two applications' images should also match. Let's get started.
+In this chapter, we will use everything we have learned in the previous chapters about the pinhole camera model and write a program to implement this model. To convince you that this model works and that there is nothing mysterious or magical about how images are produced in software such as Maya. We will produce a series of images by changing different camera parameters in Maya and our program and compare the results. If all goes well, when the camera settings match, the two applications' images should also match. Let's get started.
 
 ## Implementing an Ideal Pinhole Camera Model
 
@@ -14,7 +14,7 @@ The pinhole and virtual cameras must have the same viewing frustum to deliver th
 
 ### Where Shall the Canvas/Screen Be?
 
-In CG, once the viewing frustum is defined, we then need to define where is the virtual image plane going to be. Mathematically though, the canvas can be anywhere we want along the line of sight, as long as the surface on which we project the image is contained with the viewing frustum, as shown in Figure 1; it can be anywhere between the apex of the pyramid (obviously not the apex itself) and its base (which is defined by the far clipping plane) or even further if we wanted to.
+In CG, once the viewing frustum is defined, we then need to define where is the virtual image plane going to be. Mathematically though, the canvas can be anywhere we want along the line of sight, as long as the surface on which we project the image is contained within the viewing frustum, as shown in Figure 1; it can be anywhere between the apex of the pyramid (obviously not the apex itself) and its base (which is defined by the far clipping plane) or even further if we wanted to.
 
 <details>
 **Don't mistake the distance between the eye (the center of projection) and the canvas for the focal length**. They are not the same. The **position of the canvas does not define how wide or narrow the viewing frustum is** (neither does the near clipping plane); the viewing frustum shape is only defined by the focal length and the film size (the combination of both parameters defines the angle of view and thus the magnification at the image plane). As for the near-clipping plane, it is just an arbitrary plane which, with the far-clipping plane, is used to "clip" geometry along the camera's local z-axis and remap points z-coordinates to the range [0,1]. Why and how the remapping is done is explained in the lesson on the REYES algorithm, a popular rasterization algorithm, and the next lesson is devoted to the perspective projection matrix.
@@ -135,7 +135,7 @@ Note, though, that the film format is more often rectangular than square, as men
 
 ### Computing the Canvas Coordinates: The Long Way
 
-Let's start with the horizontal angle of view. In the previous chapters, we introduced the equation to compute the angle of view. It can easily be done using trigonometric identities. If you look at the camera setup from the top, you can see that we can trace a right triangle (Figure 6). The adjacent and opposite sides of the triangles are known: they correspond to the focal length and half of the film's horizontal aperture. However, they must be defined in the same unit to be used in a trigonometric identity. Typically, film gate dimensions are defined in inches, and focal length is defined in millimeters. Generally, inches are converted into millimeters, but you can convert millimeters to inches if you prefer; the result will be the same. One inch corresponds to 25.4 millimeters. The find the horizontal angle of view, we will use a trigonometric identity that says that the tangent of an angle is the ratio of the length of the opposite side to the length of the adjacent side (equation 1):
+Let's start with the horizontal angle of view. In the previous chapters, we introduced the equation to compute the angle of view. It can easily be done using trigonometric identities. If you look at the camera setup from the top, you can see that we can trace a right triangle (Figure 6). The adjacent and opposite sides of the triangles are known: they correspond to the focal length and half of the film's horizontal aperture. However, they must be defined in the same unit to be used in a trigonometric identity. Typically, film gate dimensions are defined in inches, and focal length is defined in millimeters. Generally, inches are converted into millimeters, but you can convert millimeters to inches if you prefer; the result will be the same. One inch corresponds to 25.4 millimeters. To find the horizontal angle of view, we will use a trigonometric identity that says that the tangent of an angle is the ratio of the length of the opposite side to the length of the adjacent side (equation 1):
 
 $$
 \begin{array}{l}
@@ -195,7 +195,7 @@ int main(int argc, char **argv)
     float left = -right;
 
     printf("Screen window left/right coordinates %f %f\n", left, right);
-    
+
     ...
 }
 ```
@@ -259,7 +259,7 @@ int main(int argc, char **argv)
     float filmAspectRatio = filmApertureWidth / filmApertureHeight;
     float left = bottom * filmAspectRatio;
     float left = -right;
-    
+
     printf("Screen window bottom-left, top-right coordinates %f %f %f %f\n", bottom, left, top, right);
     ...
 }
@@ -298,7 +298,7 @@ bool computePixelCoordinates(
     Vec2f pScreen;
     pScreen.x = pCamera.x / -pCamera.z * near;
     pScreen.y = pCamera.y / -pCamera.z * near;
-    
+
     Vec2f pNDC;
     pNDC.x = (pScreen.x + r) / (2 * r);
     pNDC.y = (pScreen.y + t) / (2 * t);
@@ -351,7 +351,7 @@ float yscale = 1;
 switch (fitFilm) {
     default:
     case kFill:
-        if (filmAspectRatio &gt; deviceAspectRatio) {
+        if (filmAspectRatio > deviceAspectRatio) {
             // 8a
             xscale = deviceAspectRatio / filmAspectRatio;
         }
@@ -361,7 +361,7 @@ switch (fitFilm) {
         }
         break;
     case kOverscan:
-        if (filmAspectRatio &gt; deviceAspectRatio) {
+        if (filmAspectRatio > deviceAspectRatio) {
             // 8b
             yscale = filmAspectRatio / deviceAspectRatio;
         }
