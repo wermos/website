@@ -12,7 +12,7 @@ float vertices[12] =
 uint32_t index[6] = {};
 
 float cam_to_world[16] = {};
-float horizontal_field_of_view = 60; // in degrees
+float vertical_field_of_view = 45; // in degrees
 float znear = 0.1;
 float zfar = 100;
 
@@ -352,7 +352,165 @@ Great. So we have our `world-to-camera` matrix, our projection matrix. What are 
 
 Let's look at the Imath code for this. You can also search in the GLM library where this is done, but it's more easily done in Imath.
 
-xx
+For the point matrix multiplication, the Imath code looks like this:
+
+```
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE inline void
+Matrix44<T>::multVecMatrix (const Vec3<S>& src, Vec3<S>& dst) const
+    IMATH_NOEXCEPT
+{
+    S a, b, c, w;
+
+    a = src.x * x[0][0] + src.y * x[1][0] + src.z * x[2][0] + x[3][0];
+    b = src.x * x[0][1] + src.y * x[1][1] + src.z * x[2][1] + x[3][1];
+    c = src.x * x[0][2] + src.y * x[1][2] + src.z * x[2][2] + x[3][2];
+    w = src.x * x[0][3] + src.y * x[1][3] + src.z * x[2][3] + x[3][3];
+
+    dst.x = a / w;
+    dst.y = b / w;
+    dst.z = c / w;
+}
+```
+
+Imath vector class is called `Vec3` and be specialized so that its elements x, y, z can either be floats or doubles (hence the template). Note that this method calculates `w` and add the translation part of the matrix (the elements `x[3][0]`, `x[3][1]`, and `x[3][2]`) to the respective elements of the `Vec3` instance. You should immediately realize that this function is indeed for points. Remember though from the lesson on Geometry that `w` is never defined explicitely. Yet, when it comes to transform points by matrices, we need to calculate its value (it is changed by the projection matrix as we will see later). Remember that it also needs to be normalized. As `w` is discarded at the end of the process, we don't need to explicitely set it to 1, though we need to divide the other vector elements by `w`.
+
+Also looking at the code you should immediately notice that Imath uses the **column-major convention**. This is important since if you decide to use it for your own project, you need to be aware of the convention used by Imath of course. Scratchapixel too uses the column-major convention. The vector is on the left of the matrix defined as row of elements. So are the elements of the matrix. In this convention the vector is on the left, the matrix on the right (of course), and we need to multiply for each elements in the transformed point, the elements of the vector by the elements in the matrix' row. For example if you calculate `pt.x` where `pt` is `p` transformed by matrix `m`, then:
+
+$$$pt.x = p.x * m[0][0] + p.y * m[1][0] + p.z * m[2][0] + \color{magenta}{m[3][0]}$$
+
+Where the last element in the @@\mmagenta@@ color represents the translation part. For `pt.y`:
+
+$$$pt.y = p.x * m[0][1] + p.y * m[1][1] + p.z * m[2][1] + \color{magenta}{m[3][1]}$$
+
+And so on. If you are not clear with the concept of **row** vs. **column-major** vectors and matrices, please read the lesson on Geometry once more.
+
+For the sake of completeness, compare the above fuction with the following which is used to transform vectors (aka directions). Note that translations values are ignored as well as the calculation for `w` and the `w` divide:
+
+```
+template <class T>
+template <class S>
+IMATH_HOSTDEVICE inline void
+Matrix44<T>::multDirMatrix (const Vec3<S>& src, Vec3<S>& dst) const
+    IMATH_NOEXCEPT
+{
+    S a, b, c;
+
+    a = src.x * x[0][0] + src.y * x[1][0] + src.z * x[2][0];
+    b = src.x * x[0][1] + src.y * x[1][1] + src.z * x[2][1];
+    c = src.x * x[0][2] + src.y * x[1][2] + src.z * x[2][2];
+
+    dst.x = a;
+    dst.y = b;
+    dst.z = c;
+}
+```
+
+Let's move to the matrix-matrix multiplication. Here is the code from Imath:
+
+```
+template <class T>
+IMATH_HOSTDEVICE inline IMATH_CONSTEXPR14 Matrix44<T>
+Matrix44<T>::multiply (const Matrix44& a, const Matrix44& b) IMATH_NOEXCEPT
+{
+    const auto a00 = a.x[0][0];
+    const auto a01 = a.x[0][1];
+    const auto a02 = a.x[0][2];
+    const auto a03 = a.x[0][3];
+
+    const auto c00 =
+        a00 * b.x[0][0] + a01 * b.x[1][0] + a02 * b.x[2][0] + a03 * b.x[3][0];
+    const auto c01 =
+        a00 * b.x[0][1] + a01 * b.x[1][1] + a02 * b.x[2][1] + a03 * b.x[3][1];
+    const auto c02 =
+        a00 * b.x[0][2] + a01 * b.x[1][2] + a02 * b.x[2][2] + a03 * b.x[3][2];
+    const auto c03 =
+        a00 * b.x[0][3] + a01 * b.x[1][3] + a02 * b.x[2][3] + a03 * b.x[3][3];
+
+    const auto a10 = a.x[1][0];
+    const auto a11 = a.x[1][1];
+    const auto a12 = a.x[1][2];
+    const auto a13 = a.x[1][3];
+
+    const auto c10 =
+        a10 * b.x[0][0] + a11 * b.x[1][0] + a12 * b.x[2][0] + a13 * b.x[3][0];
+    const auto c11 =
+        a10 * b.x[0][1] + a11 * b.x[1][1] + a12 * b.x[2][1] + a13 * b.x[3][1];
+    const auto c12 =
+        a10 * b.x[0][2] + a11 * b.x[1][2] + a12 * b.x[2][2] + a13 * b.x[3][2];
+    const auto c13 =
+        a10 * b.x[0][3] + a11 * b.x[1][3] + a12 * b.x[2][3] + a13 * b.x[3][3];
+
+    const auto a20 = a.x[2][0];
+    const auto a21 = a.x[2][1];
+    const auto a22 = a.x[2][2];
+    const auto a23 = a.x[2][3];
+
+    const auto c20 =
+        a20 * b.x[0][0] + a21 * b.x[1][0] + a22 * b.x[2][0] + a23 * b.x[3][0];
+    const auto c21 =
+        a20 * b.x[0][1] + a21 * b.x[1][1] + a22 * b.x[2][1] + a23 * b.x[3][1];
+    const auto c22 =
+        a20 * b.x[0][2] + a21 * b.x[1][2] + a22 * b.x[2][2] + a23 * b.x[3][2];
+    const auto c23 =
+        a20 * b.x[0][3] + a21 * b.x[1][3] + a22 * b.x[2][3] + a23 * b.x[3][3];
+
+    const auto a30 = a.x[3][0];
+    const auto a31 = a.x[3][1];
+    const auto a32 = a.x[3][2];
+    const auto a33 = a.x[3][3];
+
+    const auto c30 =
+        a30 * b.x[0][0] + a31 * b.x[1][0] + a32 * b.x[2][0] + a33 * b.x[3][0];
+    const auto c31 =
+        a30 * b.x[0][1] + a31 * b.x[1][1] + a32 * b.x[2][1] + a33 * b.x[3][1];
+    const auto c32 =
+        a30 * b.x[0][2] + a31 * b.x[1][2] + a32 * b.x[2][2] + a33 * b.x[3][2];
+    const auto c33 =
+        a30 * b.x[0][3] + a31 * b.x[1][3] + a32 * b.x[2][3] + a33 * b.x[3][3];
+    return Matrix44 (
+        c00,
+        c01,
+        c02,
+        c03,
+        c10,
+        c11,
+        c12,
+        c13,
+        c20,
+        c21,
+        c22,
+        c23,
+        c30,
+        c31,
+        c32,
+        c33);
+}
+```
+
+Remember from the Geometry lesson that for a matrix-matrix multiplication you need to multiply the elements of each row in the left-hand matrix by each column in the right-hand matrix (assuming you are using a column-major order convention). This can be expressed as follows:
+
+```
+inline
+Matrix4 Matrix4::operator*(const Matrix4& rhs) const
+{
+    Matrix4 mult;
+    const Matrix4& lhs = *this;
+    for (uint32_t j = 0; j < 4; ++j) {
+		for (uint32_t i = 0; i < 4; ++i) {
+            mult[j][i] = lhs[j][0] * rhs[0][i] + lhs[j][1] * rhs[1][i] + 
+                lhs[j][2] * rhs[2][i] + lhs[j][3] * rhs[3][i];
+        }
+    }
+
+    return mult;
+}
+```
+
+The code from Imath does the same thing as this function, but the two for-loops are unfolded. The unfolded version is preferred in production code because while less compact, by carefully arranging the term, you can avoid a few memeory fetches which should make the function faster to execute. In practice, it's hard to see the different nowardays, as when you write `for` loops, especially simple ones like the ones we have in matrix-multiplication, modern compilers are likely to do an excellent job at optimzing the code.
+
+Congratulation. You have all the tools you need. Let's proceed to the final step. Let's project the points.
 
 ## Processing Vertices and Converting Them to Image Space
 
