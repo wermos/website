@@ -332,8 +332,79 @@ void glhPerspectivef(sreal *matrix, sreal fovyInDegrees, sreal aspectRatio, srea
 }
 ```
 
-In the good old times, you'd construct a perspective projection matrix by calling the `glPerspective` function (here called `glhPerspective`). As you can see, it takes a matrix as an input variable, a field of view (in degrees), an image aspect ratio, and a near and far clipping plane. Here, we are in familiar territory. Because we are given the vertical field of view, we will calculate the top coordinate first (here called `ymax`) using the near and vertical field of view. `ymin` is `-ymax`. Multiplying `ymax` and `ymin` by the image aspect ratio gives us `xmas` and `xmin`, respectively. We then pass left, right, bottom, and top (`-xmas`, `xmas`, `-ymax` and `ymax` respectively) to `glhFrustumf` that will use the frustum coordinates to set our final perspective matrix. Not that because `xmin = -xmas` and `yin = -ymax`, `matrix2[8]=(right+left)/temp2;` and `matrix2[9]=(top+bottom)/temp3;` are equal to 0 (the numerator equals 0 in both cases). We let you do the rest of the work, but you will see that if you move the code from `glhPerspetivef` into 
-`glhFrustumf` and do the simplifications we spoke about. You will end with `perspectiveRH_ZO`.
+In the good old times, you'd construct a perspective projection matrix by calling the `glPerspective` function (here called `glhPerspective`). As you can see, it takes a matrix as an input variable, a field of view (in degrees), an image aspect ratio, and a near and far clipping plane. Here, we are in familiar territory. Because we are given the vertical field of view, we will calculate the top coordinate first (here called `ymax`) using the near and vertical field of view. `ymin` is `-ymax`. Multiplying `ymax` and `ymin` by the image aspect ratio gives us `xmas` and `xmin`, respectively. We then pass left, right, bottom, and top (`-xmas`, `xmas`, `-ymax` and `ymax` respectively) to `glhFrustumf` that will use the frustum coordinates to set our final perspective matrix. Not that because `xmin = -xmas` and `yin = -ymax`, `matrix2[8]=(right+left)/temp2;` and `matrix2[9]=(top+bottom)/temp3;` are equal to 0 (the numerator equals 0 in both cases). If you move the code from `glhPerspetivef` into `glhFrustumf` and do the simplifications we spoke about, you will end with `perspectiveRH_ZO`.
+
+```
+matrix2[0] = temp / temp2;
+// where temp = temp=2 * znear and temp2 = right - left with right = xmax = aspectRatio * znear * tan(fovy)
+matrix2[0] = 2 * znear / ((aspectRatio * znear * tan(fovy) - - (aspectRatio * znear * tan(fovy));
+matrix2[0] = = 2 * znear / 2 * znear * aspectRatio * tan(fovy);
+matrix2[0] = 1 / aspectRatio * tan(fovy);
+```
+
+```
+matrix2[5] = temp / temp3;
+// where temp = 2 * znear and temp3 = top - bottom with top = znear * tanf(fovy)
+matrix2[5]= 2 * znear / (znear * tan(fovy) - - znear * tan(fovy));
+matrix2[5]= 2 * znear / 2 * znear * tan(fovy);
+matrix2[5]= 1 / tan(fovy);
+```
+
+```
+matrix2[8] = (right + left) / temp2;
+// with right = xmax = aspectRatio * znear * tan(fovy) and left = -right
+matrix2[8]=(xmas + -xmas) / temp2 = 0;
+```
+
+```
+matrix2[9] = (top + bottom) / temp3;
+// with top = ymax = znear * tan(fovy) and bottom = -top
+matrix2[9]=(ymax + -ymax) / temp3 = 0;
+```
+
+```
+matrix2[10] = (-zfar - znear) / temp4; // or -(zfar + znear) / temp4
+// temp4 = zfar-znear
+matrix2[10] = - (zfar + znear) / (zfar - znear);
+```
+
+This part is different from the `perspectiveRH_ZO` here but that's because `glhFrustumf` remaps depth in the range [-1,1] whereas `perspectiveRH_ZO` rempas depth in the range 0 to 1. Here is the code for `perspectiveRH_NO`.
+
+```
+template<typename T>
+GLM_FUNC_QUALIFIER mat<4, 4, T, defaultp> perspectiveRH_NO(T fovy, T aspect, T zNear, T zFar)
+{
+	assert(abs(aspect - std::numeric_limits<T>::epsilon()) > static_cast<T>(0));
+
+	T const tanHalfFovy = tan(fovy / static_cast<T>(2));
+
+	mat<4, 4, T, defaultp> Result(static_cast<T>(0));
+	Result[0][0] = static_cast<T>(1) / (aspect * tanHalfFovy);
+	Result[1][1] = static_cast<T>(1) / (tanHalfFovy);
+	Result[2][2] = - (zFar + zNear) / (zFar - zNear);
+	Result[2][3] = - static_cast<T>(1);
+	Result[3][2] = - (static_cast<T>(2) * zFar * zNear) / (zFar - zNear);
+	return Result;
+}
+```
+
+Let's continue:
+
+```
+matrix2[11]=-1.0; // similar to Result[2][3] = - static_cast<T>(1); in perspectiveRH_ZO
+```
+
+Last:
+
+```
+matrix2[14] = (-temp * zfar) / temp4;
+// with temp = 2 * znear and temp4 = zfar - znear;
+matrix2[14] = -2 * znear * zfar / (zfar - znear);
+```
+
+Here again the difference with `Result[3][2] = -(zFar * zNear) / (zFar - zNear);` (note the missing `2`) has to do with the difference of remapping from 0 to 1 vs -1 to 1.
+
+So the functions are similar. By the way you might still ask, why is the `frustum` way of calaculating the perspective matrix useful if we can use a function to calculate that matrix that looks more compact. That's because sometimes (though it's quite uncommon), the top and left and/or top and bottom frustum coordinates are not "symmetrical". In other words `left != -right` and/or `bottom != -top` (you may want to calculate slightly more of the scene on the left or on the right, etc.).
 
 ![Figure xx: The bottom/left and top/right camera frustum's coorddinates](/images/perspective-matrix/projectionOpenGL2.png)
 
@@ -514,8 +585,72 @@ Congratulation. You have all the tools you need. Let's proceed to the final step
 
 ## Processing Vertices and Converting Them to Image Space
 
-xx
+We now have all the code we need in order to:
+
+- Calculate the world-to-camera matrix.
+- calculate the perspective projection matrix.
+- Multiply matrices with other matrices and points by matrices.
+
+All we are left to do is loop through the vertices and:
+
+- Remember that our input vertices are assumed to be in world space. So we first need to transform them to camera space. We do my multiplying the vertices by the `world-to-camera` matrix.
+- Then project the vertices in camera space to screen space using the perspective matrix.
+
+Okay there's one final step we have considered yet. When vertices are defined in screen space, their coordinates are **necessarily** in the range -1 to 1. Where [-1,-1] being the bottom-left coordinate of the screen and [1,1] being the top-right corner. So we need to remap these coordinates to the image dimension (640x480 in this example). This is simple, however remember that in an image, the pixel located in the top-left coorner of the image has coordinate (0,0) whereas the bottom-right pixel has coordinate (width-1, height-1). In other words, we need to **invert** the y-coordinate in the remapping process like so:
+
+```
+float pixelCoordX = (pt.x * 0.5 + 0.5) * imageWidth;
+float pixelCoordY = (0.5 - pt.y * 0.5) * imageHeight; // remap 1 to 0 and -1 to imageHeight
+```
+
+![](/images/projecting-3Dpoints-review/screen-pixel-coordinates.png)
+
+Here is the code snipped for projecting the vertices and calculating their pixel coordinates:
+
+```
+// this code works but for production code you would need to be sure that
+// the pixel coordinates are in the range from [0,0] to [width-1,height-1]
+for (uint32_t i = 0; i < numVertices; ++i) {
+	Point3 pt = vertices[i] * worldToCamera * perspMatrix;
+	float pixelCoordX = (pt.x * 0.5 + 0.5) * imageWidth;
+	float pixelCoordY = (0.5 - pt.y * 0.5) * imageHeight; // remap 1 to 0 and -1 to imageHeight
+	std::cerr << "pixel coordinages: " << pixelCoordX << " " << pixelCoordY << std::endl;
+}
+```
 
 ## Storing the Result Into an Image File
+
+xx
+
+```
+unsigned char* buffer = new unsigned char[imageWidth * imageHeight];
+	memset(buffer, 0x0, imageWidth * imageHeight);
+		
+	for (uint32_t i = 0; i < numVertices; ++i) {
+		std::cerr << "v " << vertices[i] << std::endl;
+		Point3 pt = vertices[i] * worldToCamera * perspMatrix;
+		float pixelCoordX = (pt.x * 0.5 + 0.5) * imageWidth;
+		float pixelCoordY = (0.5 - pt.y * 0.5) * imageHeight;
+		std::cerr << "pix coord " << pixelCoordX << " " << pixelCoordY << std::endl;
+		buffer[(int)pixelCoordY * imageWidth + (int)pixelCoordX] = 255;
+	}
+
+	std::ofstream ofs("./result.ppm", std::ios::binary);
+	ofs << "P5\n";
+	ofs << imageWidth << " " << imageHeight << "\n255\n";
+	ofs.write((char*)buffer, imageWidth * imageHeight);
+	ofs.close();
+```
+xx
+
+## Results
+
+xx
+
+![](/images/projecting-3Dpoints-review/maya-angle-of-view.png)
+
+xx
+
+![](/images/projecting-3Dpoints-review/result-proj-matrix.png)
 
 xx

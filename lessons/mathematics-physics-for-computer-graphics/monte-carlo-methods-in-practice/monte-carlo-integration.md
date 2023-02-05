@@ -36,7 +36,7 @@ Of course, as usual with Monte Carlo methods, this approximation converges to th
 !!!
 We can formalize this idea with the following formula:
 
-$\langle F^N\rangle = (b-a) \dfrac{1}{N } \sum_{i=0}^{N-1} f(X_i).$
+$$\langle F^N\rangle = (b-a) \dfrac{1}{N } \sum_{i=0}^{N-1} f(X_i).$$
 
 Where N here, is the number of samples used in this approximation. In mathematical notation (and statistics), \(\langle S \rangle\) represents the average of all the elements in S (\(\langle F^N \rangle \) is an approximation of F using N samples. It is equivalent to the sample mean notation \(\bar X_n\) we used in lesson 16 and the two are equivalent). This equation is called a **basic Monte Carlo estimator**. The random point in the interval [a,b] can easily be obtained by multiplying the result of a random generator producing uniformly distributed numbers in the interval [0,1] with (b-a):
 
@@ -46,7 +46,7 @@ The PDF of the resulting \(X_i\)s is \({1}/{(b - a)} \). Since the random number
 
 It is important here to note that:
 
-$Pr(\lim_{ N \to \infty} \langle F^N \rangle = F ) = 1.$
+$$Pr(\lim_{ N \to \infty} \langle F^N \rangle = F ) = 1.$$
 
 The law of large numbers which we talked about in the lesson [Mathematical Foundations of Monte Carlo Methods](/lessons/mathematics-physics-for-computer-graphics/monte-carlo-methods-mathematical-foundations/), tells us that as N approaches infinity, our Monte Carlo approximation converges (in probability) to the right answer (the probability is 1).
 !!!
@@ -71,7 +71,7 @@ Remember that the pdf is equal to 1/(b-a) thus it cancels out the term (b-a) on 
 Now, as mentioned above, the formula we used for the Monte Carlo estimator is basic. Why? Because it only works if the PDF of the random variable X is uniform. However, we can extend Monte Carlo integration to random variables with arbitrary PDFs. The more generic formula is then:
 
 !!!
-$\langle F^N \rangle = \dfrac{1}{N} \sum_{i=0}^{N-1} \dfrac{f(X_i)}{pdf(X_i)}.$
+$$\langle F^N \rangle = \dfrac{1}{N} \sum_{i=0}^{N-1} \dfrac{f(X_i)}{pdf(X_i)}.$$
 
 This is the more generalized form of the Monte Carlo estimator and the one you should remember (if there's only one equation to remember from the last two chapters, it is the one).
 
@@ -124,7 +124,7 @@ As you can see, a Monte Carlo estimation is nothing else than a sample mean, onl
 
 - Its rate of convergence is proportional to the function's variance \(\sigma^2\). The variance of the estimator is itself the now familiar formula: \(\sigma^2 / n\). **In practice, this means that four times more samples are needed to reduce the error of the estimate by half.**
   
-  \(\sigma[\langle F^N \rangle] \propto { 1 \over \sqrt{N} }\).
+  $$\sigma[\langle F^N \rangle] \propto { 1 \over \sqrt{N} }.$$
   
   And as we will explain in a short while, this convergence rate is independent of the integral dimension which is not the case of other more deterministic methods used to solve integrals (such as the Riemann sum for instance).  
   
