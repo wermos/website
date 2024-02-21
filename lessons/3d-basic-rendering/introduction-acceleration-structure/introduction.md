@@ -29,7 +29,7 @@ As for computing the total render time, we can simply keep track of time before 
 
 <details>
 
-While the following code is still valid, you should now be using the [STL C++ **atomic** library](http://en.cppreference.com/w/cpp/atomic/atomic) which has been introduced in C++11\. Check the lesson on Parallel Rendering for more recent information on this topic. This code will be revised once the basic section is complete (July 2014).
+While the following code is still valid, you should now be using the [STL C++ **atomic** library](http://en.cppreference.com/w/cpp/atomic/atomic) which has been introduced in C++11. Check the lesson on Parallel Rendering for more recent information on this topic. This code will be revised once the basic section is complete (July 2014).
 
 </details>
 
